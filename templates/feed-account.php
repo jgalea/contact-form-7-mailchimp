@@ -263,14 +263,15 @@ color: #E31230;
    } 
   ?>
   <div class="vx_wrap"> 
-    <h2 class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php 
-echo sprintf(esc_html__('Edit Mailchimp Feed # %d','contact-form-mailchimp-crm') ,$fid); 
+<h1 class="screen-reader-text"><?php esc_html_e("Contact Form 7 - Mailchimp", "contact-form-mailchimp") ?></h1>
+    <h2 class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php 
+echo sprintf(esc_html__('Edit Mailchimp Feed # %d','contact-form-mailchimp') ,$fid); 
   if(empty($id) || $new_account_id != $id){
- ?> <a href="<?php echo esc_url($new_feed_link) ?>" class="add-new-h2"><?php esc_html_e("Add New Feed",'contact-form-mailchimp-crm'); ?></a> 
+ ?> <a href="<?php echo esc_url($new_feed_link) ?>" class="add-new-h2"><?php esc_html_e("Add New Feed",'contact-form-mailchimp'); ?></a> 
  <?php
 }
  ?>
- <a href="<?php echo esc_url($feeds_link) ?>" class="add-new-h2"><?php esc_html_e("Back to Feeds",'contact-form-mailchimp-crm'); ?></a>
+ <a href="<?php echo esc_url($feeds_link) ?>" class="add-new-h2"><?php esc_html_e("Back to Feeds",'contact-form-mailchimp'); ?></a>
 
   </h2>
   <?php
@@ -283,7 +284,7 @@ if(empty($feed_name)){
   //ensures valid credentials were entered in the settings page
   if(!empty($info) && !$this->api_is_valid($info)) {
   ?>
-  <div class="error" id="message" style="margin-top:20px;"><?php echo wpautop(sprintf(esc_html__("We are unable to login to Mailchimp with the provided API token. Please make sure they are valid in the %sSettings Page%s", 'contact-form-mailchimp-crm'), "<a href='".esc_url($this->link_to_settings())."'>", "</a>")); ?></div>
+  <div class="error" id="message" style="margin-top:20px;"><?php echo wpautop(sprintf(esc_html__("We are unable to login to Mailchimp with the provided API token. Please make sure they are valid in the %sSettings Page%s", 'contact-form-mailchimp'), "<a href='".esc_url($this->link_to_settings())."'>", "</a>")); ?></div>
   <?php
   // return;
   } 
@@ -295,14 +296,14 @@ if(empty($feed_name)){
   <?php wp_nonce_field("vx_nonce") ?>
     <div class="vx_div">
       <div class="vx_head">
-<div class="crm_head_div"> <?php esc_html_e('1. Enter feed name',  'contact-form-mailchimp-crm' ); ?></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
+<div class="crm_head_div"> <?php esc_html_e('1. Enter feed name',  'contact-form-mailchimp' ); ?></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
 <div class="crm_clear"></div> 
   </div>
   <div class="vx_group">
   <div class="vx_row">
   <div class="vx_col1">
-  <label for="vx_name" class="left_header"><?php esc_html_e("Feed Name", 'contact-form-mailchimp-crm'); ?>
+  <label for="vx_name" class="left_header"><?php esc_html_e("Feed Name", 'contact-form-mailchimp'); ?>
   <?php $this->tooltip("vx_feed_name") ?>
  </label>
   </div>
@@ -315,21 +316,21 @@ if(empty($feed_name)){
   </div>
   <div class="vx_div">
         <div class="vx_head">
-<div class="crm_head_div"> <?php esc_html_e('2. Select Mailchimp Account.', 'contact-form-mailchimp-crm'); ?></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
+<div class="crm_head_div"> <?php esc_html_e('2. Select Mailchimp Account.', 'contact-form-mailchimp'); ?></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
 <div class="crm_clear"></div> 
   </div>
 
   <div class="vx_group">
     <div class="vx_row">
   <div class="vx_col1">
-  <label for="vx_account" class="left_header"><?php esc_html_e("Mailchimp Account", 'contact-form-mailchimp-crm'); ?>
+  <label for="vx_account" class="left_header"><?php esc_html_e("Mailchimp Account", 'contact-form-mailchimp'); ?>
   <?php $this->tooltip("vx_sel_object") ?>
  </label>
   </div>
   <div class="vx_col2">
   <select id="vx_account" class="crm_sel load_object" name="account" autocomplete="off">
-  <option value=""><?php esc_html_e("Select a Mailchimp Account", 'contact-form-mailchimp-crm'); ?></option>
+  <option value=""><?php esc_html_e("Select a Mailchimp Account", 'contact-form-mailchimp'); ?></option>
   <?php
   $this->account=$account=$this->post('account',$feed); 
   $account_found=false;
@@ -354,21 +355,21 @@ if(empty($feed_name)){
   
     <div class="vx_div">
         <div class="vx_head">
-<div class="crm_head_div"> <?php esc_html_e('3. Select Contact Form.', 'contact-form-mailchimp-crm'); ?></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
+<div class="crm_head_div"> <?php esc_html_e('3. Select Contact Form.', 'contact-form-mailchimp'); ?></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
 <div class="crm_clear"></div> 
   </div>
 
   <div class="vx_group">
     <div class="vx_row">
   <div class="vx_col1">
-  <label for="vx_form_id" class="left_header"><?php esc_html_e("Contact Form Form", 'contact-form-mailchimp-crm'); ?>
+  <label for="vx_form_id" class="left_header"><?php esc_html_e("Contact Form Form", 'contact-form-mailchimp'); ?>
   <?php $this->tooltip("vx_sel_form") ?>
  </label>
   </div>
   <div class="vx_col2">
   <select id="vx_form_id" class="crm_sel load_object" name="form_id" autocomplete="off">
-  <option value=""><?php esc_html_e("Select a Form", 'contact-form-mailchimp-crm'); ?></option>
+  <option value=""><?php esc_html_e("Select a Form", 'contact-form-mailchimp'); ?></option>
   <?php
    
   foreach($forms as $f_key=>$platform){
@@ -394,7 +395,7 @@ if(empty($feed_name)){
 <?php
       if(defined('ELEMENTOR_PRO_VERSION') ){
   ?>  
-<div class="howto"><?php echo sprintf(esc_html__('If contact form is missing from list then install our %s , submit required form, it will add that missing form in this list.','contact-form-mailchimp-crm'),'<a href="https://wordpress.org/plugins/contact-form-entries/" target="_blank">Contact Form Entries</a>')?></div>
+<div class="howto"><?php echo sprintf(esc_html__('If contact form is missing from list then install our %s , submit required form, it will add that missing form in this list.','contact-form-mailchimp'),'<a href="https://wordpress.org/plugins/contact-form-entries/" target="_blank">Contact Form Entries</a>')?></div>
 <?php
       }
 ?>
@@ -404,7 +405,7 @@ if(empty($feed_name)){
   </div>
   </div>
   
-    <div id="crm_ajax_div_object" style="display:none; text-align: center; line-height: 100px;"><i> <?php esc_html_e('Loading, Please Wait...','contact-form-mailchimp-crm'); ?></i></div>
+    <div id="crm_ajax_div_object" style="display:none; text-align: center; line-height: 100px;"><i> <?php esc_html_e('Loading, Please Wait...','contact-form-mailchimp'); ?></i></div>
 
   <div id="crm_object_div" style="<?php if(empty($info) || empty($form_id)) {echo 'display:none';} ?>">
     <?php
@@ -588,7 +589,7 @@ $(document).on("dblclick",".vx_head,.crm_panel_head2",function(e){
           if(field_div.is(":hidden")){
        panel.find(".crm_toggle_btn").trigger('click');
      }
-    attach_error.append('<div class="entry_row vx_entry_error"><div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('This is a required field','contact-form-mailchimp-crm') ?></div></div>');
+    attach_error.append('<div class="entry_row vx_entry_error"><div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('This is a required field','contact-form-mailchimp') ?></div></div>');
     return false;
     }  
    })  
@@ -636,7 +637,7 @@ $(document).on("dblclick",".vx_head,.crm_panel_head2",function(e){
  
   $(document).on("click",".vx_remove_btn",function(e){ 
   e.preventDefault(); 
-    if(!confirm('<?php esc_html_e('Are you sure to remove ?','contact-form-mailchimp-crm') ?>')){
+    if(!confirm('<?php esc_html_e('Are you sure to remove ?','contact-form-mailchimp') ?>')){
       return;
   }
   var temp=$(this).parents(".crm_panel");
@@ -652,7 +653,7 @@ $(document).on("dblclick",".vx_head,.crm_panel_head2",function(e){
   if(field_name_select.length){
     var field_name=id=field_name_select.val(); 
     if(field_name == '' || crm_fields[field_name] == ''){
-     alert('<?php esc_html_e('Please Select Field Name','contact-form-mailchimp-crm') ?>');
+     alert('<?php esc_html_e('Please Select Field Name','contact-form-mailchimp') ?>');
      return;   
     }  
  var field=crm_fields[field_name];
@@ -775,7 +776,7 @@ if(type){ row.find('.vxc_field_option').hide(); }
       e.preventDefault();
   });
     function add_note_sel(){
-    jQuery('#crm_note_fields').select2({ placeholder: '<?php esc_html_e('Select Field','contact-form-mailchimp-crm') ?>'});
+    jQuery('#crm_note_fields').select2({ placeholder: '<?php esc_html_e('Select Field','contact-form-mailchimp') ?>'});
 } 
   function mark_del(obj){
   obj.css({'opacity':'.5'});
@@ -872,7 +873,7 @@ vx_select();
   }
 vx_select();
   function vx_select(){
-      $('#vx_add_fields_select').select2({ placeholder: '<?php esc_html_e('Select Field','contact-form-mailchimp-crm') ?>'});
+      $('#vx_add_fields_select').select2({ placeholder: '<?php esc_html_e('Select Field','contact-form-mailchimp') ?>'});
       add_note_sel();
   }
   $(document).on("click","#load_objects",function(e){

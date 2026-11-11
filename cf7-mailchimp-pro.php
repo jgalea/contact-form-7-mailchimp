@@ -31,6 +31,7 @@ class vxcf_mailchimp {
   public  $min_cf_version = "1.0";
   public $type = "vxcf_mailchimp";
   public  $fields = null;
+  public  $form_fields = null;
   public  $data = null;
 
   private $filter_condition;
@@ -45,16 +46,13 @@ class vxcf_mailchimp {
   public static $save_key='';  
   public static  $lic_msg = "";
   public static $db_version='';  
-  public static $vx_plugins;  
   public static $note;
   public static $feeds_res;    
   public static $cf_status='';    
   public static $cf_status_msg='';    
   public static $tooltips;    
   public static $entry_created=false;
-    public static $plugin;       
   public static $api_timeout;  
-  public static $is_pr;        
 
  public function instance(){ 
       add_action( 'plugins_loaded', array( $this, 'setup_main' ) );
@@ -77,19 +75,6 @@ register_activation_hook(__FILE__,(array($this,'activate')));
   return;
   } */
   
-$pro_file=self::$path . 'wp/crmperks-notices.php';
-if(file_exists($pro_file)){ 
-include_once($pro_file); 
-}else{
-//plugin api
-$this->plugin_api(true);    
-self::$is_pr=true;
- $pro_file=self::$path . 'pro/add-ons.php';
-if(file_exists($pro_file)){
-include_once($pro_file);
-} } 
-
-require_once(self::$path . "includes/crmperks-cf.php"); 
 require_once(self::$path . "includes/plugin-pages.php");    
  
 
@@ -106,6 +91,10 @@ require_once(self::$path . "includes/plugin-pages.php");
  add_action('vxcf_entry_created', array($this, 'entry_created'),10,3);
  add_action('vx_contact_created', array($this, 'entry_created_contacts'),10,3);
  add_action('vx_callcenter_entry_created', array($this, 'entry_created_callcenter'),10,3);
+ add_action($this->id.'_prune_logs', array($this,'prune_logs'));
+ if(!wp_next_scheduled($this->id.'_prune_logs')){
+  wp_schedule_event(time()+HOUR_IN_SECONDS,'daily',$this->id.'_prune_logs');
+ }
  
   add_filter('wpcf7_before_send_mail', array($this, 'create_entry_cf'),99);
    //formidable
@@ -118,65 +107,28 @@ require_once(self::$path . "includes/plugin-pages.php");
       if(is_admin()){
   self::$path=$this->get_base_path(); 
   add_action('init', array($this,'init'));
-       //loading translations
-load_plugin_textdomain('contact-form-mailchimp-crm', FALSE,  $this->plugin_dir_name(). '/languages/' );
   
   self::$db_version=get_option($this->type."_version");
   if(self::$db_version != $this->version && current_user_can( 'manage_options' )){
+  if(empty(self::$db_version) && get_option($this->type.'_settings') === false){
+  add_option($this->type.'_settings',array('log_days'=>30));
+  }
   $data=$this->get_data_object();
   $data->update_table();
   update_option($this->type."_version", $this->version);
   //add post permissions
   require_once(self::$path . "includes/install.php"); 
   $install=new vxcf_mailchimp_install();
-  $install->create_roles();   
+  $install->create_roles();
 
   }
-}
-  
+  if((int)get_option($this->type.'_schema',1) < 2 && current_user_can( 'manage_options' )){
+  $this->get_data_object()->update_table();
+  update_option($this->type.'_schema',2);
   }
-   public function form_submitted($form){ 
-
-    //entries plugin exists , do not use this hook
-    if(class_exists('vxcf_form')){ return; }
-    $form_id=$form->id();
-     $submission = WPCF7_Submission::get_instance();  
-    
-     $lead = $submission->uploaded_files();
-if(!is_array($lead)){  $lead=array(); }
-$form_title=$form->title();
-$tags=array();
-
-if(method_exists('WPCF7_ShortcodeManager','get_instance') || method_exists('WPCF7_FormTagsManager','get_instance')){
-
-         $form_text=get_post_meta($form_id ,'_form',true); 
-         
-if(method_exists('WPCF7_FormTagsManager','get_instance')){
-    $manager=WPCF7_FormTagsManager::get_instance(); 
-$contents=$manager->scan($form_text); 
-$tags=$manager->get_scanned_tags();   
-
-}else if(method_exists('WPCF7_ShortcodeManager','get_instance')){ //
- $manager = WPCF7_ShortcodeManager::get_instance();
-$contents=$manager->do_shortcode($form_text);
-$tags=$manager->get_scanned_tags();    
-} }
-
-
-if(is_array($tags)){
-  foreach($tags as $k=>$v){
-      if(!empty($v['name'])){
-      $name=$v['name'];
-$val=$submission->get_posted_data($name);
-if(!isset($lead[$name])){  $lead[$name]=$val;  }
-         
-  }  }
 }
-//var_dump($lead);
-$form_arr=array('id'=>'cf_'.$form_id,'name'=>$form_title,'fields'=>$tags);
-$this->entry_created($lead,'0',$form_arr); 
 
-}
+  }
 public function create_entry_cf($form){ 
  if(class_exists('vxcf_form')){ return; }   
 $form_id=$form->id();
@@ -353,11 +305,9 @@ if(is_array($fields)){
          $val=$detail[$name];
      if($v['type'] == 'file'){
           $val= wp_get_attachment_url($val) ;
-             $base_url=get_site_url();
-              $val=str_replace($base_url,trim(ABSPATH,'/'),$val);
     $uploaded_files_form[$name]=$val;   
      }     
-  $lead[$name]=$detail[$name];          
+  $lead[$name]=is_serialized($detail[$name]) ? @unserialize($detail[$name],array('allowed_classes'=>false)) : $detail[$name];
      }
   }  
 //
@@ -375,21 +325,6 @@ $form_name=$wpdb->get_var($sql);
 $form_arr=array('id'=>'fd_'.$form_id,'name'=>$form_name,'fields'=>$fields);
 $this->entry_created($lead,'0',$form_arr);  
 }
-public  function plugin_api($start_instance=false){
-    if(empty(self::$path)){   self::$path=$this->get_base_path(); }
-   $api_file=self::$path . "pro/plugin-api.php";
-    if(!class_exists('vxcf_plugin_api') && file_exists( $api_file)){   
-require_once( $api_file );
-}
-if(class_exists('vxcf_plugin_api')){
- $slug=$this->get_slug();
- $settings_link=$this->link_to_settings();
- $is_plugin_page=$this->is_crm_page(); 
-self::$plugin=new vxcf_plugin_api($this->id,$this->version,$this->type,$this->domain,$this->update_id,self::$title,$slug,self::$path,$settings_link,$is_plugin_page);
-if($start_instance){
-self::$plugin->instance();
-}
-} }
    /**
   * contact form entry created
   * 
@@ -400,18 +335,12 @@ self::$plugin->instance();
 
       self::$entry_created=true;
       
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'cf',$form);
-       }  
 
      $entry['__vx_id']=$entry_id; 
       $this->push($entry,$form,'',false);  
   } 
 public function entry_created_crmperks($entry_id,$entry,$form){ 
     self::$entry_created=true;
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'vf',$form);
-       } 
 
 $form['id']='vf_'.$form['id'];
 $form['cfx_type']='vf';
@@ -420,9 +349,6 @@ $this->push($entry,$form,'',false);
 }
   public function entry_created_contacts($entry,$entry_id,$form){
 
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'cc',$form);
-       }  
 
      $entry['__vx_id']=$entry_id; 
       $this->push($entry,$form,'',false);  
@@ -432,39 +358,6 @@ $this->push($entry,$form,'',false);
     }
 
   /**
-  * Install Contact Form Notice
-  * 
-  */
-  public function install_cf_notice(){
-        $message=self::$cf_status_msg;
-  if(!empty($message)){
-  $this->display_msg('admin',$message,'gravity'); 
-     $this->notice_js=true; 
-  
-  }
-  }
-   public function submit(){
-       $entry='{"your-name":"Your Name (required)","your-email":"admin@localhost.com","your-subject":"subject test","your-message":"sdfsdfsdfsdf","your-country":["India"],"your-sports":["Tennis"],"your-fruit":["Banana"],"your-browser":"Safari","your-file":""}';
-       $form='{"id":69,"name":"Contact form 1"}';
-       $entry=json_decode($entry,true);
-       $form=json_decode($form,true);
-         apply_filters('vx_addons_save_entry',false,$entry_id,$entry,'cf',$form);   
-         $entry['__vx_id']="1"; 
-      $p=$this->push($entry,$form);  
-   var_dump($p); die();  
- } 
-
-  /**
-  * Install Contact Form Notice (plugin row)
-  * 
-  */
-  public function install_cf_notice_plugin_row(){
-  $message=self::$cf_status_msg;
-  if(!empty($message)){
-   $this->display_msg('',$message,'gravity');
-  } 
-  }
-  /**
   * display admin notice
   * 
   * @param mixed $type
@@ -472,21 +365,11 @@ $this->push($entry,$form,'',false);
   * @param mixed $id
   */
   public function display_msg($type,$message,$id=""){
-  //exp 
-  global $wp_version;
-  $ver=floatval($wp_version);
   if($type == "admin"){
-     if($ver<4.2){
   ?>
-    <div class="error vx_notice notice" data-id="<?php echo esc_attr($id) ?>"><p style="display: table"><span style="display: table-cell; width: 98%"><span class="dashicons dashicons-megaphone"></span> <b><?php esc_html_e('Contact Form Mailchimp Plugin','contact-form-mailchimp-crm') ?>. </b><?php echo wp_kses_post($message);?> </span>
-<span style="display: table-cell; padding-left: 10px; vertical-align: middle;"><a href="#" class="notice-dismiss" title="<?php esc_html_e('Dismiss Notice','contact-form-mailchimp-crm') ?>">dismiss</a></span> </p></div>
-  <?php
-     }else{
-  ?>
-  <div class="error vx_notice notice below-h2 is-dismissible" data-id="<?php echo esc_attr($id) ?>"><p><span class="dashicons dashicons-megaphone"></span> <b><?php esc_html_e('Contact Form Mailchimp Plugin','contact-form-mailchimp-crm') ?>. </b> <?php echo wp_kses_post($message);?> </p>
+  <div class="error vx_notice notice below-h2 is-dismissible" data-id="<?php echo esc_attr($id) ?>"><p><span class="dashicons dashicons-megaphone"></span> <b><?php esc_html_e('Contact Form Mailchimp Plugin','contact-form-mailchimp') ?>. </b> <?php echo wp_kses_post($message);?> </p>
   </div>    
   <?php
-     }
   }else{
   ?>
   <tr class="plugin-update-tr"><td colspan="5" class="plugin-update">
@@ -549,11 +432,11 @@ $this->push($entry,$form,'',false);
   }
   if($installed !=1){
     if($installed === 0){ // not found
-  $message = sprintf(__("%sContact Form Entries%s is required. %s it today!%s", 'contact-form-mailchimp-crm'), "<a href='https://www.crmperks.com/'>", "</a>", "<a href='https://www.crmperks.com/'>", "</a>");   
+  $message = sprintf(__("%sContact Form Entries%s is required. %s it today!%s", 'contact-form-mailchimp'), "<a href='https://www.crmperks.com/'>", "</a>", "<a href='https://www.crmperks.com/'>", "</a>");   
   }else if($installed === 2){ // not active
-  $message = sprintf(__('Contact Form Entries is installed but not active. %sActivate Contact Form Entries%s to use the Contact Form Mailchimp Plugin','contact-form-mailchimp-crm'), '<strong><a href="'.wp_nonce_url(admin_url('plugins.php?action=activate&plugin=contact-form-entries-pro/contact-form-entries-pro.php'), 'activate-plugin_contact-form-entries-pro/contact-form-entries-pro.php').'">', '</a></strong>');  
+  $message = sprintf(__('Contact Form Entries is installed but not active. %sActivate Contact Form Entries%s to use the Contact Form Mailchimp Plugin','contact-form-mailchimp'), '<strong><a href="'.wp_nonce_url(admin_url('plugins.php?action=activate&plugin=contact-form-entries-pro/contact-form-entries-pro.php'), 'activate-plugin_contact-form-entries-pro/contact-form-entries-pro.php').'">', '</a></strong>');  
   } else if($installed === 3){ // not supported
-  $message = sprintf(__("A higher version of %sContact Form Entries%s is required. %sPurchase it today!%s", 'contact-form-mailchimp-crm'), "<a href='https://www.crmperks.com/'>", "</a>", "<a href='https://www.crmperks.com/'>", "</a>");
+  $message = sprintf(__("A higher version of %sContact Form Entries%s is required. %sPurchase it today!%s", 'contact-form-mailchimp'), "<a href='https://www.crmperks.com/'>", "</a>", "<a href='https://www.crmperks.com/'>", "</a>");
   }  
   self::$cf_status_msg=$message;
   }
@@ -816,7 +699,9 @@ return $forms;
       $title='Contacts Addon';
       if($form_id !='vx_contacts'){
       global $vxcf_form;
-      if(method_exists($vxcf_form,'get_forms')){
+      if(strpos($form_id,'cf_') === 0){
+          $title=get_the_title((int)substr($form_id,3));
+      }else if(is_object($vxcf_form) && method_exists($vxcf_form,'get_forms')){
           $forms=$vxcf_form->get_forms();
           if(is_array($forms) && count($forms)>0){
               foreach($forms as $key=>$vals){
@@ -967,10 +852,6 @@ return $result;
      if(is_array($value) && isset($value['value'])){
       $value=$value['value'];   
      }
-     if(!is_array($value)){
-          $value=maybe_unserialize($value);
-     }
-  
   }
  $fields=$this->form_fields;  
  $type=isset($fields[$field_id]['type']) ? $fields[$field_id]['type'] : '';
@@ -1071,7 +952,7 @@ return $objects;
   * @param mixed $feed
   */
   public  function verify_log($feed,$objects=''){
-  $link="N/A"; $desc=__("Added to ",'contact-form-mailchimp-crm');
+  $link="N/A"; $desc=__("Added to ",'contact-form-mailchimp');
     $status_imgs=array("1"=>"created","2"=>"updated","4"=>"filtered",'5'=>'deleted');
     $feed['status_img']=isset($status_imgs[$feed["status"]]) ? $status_imgs[$feed["status"]] : 'failed';
     
@@ -1087,26 +968,26 @@ return $objects;
   // $desc="Note Added to ";     
   }
   if($feed['status'] == 2){
-  $desc="Updated to ";    
+  $desc=__("Updated to ",'contact-form-mailchimp');    
   }
   $desc.=$feed['object'];
   if($feed['status'] == 5){
-   $desc=sprintf(__("Deleted from %s",'contact-form-mailchimp-crm'),$feed['object']);   
+   $desc=sprintf(__("Deleted from %s",'contact-form-mailchimp'),$feed['object']);   
   }
   }else if($feed['status'] == 4){
-      $desc=sprintf(__("Filtered from %s",'contact-form-mailchimp-crm'),$feed['object']); 
+      $desc=sprintf($feed['error'] == 'skipped' ? __("Skipped, already in %s",'contact-form-mailchimp') : __("Filtered from %s",'contact-form-mailchimp'),$feed['object']); 
   }else{
-  $desc= !empty($feed['error']) ? $feed['error'] : esc_html__("Unknown Error",'contact-form-mailchimp-crm');
+  $desc= !empty($feed['error']) ? $feed['error'] : esc_html__("Unknown error. Open the log details for the full Mailchimp response.",'contact-form-mailchimp');
   }
-  $title=__("Failed",'contact-form-mailchimp-crm');   
+  $title=__("Failed",'contact-form-mailchimp');   
   if($feed['status'] == 1){
-  $title=__("Created",'contact-form-mailchimp-crm');   
+  $title=__("Created",'contact-form-mailchimp');   
   }else if($feed['status'] == 2){
-  $title=__("Updated",'contact-form-mailchimp-crm');   
+  $title=__("Updated",'contact-form-mailchimp');   
   }else if($feed['status'] == 4){
-  $title=__("Filtered",'contact-form-mailchimp-crm');   
+  $title=__("Filtered",'contact-form-mailchimp');   
   }else if($feed['status'] == 5){
-  $title=__("Deleted",'contact-form-mailchimp-crm');   
+  $title=__("Deleted",'contact-form-mailchimp');   
   }
   $feed['_crm_id']= !empty($feed['crm_id']) ? $feed['crm_id'] : "N/A";
   $feed['a_link']=$link;
@@ -1114,116 +995,6 @@ return $objects;
   $feed['title']=$title;
   return $feed;
   }   
-  /**
-  * get address components
-  *  
-  * @param mixed $entry
-  * @param mixed $field_id
-  * @param mixed $type
-  */
-  private  function get_address($entry, $field_id,$type=""){
-  $street_value = str_replace("  ", " ", trim($entry[$field_id . ".1"]));
-  $street2_value = str_replace("  ", " ", trim($entry[$field_id . ".2"]));
-  $city_value = str_replace("  ", " ", trim($entry[$field_id . ".3"]));
-  $state_value = str_replace("  ", " ", trim($entry[$field_id . ".4"]));
-  $zip_value = trim($entry[$field_id . ".5"]);
-  if(method_exists('GF_Field_Address','get_country_code')){
-  $field_c=new GF_Field_Address();
-  $country_value=$field_c->get_country_code(trim($entry[$field_id . ".6"]));
-  }else{
-  $country_value = GFCommon::get_country_code(trim($entry[$field_id . ".6"]));       
-  }
-  $country =trim($entry[$field_id . ".6"]);
-  $address = $street_value;
-  $address .= !empty($address) && !empty($street2_value) ? "  $street2_value" : $street2_value;
-  if($type =="json"){
-  $arr=array("street"=>$address,"city"=>$city_value,"state"=>$state_value,"zip"=>$zip_value,"country"=>$country);
-  return json_encode($arr);
-  }
-  $address .= !empty($address) && (!empty($city_value) || !empty($state_value)) ? "  $city_value" : $city_value;
-  $address .= !empty($address) && !empty($city_value) && !empty($state_value) ? "  $state_value" : $state_value;
-  $address .= !empty($address) && !empty($zip_value) ? "  $zip_value" : $zip_value;
-  $address .= !empty($address) && !empty($country_value) ? "  $country_value" : $country_value;
-  
-  return $address;
-  }
-
-  /**
-  * Add checkbox to entry info - option to send entry to crm
-  * 
-  * @param mixed $form_id
-  * @param mixed $lead
-  */
-  public  function entry_info_send_checkbox( $form_id, $lead ) {
-  
-  // If this entry's form isn't connected to crm, don't show the checkbox
-  if(!$this->show_send_to_crm_button() ) { return; }
-  
-  // If this is not the Edit screen, get outta here.
-  if(empty($_POST["screen_mode"]) || $_POST["screen_mode"] === 'view') { return; }
-  
-   if(!current_user_can($this->id."_send_to_crm")){return; }
-  
-  if( apply_filters( $this->id.'_show_manual_export_button', true ) ) {
-  printf('<input type="checkbox" name="'.esc_attr($this->id).'_update" id="'.esc_attr($this->id).'_update" value="1" /><label for="'.esc_attr($this->id).'_update" title="%s">%s</label><br /><br />', esc_html__('Create or update this entry in Mailchimp. The fields will be mapped according to the form feed settings.', 'contact-form-mailchimp-crm'), esc_html__('Send to Mailchimp', 'contact-form-mailchimp-crm'));
-  } else {
-  echo '<input type="hidden" name="'.esc_attr($this->id).'_update" id="'.esc_attr($this->id).'_update" value="1" />';
-  }
-  }
-  /**
-  * Add button to entry info - option to send entry to crm
-  * 
-  * @param mixed $button
-  */
-  public  function entry_info_send_button( $button = '' ) {
-  // If this entry's form isn't connected to crm, don't show the button
-  if(!$this->show_send_to_crm_button()) { return $button; }
-if(!current_user_can($this->id."_send_to_crm")){return; }
-  // Is this the view or the edit screen?
-  $mode = empty($_POST["screen_mode"]) ? "view" : $this->post("screen_mode");
-  if($mode === 'view') {
-            $margin="";
-      if(defined("vx_btn")){
-      $margin="margin-top: 5px;";    
-      }else{define('vx_btn','true');}
-  $button.= '<input type="submit" class="button button-large button-secondary alignright" name="'.esc_attr($this->id).'_send" style="margin-left:5px; '.$margin.'" title="'.__('Create or update this entry in Mailchimp. The fields will be mapped according to the form feed settings.','contact-form-mailchimp-crm').'" value="'.__('Send to Mailchimp', 'contact-form-mailchimp-crm').'" onclick="jQuery(\'#action\').val(\'send_to_crm\')" />';
-  //logs button
-
-      $entry_id=$this->post('lid');
-      $form_id = rgget('id');
-      if(empty($entry_id)){
-          $entry_id=$this->get_entry_id($form_id);
-      }
-      $log_url=admin_url( 'admin.php?page=gf_edit_forms&view=settings&subview='.$this->id.'&tab=log&id='.$this->post('id').'&entry_id='.$entry_id); 
-    $button.= '<a class="button button-large button-secondary alignright" style="margin-left:5px; margin-top:5px; " title="'.__('Go to Mailchimp Logs','contact-form-mailchimp-crm').'" href="'.esc_url($log_url).'">'.__('Mailchimp Logs','contact-form-mailchimp-crm').'</a>';
-  
-  } 
-  return $button;
-  }
-  /**
-  * Whether to show the Entry "Send to CRM" button or not
-  *
-  * If the entry's form has been mapped to CRM feed, show the Send to CRM button. Otherwise, don't.
-  *
-  * @return boolean True: Show the button; False: don't show the button.
-  */
-  private  function show_send_to_crm_button() {
-  
-  $form_id = rgget('id');
-  
-  return $this->has_feed($form_id);
-  }
-  /**
-  * Does the current form have a feed assigned to it?
-  * @param  INT      $form_id Form ID
-  * @return boolean
-  */
-  function has_feed($form_id) {
-  $data=$this->get_data_object();
-  $feeds = $data->get_feed_by_form( $form_id , true);
-  
-  return !empty($feeds);
-  }
   
 
   
@@ -1244,18 +1015,6 @@ if(!current_user_can($this->id."_send_to_crm")){return; }
   else{
   return false;
   }
-  }
-  /**
-  * uninstall plugin
-  * 
-  */
-  public  function uninstall(){
-  //droping all tables
- require_once(self::$path . "includes/install.php"); 
-  $install=new vxcf_mailchimp_install();
-    do_action('uninstall_vx_plugin_'.$install->id);
-  $install->remove_data();
-  $install->remove_roles();
   }
     /**
   * email validation
@@ -1279,7 +1038,15 @@ if(!current_user_can($this->id."_send_to_crm")){return; }
   * 
   * @param mixed $action
   */
-  public function deactivate($action="deactivate"){ 
+  public function prune_logs(){
+  $settings=get_option($this->type.'_settings',array());
+  $days=isset($settings['log_days']) ? absint($settings['log_days']) : 0;
+  if($days > 0){
+  $this->get_data_object()->delete_old_logs($days);
+  }
+  }
+  public function deactivate($action="deactivate"){
+  wp_clear_scheduled_hook($this->id.'_prune_logs');
   do_action('plugin_status_'.$this->type,$action);
   }
   /**
@@ -1287,40 +1054,8 @@ if(!current_user_can($this->id."_send_to_crm")){return; }
   * 
   */
   public function activate(){ 
-$this->plugin_api(true);
 do_action('plugin_status_'.$this->type,'activate');  
   }
-    /**
-  * Send CURL Request
-  * 
-  * @param mixed $body
-  * @param mixed $path
-  * @param mixed $method
-  */
-  public function request($path="",$method='POST',$body="",$head=array()) {
-
-        $args = array(
-            'body' => $body,
-            'headers'=> $head,
-            'method' => strtoupper($method), // GET, POST, PUT, DELETE, etc.
-            'sslverify' => false,
-            'timeout' => 20,
-        );
-
-       $response = wp_remote_request($path, $args);
-
-        if(is_wp_error($response)) { 
-            $this->error_msg= $response->get_error_message();
-            return false;
-        } else if(isset($response['response']['code']) && $response['response']['code'] != 200 && $response['response']['code'] != 404) {
-            $this->error_msg = strip_tags($response['body']);
-            return false;
-        } else if(!$response) {
-            return false;
-        }
-   $result=wp_remote_retrieve_body($response);
-        return $result;
-    }
 
   /**
   * Formates User Informations and submitted form to string
@@ -1386,7 +1121,7 @@ public function post($key, $arr="") {
 }
 public static function clean($var){
     if ( is_array( $var ) ) {
-        return array_map( array('self','clean'), $var );
+        return array_map( array(__CLASS__,'clean'), $var );
     } else {
         return  sanitize_text_field(wp_unslash($var));
     }
@@ -1406,7 +1141,7 @@ public static function clean($var){
   $status=0;
   if(class_exists('vxcf_mailchimp_wp')){
       $status=1;
-  }else if( file_exists(WP_PLUGIN_DIR.'/contact-form-mailchimp-crm/contact-form-mailchimp-crm.php')) {
+  }else if( file_exists(WP_PLUGIN_DIR.'/contact-form-mailchimp/contact-form-mailchimp.php')) {
   $status=2;
   } 
   return $status;
@@ -1418,7 +1153,11 @@ public static function clean($var){
   public function time_offset(){
  $offset = (int) get_option('gmt_offset');
   return $offset*3600;
-  } 
+  }
+  public function format_time($time){
+  if(empty($time)){ return ''; }
+  return wp_date(get_option('date_format').' '.get_option('time_format'),strtotime($time));
+  }
   /**
   * Decrypts Values
   * @param array $info Mailchimp encrypted API info 
@@ -1517,14 +1256,6 @@ $enc_str.=":".base64_encode($iv);
   */
   public function get_slug(){
   return plugin_basename(__FILE__);
-  }
-public function do_actions(){
-     if(!is_object(self::$plugin) ){ $this->plugin_api(); }
-      if(is_object(self::$plugin) && method_exists(self::$plugin,'valid_addons')){
-       return self::$plugin->valid_addons();  
-      }
-    
-   return false;   
   }
   /**
   * Returns the physical path of the plugin's root folder
@@ -1889,40 +1620,44 @@ if(!empty($res_temp)){ $res=$res_temp; }
       $action=$this->post('action',$res);
       if($action == "Added"){
           if(empty($res['link'])){
-  $msg=sprintf(__('Successfully Added to Mailchimp (%s) with ID # %s .', 'contact-form-mailchimp-crm'),$feed['object'],$res['id']);
+  $msg=sprintf(__('Successfully Added to Mailchimp (%s) with ID # %s .', 'contact-form-mailchimp'),$feed['object'],$res['id']);
           }else{
-  $msg=sprintf(__('Successfully Added to Mailchimp (%s) with ID # %s . View entry at %s', 'contact-form-mailchimp-crm'),$feed['object'],$res['id'],$res['link']);
+  $msg=sprintf(__('Successfully Added to Mailchimp (%s) with ID # %s . View entry at %s', 'contact-form-mailchimp'),$feed['object'],$res['id'],$res['link']);
           }
-  $screen_msg=__( 'Entry added in Mailchimp', 'contact-form-mailchimp-crm');
+  $screen_msg=__( 'Entry added in Mailchimp', 'contact-form-mailchimp');
       }else{
-            if(empty($res['link'])){
-  $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s . View entry at %s', 'contact-form-mailchimp-crm'),$feed['object'],$res['id'],$res['link']);   
+            if(!empty($res['link'])){
+  $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s . View entry at %s', 'contact-form-mailchimp'),$feed['object'],$res['id'],$res['link']);   
             }else{
-  $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s .', 'contact-form-mailchimp-crm'),$feed['object'],$res['id']);   
+  $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s .', 'contact-form-mailchimp'),$feed['object'],$res['id']);   
             }
           if($event == 'delete'){  
-     $screen_msg=__( 'Entry deleted from Mailchimp', 'contact-form-mailchimp-crm');
+     $screen_msg=__( 'Entry deleted from Mailchimp', 'contact-form-mailchimp');
           }else{
-     $screen_msg=__( 'Entry updated in Mailchimp', 'contact-form-mailchimp-crm');
+     $screen_msg=__( 'Entry updated in Mailchimp', 'contact-form-mailchimp');
           }
           }
    
   
   }else if($this->post('status',$res) == 4){
-  $screen_msg=$msg=__( 'Entry filtered', 'contact-form-mailchimp-crm');    
+  if($this->post('action',$res) == 'Skipped'){
+  $error='skipped';
+  $screen_msg=$msg=__( 'Entry already exists in Mailchimp, skipped', 'contact-form-mailchimp');
+  }else{
+  $screen_msg=$msg=__( 'Entry filtered', 'contact-form-mailchimp');
+  }
   }else{
   $status=0; $screen_msg_class="error";
-  $screen_msg=__('Errors when adding to Mailchimp. Entry not sent! Check the Entry Notes below for more details.' , 'contact-form-mailchimp-crm' );
+  $screen_msg=__('Errors when adding to Mailchimp. Entry not sent! Check the Entry Notes below for more details.' , 'contact-form-mailchimp' );
   if($log_id!=""){
       //message for  bulk actions in logs
-  $screen_msg=__('Errors when adding to Mailchimp. Entry not sent' , 'contact-form-mailchimp-crm' );    
+  $screen_msg=__('Errors when adding to Mailchimp. Entry not sent' , 'contact-form-mailchimp' );    
   }
-  $msg=sprintf(__('Error while creating %s', 'contact-form-mailchimp-crm'),$feed['object']);
+  $msg=sprintf(__('Error while creating %s', 'contact-form-mailchimp'),$feed['object']);
   if($this->post('error',$res)!=""){
       $error= is_array($res['error']) ? json_encode($res['error']) : $res['error'];
   $msg.=" ($error)";
-  
-  $_REQUEST['VXGMailchimpError']=$msg; //front end form error for admin only
+
   }   
   if(!$is_admin){
       $info['msg']=$msg;
@@ -1940,7 +1675,7 @@ $this->send_error_email($info,$entry,$form);
   $log_link='';
     if(!empty($insert_id)){ //   
    $log_url=admin_url( 'admin.php?page='.$this->id.'&tab=logs&log_id='.$insert_id);  
-  $log_link=' <a href="'.esc_url($log_url).'" class="vx_log_link" data-id="'.$insert_id.'">'.__('View Detail','contact-form-mailchimp-crm')."</a>";
+  $log_link=' <a href="'.esc_url($log_url).'" class="vx_log_link" data-id="'.$insert_id.'">'.__('View Detail','contact-form-mailchimp')."</a>";
  $screen_msg.=$log_link;
     }
     if($post_comment){
@@ -1969,20 +1704,20 @@ $this->send_error_email($info,$entry,$form);
   */
   public function send_error_email($info,$entry,$form){
         if(!empty($info['data']['error_email'])){
-  $subject="Error While Posting to Mailchimp";
+  $subject=__("Error while posting to Mailchimp",'contact-form-mailchimp');
     $entry_link=add_query_arg(array('page' => 'vxcf_leads','tab'=>'entries', 'id' => $entry['__vx_id']), admin_url('admin.php'));  
-  $page_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; 
+  $page_url = esc_url_raw(home_url(wp_unslash($_SERVER['REQUEST_URI']))); 
 
   $detail=array(
   "Time"=>date('d/M/y H:i:s',current_time('timestamp')),
-  "Page URL"=>'<a href="'.$page_url.'" style="word-break:break-all;">'.$page_url.'</a>',
-  "Entry ID"=>'<a href="'.$entry_link.'" target="_blank" style="word-break:break-all;">'.$entry_link.'</a>'
+  "Page URL"=>'<a href="'.esc_url($page_url).'" style="word-break:break-all;">'.esc_html($page_url).'</a>',
+  "Entry ID"=>'<a href="'.esc_url($entry_link).'" target="_blank" style="word-break:break-all;">'.esc_html($entry_link).'</a>'
   );
   if(isset($form['title'])){
-    $detail["Form Name"]=$form['title'];
-  $detail["Form Id"]=$form['id'];
+    $detail["Form Name"]=esc_html($form['title']);
+  $detail["Form Id"]=esc_html($form['id']);
   }
-    $email_info=array("msg"=>$info['msg'],"title"=>__('Mailchimp','contact-form-mailchimp-crm')." Error","info_title"=>"More Detail","info"=>$detail);
+    $email_info=array("msg"=>esc_html($info['msg']),"title"=>__('Mailchimp','contact-form-mailchimp')." Error","info_title"=>"More Detail","info"=>$detail);
   $email_body=$this->format_user_info($email_info,true);
 
   $error_emails=explode(",",$info['data']['error_email']); 

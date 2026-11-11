@@ -15,11 +15,14 @@ class vxcf_mailchimp_api extends vxcf_mailchimp{
 function __construct($info) {
      
     if(isset($info['data'])){ 
+       if(defined('VXCF_MAILCHIMP_API_KEY')){
+           $info['data']['api_key']=VXCF_MAILCHIMP_API_KEY;
+       }
        $this->info= $info;
        if(!empty($info['data']['api_key'])){
         $this->api_key=$info['data']['api_key'];
       $temp_arr=explode('-',$this->api_key); 
-      if(!empty($temp_arr[1])){ 
+      if(!empty($temp_arr[1]) && preg_match('/^[a-z]+[0-9]+$/',$temp_arr[1])){ 
 $this->url='https://'.$temp_arr[1].'.api.mailchimp.com/3.0/';
       }
        }
@@ -190,10 +193,8 @@ public function push_object($module,$fields,$meta){
 //check primary key
  $extra=array();
 
-  $debug = isset($_GET['vx_debug']) && current_user_can('manage_options');
   $event= isset($meta['event']) ? $meta['event'] : '';
   $id= isset($meta['crm_id']) ? $meta['crm_id'] : '';
-  if($debug){ ob_start();}
 if(isset($meta['primary_key']) && $meta['primary_key']!="" && isset($fields[$meta['primary_key']]['value']) && $fields[$meta['primary_key']]['value']!=""){    
 $search=$fields[$meta['primary_key']]['value'];
 $field=$meta['primary_key'];
@@ -209,18 +210,6 @@ if(!empty($search_response['exact_matches']['members']) && is_array($search_resp
   }  
 }
 
-  if($debug){
-  ?>
-  <h3>Search field</h3>
-  <p><?php print_r($field) ?></p>
-  <h3>Search term</h3>
-  <p><?php print_r($search) ?></p>
-    <h3>POST Body</h3>
-  <p><?php print_r($body) ?></p>
-  <h3>Search response</h3>
-  <p><?php print_r($res) ?></p>  
-  <?php
-  }
 
       $extra["body"]=$search;
       $extra["response"]=$search_response;
@@ -230,6 +219,15 @@ if(!empty($meta['vx_unsub'])){
    return '';     
     }else{
    $event='delete';     
+    }
+}
+
+if($id == "" && !in_array($event,array('delete','delete_note','add_note')) && !empty($fields['email_address']['value'])){
+    $member_hash=md5(strtolower(trim($fields['email_address']['value'])));
+    $member=$this->post_crm('lists/'.$module.'/members/'.$member_hash,'get');
+    if(!empty($member['id']) && empty($member['detail'])){
+        $id=$member['id'];
+        $extra['Existing member']=$member_hash;
     }
 }
 
@@ -281,6 +279,8 @@ if(empty($meta['update'])){
  $is_main=true;
 $object_url='lists/'.$module.'/members/'.$id;
  $method='patch';
+ }else{
+ $action="Skipped"; $status="4";
  } }
 }
 
@@ -331,7 +331,11 @@ if($type == 'birthday'){ $temp_val=strtotime($val); if(!empty($temp_val)){ $val=
 if(!empty($merge_fields)){
 $post['merge_fields']=$merge_fields;
 }
+if($method != 'patch'){
 $post['status']=!empty($meta['status']) ? $meta['status'] : 'subscribed';
+}else if(!empty($meta['status']) && in_array($meta['status'],array('unsubscribed','cleaned'))){
+$post['status']=$meta['status'];
+}
 $post['email_type']=!empty($meta['email_type']) ? $meta['email_type'] : 'html';
 $post['language']=!empty($meta['language']) ? $meta['language'] : 'en';
 if(!empty($meta['vip'])){
@@ -366,24 +370,6 @@ if($status == '2' && !empty($post['tags'])){
 $extra['Tags Response']=$this->post_crm($object_url.'/tags','post',array('tags'=>$tags));   
 }
     }
-  if($debug){
-  ?>
-  <h3>Account Information</h3>
-  <p><?php //print_r($this->info) ?></p>
-  <h3>Data Sent</h3>
-  <p><?php print_r($post) ?></p>
-  <h3>Fields</h3>
-  <p><?php echo json_encode($fields) ?></p>
-  <h3>Response</h3>
-  <p><?php print_r($response) ?></p>
-  <h3>Object</h3>
-  <p><?php print_r($module."--------".$action) ?></p>
-  <?php
- echo  $contents=trim(ob_get_clean());
-  if($contents!=""){
-  update_option($this->id."_debug",$contents);   
-  }
-  }
        //add entry note
  if(!empty($meta['__vx_entry_note']) && !empty($id)){
  $disable_note=$this->post('disable_entry_note',$meta);
@@ -399,7 +385,7 @@ $note_response= $this->post_crm( $object_url,'post',$note_post);
    }  
  }
 
-return array("error"=>$error,"id"=>$id,"link"=>$link,"action"=>$action,"status"=>$status,"data"=>$fields,"response"=>$arr,"extra"=>$extra);
+return array("error"=>$error,"id"=>($action == "Skipped" ? "" : $id),"link"=>$link,"action"=>$action,"status"=>$status,"data"=>$fields,"response"=>$arr,"extra"=>$extra);
 }
 public function create_fields_section($fields){ 
 $arr=array(); 
@@ -468,7 +454,7 @@ public function post_crm($path,$method,$body=''){
        $body=json_encode($body); 
    }
      $head=array('Authorization'=> ' apikey ' .$this->api_key); 
-       if($method == 'post'){
+ if(in_array($method,array('post','put','patch'))){
        $head['Content-Type']='application/json';   
        }
      
@@ -476,7 +462,6 @@ public function post_crm($path,$method,$body=''){
   'body' => $body,
   'headers'=> $head,
   'method' => strtoupper($method), // GET, POST, PUT, DELETE, etc.
-  'sslverify' => false,
   'timeout' => 30,
   );
   

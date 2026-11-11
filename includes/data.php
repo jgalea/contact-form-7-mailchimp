@@ -62,7 +62,9 @@ class vxcf_mailchimp_data extends vxcf_mailchimp{
   `status` tinyint(1) not null default 1,
   `time` datetime null,
   PRIMARY KEY  (id),
-  KEY entry_id (entry_id)
+  KEY entry_id (entry_id),
+  KEY idx_time (`time`),
+  KEY idx_status_time (`status`,`time`)
   )$charset_collate;";
   
    dbDelta($sql);
@@ -244,8 +246,9 @@ $page=(int)$this->post('page_id');
   if($search!=""){
   $sql_end.=" where ".substr($search,4);
   }
-  if($this->post('orderby')!=""){
-  $sql_end.=' order by '.esc_sql($this->post('orderby'));   
+  $order_cols=array('crm_id'=>'crm_id','entry_id'=>'entry_id','object'=>'object','time'=>'s.time','id'=>'s.id');
+  if(isset($order_cols[$this->post('orderby')])){
+  $sql_end.=' order by '.$order_cols[$this->post('orderby')];   
   if($this->post('order')!="" && in_array($this->post('order'),array("asc","desc"))){
   $sql_end.=' '.$this->post('order'); 
   }
@@ -306,6 +309,11 @@ $page=(int)$this->post('page_id');
   * 
   * @param mixed $id
   */
+  public  function delete_old_logs($days){
+  global $wpdb;
+  $table=$this->get_crm_table_name('log');
+  return $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE `time` < %s",gmdate('Y-m-d H:i:s',time()-$days*DAY_IN_SECONDS)));
+  }
   public  function delete_log($log_ids){
   global $wpdb;
   $table=$this->get_crm_table_name('log');
@@ -387,13 +395,13 @@ return $results;
   return $results[0];   
   }     
   }
-  $results = $wpdb->get_results( 'SELECT * FROM '.$table.' where id='.$id.' limit 1',ARRAY_A );
+  $results = $wpdb->get_results( $wpdb->prepare('SELECT * FROM '.$table.' where id=%d limit 1',$id),ARRAY_A );
   if(count($results) == 0){
   return array();
   }
   $feed=$results[0];
-  $fields=json_decode($feed['data'],true);
-  $meta=json_decode($feed['meta'],true);
+  $fields=json_decode((string)$feed['data'],true);
+  $meta=json_decode((string)$feed['meta'],true);
   $feed['meta']=is_array($meta) ? $meta : array();
   $feed['data']=is_array($fields) ? $fields : array();
   return $feed;
