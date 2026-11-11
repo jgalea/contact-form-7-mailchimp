@@ -703,9 +703,9 @@ $this->screen_msg($msg,'error');
 die();
 }    
 public function format_log_msg($log){
-    $msg=!empty($log['meta']) ? $log['meta'] : $log['desc'];
+    $msg=esc_html(!empty($log['meta']) ? $log['meta'] : $log['desc']);
 if(!empty($log['status']) && !empty($log['a_link']) && !empty($log['crm_id'])){
-    $msg.=' '.$log['a_link'];
+    $msg.=' '.esc_html($log['a_link']);
 }
 $st=empty($log['status']) ? '0' : $log['status'];
 //$this->screen_msg($msg,$class);

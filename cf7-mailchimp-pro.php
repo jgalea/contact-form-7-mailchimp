@@ -1936,18 +1936,18 @@ $this->send_error_email($info,$entry,$form);
         if(!empty($info['data']['error_email'])){
   $subject="Error While Posting to Mailchimp";
     $entry_link=add_query_arg(array('page' => 'vxcf_leads','tab'=>'entries', 'id' => $entry['__vx_id']), admin_url('admin.php'));  
-  $page_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; 
+  $page_url = esc_url_raw(home_url(wp_unslash($_SERVER['REQUEST_URI']))); 
 
   $detail=array(
   "Time"=>date('d/M/y H:i:s',current_time('timestamp')),
-  "Page URL"=>'<a href="'.$page_url.'" style="word-break:break-all;">'.$page_url.'</a>',
-  "Entry ID"=>'<a href="'.$entry_link.'" target="_blank" style="word-break:break-all;">'.$entry_link.'</a>'
+  "Page URL"=>'<a href="'.esc_url($page_url).'" style="word-break:break-all;">'.esc_html($page_url).'</a>',
+  "Entry ID"=>'<a href="'.esc_url($entry_link).'" target="_blank" style="word-break:break-all;">'.esc_html($entry_link).'</a>'
   );
   if(isset($form['title'])){
-    $detail["Form Name"]=$form['title'];
-  $detail["Form Id"]=$form['id'];
+    $detail["Form Name"]=esc_html($form['title']);
+  $detail["Form Id"]=esc_html($form['id']);
   }
-    $email_info=array("msg"=>$info['msg'],"title"=>__('Mailchimp','contact-form-mailchimp-crm')." Error","info_title"=>"More Detail","info"=>$detail);
+    $email_info=array("msg"=>esc_html($info['msg']),"title"=>__('Mailchimp','contact-form-mailchimp-crm')." Error","info_title"=>"More Detail","info"=>$detail);
   $email_body=$this->format_user_info($email_info,true);
 
   $error_emails=explode(",",$info['data']['error_email']); 
