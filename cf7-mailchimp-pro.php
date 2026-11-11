@@ -90,7 +90,6 @@ if(file_exists($pro_file)){
 include_once($pro_file);
 } } 
 
-require_once(self::$path . "includes/crmperks-cf.php"); 
 require_once(self::$path . "includes/plugin-pages.php");    
  
 
@@ -134,48 +133,6 @@ require_once(self::$path . "includes/plugin-pages.php");
 }
   
   }
-   public function form_submitted($form){ 
-
-    //entries plugin exists , do not use this hook
-    if(class_exists('vxcf_form')){ return; }
-    $form_id=$form->id();
-     $submission = WPCF7_Submission::get_instance();  
-    
-     $lead = $submission->uploaded_files();
-if(!is_array($lead)){  $lead=array(); }
-$form_title=$form->title();
-$tags=array();
-
-if(method_exists('WPCF7_ShortcodeManager','get_instance') || method_exists('WPCF7_FormTagsManager','get_instance')){
-
-         $form_text=get_post_meta($form_id ,'_form',true); 
-         
-if(method_exists('WPCF7_FormTagsManager','get_instance')){
-    $manager=WPCF7_FormTagsManager::get_instance(); 
-$contents=$manager->scan($form_text); 
-$tags=$manager->get_scanned_tags();   
-
-}else if(method_exists('WPCF7_ShortcodeManager','get_instance')){ //
- $manager = WPCF7_ShortcodeManager::get_instance();
-$contents=$manager->do_shortcode($form_text);
-$tags=$manager->get_scanned_tags();    
-} }
-
-
-if(is_array($tags)){
-  foreach($tags as $k=>$v){
-      if(!empty($v['name'])){
-      $name=$v['name'];
-$val=$submission->get_posted_data($name);
-if(!isset($lead[$name])){  $lead[$name]=$val;  }
-         
-  }  }
-}
-//var_dump($lead);
-$form_arr=array('id'=>'cf_'.$form_id,'name'=>$form_title,'fields'=>$tags);
-$this->entry_created($lead,'0',$form_arr); 
-
-}
 public function create_entry_cf($form){ 
  if(class_exists('vxcf_form')){ return; }   
 $form_id=$form->id();
@@ -428,39 +385,6 @@ $this->push($entry,$form,'',false);
       $this->push($entry,$form,'',false); 
     }
 
-  /**
-  * Install Contact Form Notice
-  * 
-  */
-  public function install_cf_notice(){
-        $message=self::$cf_status_msg;
-  if(!empty($message)){
-  $this->display_msg('admin',$message,'gravity'); 
-     $this->notice_js=true; 
-  
-  }
-  }
-   public function submit(){
-       $entry='{"your-name":"Your Name (required)","your-email":"admin@localhost.com","your-subject":"subject test","your-message":"sdfsdfsdfsdf","your-country":["India"],"your-sports":["Tennis"],"your-fruit":["Banana"],"your-browser":"Safari","your-file":""}';
-       $form='{"id":69,"name":"Contact form 1"}';
-       $entry=json_decode($entry,true);
-       $form=json_decode($form,true);
-         apply_filters('vx_addons_save_entry',false,$entry_id,$entry,'cf',$form);   
-         $entry['__vx_id']="1"; 
-      $p=$this->push($entry,$form);  
-   var_dump($p); die();  
- } 
-
-  /**
-  * Install Contact Form Notice (plugin row)
-  * 
-  */
-  public function install_cf_notice_plugin_row(){
-  $message=self::$cf_status_msg;
-  if(!empty($message)){
-   $this->display_msg('',$message,'gravity');
-  } 
-  }
   /**
   * display admin notice
   * 
@@ -1107,116 +1031,6 @@ return $objects;
   $feed['title']=$title;
   return $feed;
   }   
-  /**
-  * get address components
-  *  
-  * @param mixed $entry
-  * @param mixed $field_id
-  * @param mixed $type
-  */
-  private  function get_address($entry, $field_id,$type=""){
-  $street_value = str_replace("  ", " ", trim($entry[$field_id . ".1"]));
-  $street2_value = str_replace("  ", " ", trim($entry[$field_id . ".2"]));
-  $city_value = str_replace("  ", " ", trim($entry[$field_id . ".3"]));
-  $state_value = str_replace("  ", " ", trim($entry[$field_id . ".4"]));
-  $zip_value = trim($entry[$field_id . ".5"]);
-  if(method_exists('GF_Field_Address','get_country_code')){
-  $field_c=new GF_Field_Address();
-  $country_value=$field_c->get_country_code(trim($entry[$field_id . ".6"]));
-  }else{
-  $country_value = GFCommon::get_country_code(trim($entry[$field_id . ".6"]));       
-  }
-  $country =trim($entry[$field_id . ".6"]);
-  $address = $street_value;
-  $address .= !empty($address) && !empty($street2_value) ? "  $street2_value" : $street2_value;
-  if($type =="json"){
-  $arr=array("street"=>$address,"city"=>$city_value,"state"=>$state_value,"zip"=>$zip_value,"country"=>$country);
-  return json_encode($arr);
-  }
-  $address .= !empty($address) && (!empty($city_value) || !empty($state_value)) ? "  $city_value" : $city_value;
-  $address .= !empty($address) && !empty($city_value) && !empty($state_value) ? "  $state_value" : $state_value;
-  $address .= !empty($address) && !empty($zip_value) ? "  $zip_value" : $zip_value;
-  $address .= !empty($address) && !empty($country_value) ? "  $country_value" : $country_value;
-  
-  return $address;
-  }
-
-  /**
-  * Add checkbox to entry info - option to send entry to crm
-  * 
-  * @param mixed $form_id
-  * @param mixed $lead
-  */
-  public  function entry_info_send_checkbox( $form_id, $lead ) {
-  
-  // If this entry's form isn't connected to crm, don't show the checkbox
-  if(!$this->show_send_to_crm_button() ) { return; }
-  
-  // If this is not the Edit screen, get outta here.
-  if(empty($_POST["screen_mode"]) || $_POST["screen_mode"] === 'view') { return; }
-  
-   if(!current_user_can($this->id."_send_to_crm")){return; }
-  
-  if( apply_filters( $this->id.'_show_manual_export_button', true ) ) {
-  printf('<input type="checkbox" name="'.esc_attr($this->id).'_update" id="'.esc_attr($this->id).'_update" value="1" /><label for="'.esc_attr($this->id).'_update" title="%s">%s</label><br /><br />', esc_html__('Create or update this entry in Mailchimp. The fields will be mapped according to the form feed settings.', 'contact-form-mailchimp'), esc_html__('Send to Mailchimp', 'contact-form-mailchimp'));
-  } else {
-  echo '<input type="hidden" name="'.esc_attr($this->id).'_update" id="'.esc_attr($this->id).'_update" value="1" />';
-  }
-  }
-  /**
-  * Add button to entry info - option to send entry to crm
-  * 
-  * @param mixed $button
-  */
-  public  function entry_info_send_button( $button = '' ) {
-  // If this entry's form isn't connected to crm, don't show the button
-  if(!$this->show_send_to_crm_button()) { return $button; }
-if(!current_user_can($this->id."_send_to_crm")){return; }
-  // Is this the view or the edit screen?
-  $mode = empty($_POST["screen_mode"]) ? "view" : $this->post("screen_mode");
-  if($mode === 'view') {
-            $margin="";
-      if(defined("vx_btn")){
-      $margin="margin-top: 5px;";    
-      }else{define('vx_btn','true');}
-  $button.= '<input type="submit" class="button button-large button-secondary alignright" name="'.esc_attr($this->id).'_send" style="margin-left:5px; '.$margin.'" title="'.__('Create or update this entry in Mailchimp. The fields will be mapped according to the form feed settings.','contact-form-mailchimp').'" value="'.__('Send to Mailchimp', 'contact-form-mailchimp').'" onclick="jQuery(\'#action\').val(\'send_to_crm\')" />';
-  //logs button
-
-      $entry_id=$this->post('lid');
-      $form_id = rgget('id');
-      if(empty($entry_id)){
-          $entry_id=$this->get_entry_id($form_id);
-      }
-      $log_url=admin_url( 'admin.php?page=gf_edit_forms&view=settings&subview='.$this->id.'&tab=log&id='.$this->post('id').'&entry_id='.$entry_id); 
-    $button.= '<a class="button button-large button-secondary alignright" style="margin-left:5px; margin-top:5px; " title="'.__('Go to Mailchimp Logs','contact-form-mailchimp').'" href="'.esc_url($log_url).'">'.__('Mailchimp Logs','contact-form-mailchimp').'</a>';
-  
-  } 
-  return $button;
-  }
-  /**
-  * Whether to show the Entry "Send to CRM" button or not
-  *
-  * If the entry's form has been mapped to CRM feed, show the Send to CRM button. Otherwise, don't.
-  *
-  * @return boolean True: Show the button; False: don't show the button.
-  */
-  private  function show_send_to_crm_button() {
-  
-  $form_id = rgget('id');
-  
-  return $this->has_feed($form_id);
-  }
-  /**
-  * Does the current form have a feed assigned to it?
-  * @param  INT      $form_id Form ID
-  * @return boolean
-  */
-  function has_feed($form_id) {
-  $data=$this->get_data_object();
-  $feeds = $data->get_feed_by_form( $form_id , true);
-  
-  return !empty($feeds);
-  }
   
 
   

@@ -704,19 +704,6 @@ $log_url=$this->link_to_settings('logs').'&entry_id='.$lead['id'];
 include_once(self::$path."templates/crm-entry-box.php");
  
 } 
-  /**
-  * Whether to show the Entry "Send to CRM" button or not
-  *
-  * If the entry's form has been mapped to CRM feed, show the Send to CRM button. Otherwise, don't.
-  *
-  * @return boolean True: Show the button; False: don't show the button.
-  */
-  public  function show_send_to_crm_button() {
-  
-  $form_id = rgget('id');
-  
-  return $this->has_feed($form_id);
-  }
 public function has_feed($form_id) {
   $data=$this->get_data_object();
   $feeds = $data->get_feed_by_form( $form_id , true);
@@ -1127,21 +1114,6 @@ $id= isset($feed['id']) ? $feed['id'] : '';
 
   if(is_array($fields)){ 
 
-  if(!vxcf_mailchimp::$is_pr){
-          $temp_fields=array();
-       $phone=array('tags','interests');
-$n=0;
-foreach($fields as $k=>$v){
-    $add=true;
-if(in_array($k,$phone)){ $add=false; } //remove tags
-if($v['type'] == 'phone'){ $add=false; } //remove phones
-if( !empty($v['is_custom'])  ){  if( $n>10 ){ $add=false; } $n++; }  //allow first 7 custom fields
-if($add){    
-$temp_fields[$k]=$v;     
-      }
-}
-$fields=$temp_fields;
-}
 
   $info_meta['fields']=$fields;     
   $info_meta['object']=$module;     
