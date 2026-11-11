@@ -1001,7 +1001,10 @@ $count=$this->data->delete_log($log_ids);
          
        foreach($log_ids  as $id){
   $log = $this->data->get_log_by_id($id); 
-  
+  if(!empty($log) && $this->post('status',$log) == '4'){
+  $this->screen_msg(__('Skipped an entry the opt-in filter did not allow.','contact-form-mailchimp'),'error');
+  continue;
+  }
   $form_id=$this->post('form_id',$log);
   $entry_id=$this->post('entry_id',$log);
     $log['__vx_id']=$entry_id;
