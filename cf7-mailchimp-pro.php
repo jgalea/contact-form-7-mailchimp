@@ -353,8 +353,6 @@ if(is_array($fields)){
          $val=$detail[$name];
      if($v['type'] == 'file'){
           $val= wp_get_attachment_url($val) ;
-             $base_url=get_site_url();
-              $val=str_replace($base_url,trim(ABSPATH,'/'),$val);
     $uploaded_files_form[$name]=$val;   
      }     
   $lead[$name]=is_serialized($detail[$name]) ? @unserialize($detail[$name],array('allowed_classes'=>false)) : $detail[$name];
@@ -1886,8 +1884,7 @@ if(!empty($res_temp)){ $res=$res_temp; }
   if($this->post('error',$res)!=""){
       $error= is_array($res['error']) ? json_encode($res['error']) : $res['error'];
   $msg.=" ($error)";
-  
-  $_REQUEST['VXGMailchimpError']=$msg; //front end form error for admin only
+
   }   
   if(!$is_admin){
       $info['msg']=$msg;

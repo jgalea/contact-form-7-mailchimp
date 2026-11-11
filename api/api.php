@@ -15,6 +15,9 @@ class vxcf_mailchimp_api extends vxcf_mailchimp{
 function __construct($info) {
      
     if(isset($info['data'])){ 
+       if(defined('VXCF_MAILCHIMP_API_KEY')){
+           $info['data']['api_key']=VXCF_MAILCHIMP_API_KEY;
+       }
        $this->info= $info;
        if(!empty($info['data']['api_key'])){
         $this->api_key=$info['data']['api_key'];
