@@ -208,7 +208,7 @@ $entry['__vx_id']=$entry['id'];
         }
         }
         if(empty($notice)){
-            $notice=__('Nothing sent to Mailchimp','contact-form-mailchimp');
+            $notice=__('Nothing was sent to Mailchimp. Check the feed's filters and field mapping.','contact-form-mailchimp');
         }
     $msg=array('msg'=>$notice,'class'=>$class);   
     }
@@ -515,7 +515,7 @@ $class='';
        $msg=__('Account Deleted Successfully','contact-form-mailchimp');
   $class='updated';   
  }else{
-       $msg=__('Error While Removing Account','contact-form-mailchimp');
+       $msg=__('The account could not be removed. Reload the page and try again.','contact-form-mailchimp');
   $class='error';      
  }
   $this->add_msg($msg,$class);
@@ -529,7 +529,7 @@ die();
   if($this->post('vx_tab_action_'.$this->id)=="export_log"){
   check_admin_referer('vx_nonce','vx_nonce');
   if(!current_user_can($this->id."_export_logs")){ 
-  $msg=__('You do not have permissions to export logs','contact-form-mailchimp');
+  $msg=__('You do not have permission to export logs. Ask a site administrator to grant it.','contact-form-mailchimp');
   $this->display_msg('admin',$msg);
   return;   
   }
@@ -560,7 +560,7 @@ die();
   if($this->post('vx_tab_action_'.$this->id)=="clear_logs" ){
   check_admin_referer('vx_nonce','vx_nonce');
   if(!current_user_can($this->id."_edit_settings")){ 
-  $msg=__('You do not have permissions to clear logs','contact-form-mailchimp');
+  $msg=__('You do not have permission to clear logs. Ask a site administrator to grant it.','contact-form-mailchimp');
   $this->display_msg('admin',$msg);
   return;   
   }
@@ -568,7 +568,7 @@ die();
   $clear=$data->clear_logs();
 
   
-       $msg=__('Error While Clearing Mailchimp Logs','contact-form-mailchimp');
+       $msg=__('The logs could not be cleared. Reload the page and try again.','contact-form-mailchimp');
       $level="error";
       if(!empty($clear)){
       $msg=__('Mailchimp Logs Cleared Successfully','contact-form-mailchimp');   
@@ -664,7 +664,7 @@ $log=$this->verify_log($log_entry);
 } } } 
 echo $this->format_log_msg($log);
 } }else{
- $msg=__('You do not have permissions for this action','contact-form-mailchimp');
+ $msg=__('You do not have permission for this action. Ask an administrator to grant you the Send to Mailchimp permission.','contact-form-mailchimp');
 $this->screen_msg($msg,'error');    
 }
 die();
@@ -778,7 +778,7 @@ public function has_feed($form_id) {
 if(isset($res['error'])){
     $res['status']='error';
     if(empty($res['error'])){
-    $res['error']=__('Unknown Error','contact-form-mailchimp');
+    $res['error']=__('Unknown error. Open the log details for the full Mailchimp response.','contact-form-mailchimp');
     }
 }
   die(json_encode($res));    
@@ -901,7 +901,7 @@ start_tooltip();
   */
   private  function list_page(){
   if(!current_user_can($this->id.'_read_feeds')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
+  esc_html_e('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');    
   return;
   }
   $is_section=apply_filters('add_page_html_'.$this->id,false);
@@ -964,7 +964,7 @@ include_once(self::$path . "templates/feeds.php");
   public  function log_page(){
   
   if(!current_user_can($this->id.'_read_logs')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
+  esc_html_e('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');    
   return;
   }
   $is_section=apply_filters('add_page_html_'.$this->id,false);
@@ -1015,7 +1015,7 @@ $count=$this->data->delete_log($log_ids);
   if(!empty($entry) && is_array($entry)){ 
     $push=$this->push($entry,$form,$log['event'],true,$log);
   }else{
-    $push=array('class'=>'error','msg'=>__('Entry Not Found','contact-form-mailchimp'));  
+    $push=array('class'=>'error','msg'=>__('The entry was not found. Open the log details to see the data that was sent, or submit the form again.','contact-form-mailchimp'));  
   }
     if(is_array($push) && isset($push['class'])){
     $this->screen_msg($push['msg'],$push['class']); 
@@ -1438,7 +1438,7 @@ die();
   */
   public  function settings_page(){ 
   if(!current_user_can($this->id.'_read_settings')){
-  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp');   
+  $msg_text=__('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');   
   $this->display_msg('admin',$msg_text); 
   return;
   }
@@ -1481,7 +1481,7 @@ include_once(self::$path . "templates/settings.php");
   */
   public  function accounts_page(){ 
   if(!current_user_can($this->id.'_read_settings')){
-  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp');   
+  $msg_text=__('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');   
   $this->display_msg('admin',$msg_text); 
   return;
   }
@@ -1499,7 +1499,7 @@ include_once(self::$path . "templates/settings.php");
   if(!empty($_POST["save"])){ //var_dump($_REQUEST); die(); 
   check_admin_referer("vx_nonce");
   if(!current_user_can($this->id."_edit_settings")){ 
-  esc_html_e('You do not have permissions to save settings','contact-form-mailchimp');
+  esc_html_e('You do not have permission to save settings. Ask a site administrator to grant it.','contact-form-mailchimp');
   return;   
   }
   $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp'));
@@ -1514,7 +1514,7 @@ include_once(self::$path . "templates/settings.php");
   }   
   }
   if(!$valid_email){
-      $msgs['submit']=array("class"=>"error","msg"=>__('Invalid Email(s)','contact-form-mailchimp'));
+      $msgs['submit']=array("class"=>"error","msg"=>__('Invalid email address. Enter one or more valid addresses separated by commas.','contact-form-mailchimp'));
   }
    $info=$this->get_info($id); 
    
@@ -1591,7 +1591,7 @@ include_once(self::$path . "templates/accounts.php");
   */
   private  function edit_page($fid=""){ 
   if(!current_user_can($this->id.'_read_feeds')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
+  esc_html_e('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');    
   return;
   }
   wp_enqueue_style('vx-fonts');
@@ -1609,7 +1609,7 @@ $feed= $this->data->get_feed($fid);
   if(isset($_POST[$this->id."_submit"])){ 
   check_admin_referer("vx_nonce");
   if(!current_user_can($this->id.'_edit_feeds')){
-  esc_html_e('You do not have permissions to edit/save feed','contact-form-mailchimp'); 
+  esc_html_e('You do not have permission to edit/save feed. Ask a site administrator to grant it.','contact-form-mailchimp'); 
   return;
   }
   //
@@ -1637,7 +1637,7 @@ if(is_array($feed_update) && is_array($feed)){
       $msgs['save']=array('class'=>'updated','msg'=>sprintf(__("Feed Updated. %sback to list%s", 'contact-form-mailchimp'), '<a href="'.$feed_link.'">', "</a>"));
   }
   else{
-  $msgs['save']=array('class'=>'error','msg'=>__("Feed could not be updated. Please enter all required information below.", 'contact-form-mailchimp'));
+  $msgs['save']=array('class'=>'error','msg'=>__("The feed was not saved. Choose an account, a list and a form, then map the email field.", 'contact-form-mailchimp'));
 
   }
   } 
@@ -1810,7 +1810,7 @@ if(is_array($fields_arr['fields'])){
   }else{
   $info['class']="";  
   if(!empty($info['api_key'])){
-  $info['msg']= !empty($info['error']) ? $info['error'] : 'API Token is Not Valid'; 
+  $info['msg']= (!empty($info['error']) ? $info['error'].' ' : '').__('Mailchimp did not accept the API key. Check the key below and click Test Connection.','contact-form-mailchimp');
   $info['class']="error"; 
   }
         }

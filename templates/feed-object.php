@@ -28,7 +28,7 @@
   }
   ?>
   </select>
-  <?php if(is_string($objects) && $objects !== ''){ ?><p class="description"><?php echo esc_html($objects); ?></p><?php } ?>
+  <?php if(is_string($objects) && $objects !== ''){ ?><p class="description"><?php echo esc_html($objects); ?> <?php esc_html_e('Check the API key under Mailchimp Accounts, then click Refresh Lists.','contact-form-mailchimp'); ?></p><?php } ?>
     <span style="margin-left: 10px;"></span>
           <button class="button" id="vx_refresh_objects" title="<?php esc_html_e('Refresh Lists','contact-form-mailchimp'); ?>">
   <span class="reg_ok"><i class="fa fa-refresh"></i> <?php esc_html_e('Refresh Lists','contact-form-mailchimp') ?></span>

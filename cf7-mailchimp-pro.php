@@ -977,7 +977,7 @@ return $objects;
   }else if($feed['status'] == 4){
       $desc=sprintf(__("Filtered from %s",'contact-form-mailchimp'),$feed['object']); 
   }else{
-  $desc= !empty($feed['error']) ? $feed['error'] : esc_html__("Unknown Error",'contact-form-mailchimp');
+  $desc= !empty($feed['error']) ? $feed['error'] : esc_html__("Unknown error. Open the log details for the full Mailchimp response.",'contact-form-mailchimp');
   }
   $title=__("Failed",'contact-form-mailchimp');   
   if($feed['status'] == 1){
