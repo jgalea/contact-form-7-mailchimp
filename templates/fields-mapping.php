@@ -625,8 +625,6 @@ if(empty($meta['email_type'])){ $meta['email_type']='html'; }
   </div>
   </div>
 <?php
-  if(vxcf_mailchimp::$is_pr){
-
       $panel_count++;
       $groups=$this->post('groups',$info_meta);
   ?>
@@ -672,9 +670,6 @@ if(empty($meta['email_type'])){ $meta['email_type']='html'; }
 
   </div>
   </div>   
-<?php
-  }
-?>
   <div class="button-controls submit" style="padding-left: 5px;">
   <input type="hidden" name="form_id" value="<?php echo esc_attr($form_id) ?>">
   <button type="submit" title="<?php esc_html_e('Save Feed','contact-form-mailchimp'); ?>" name="<?php echo esc_attr($this->id) ?>_submit" class="button button-primary button-hero"> <i class="vx_icons vx vx-arrow-50"></i> <?php echo empty($fid) ? esc_html__("Save Feed", 'contact-form-mailchimp') : esc_html__("Update Feed", 'contact-form-mailchimp'); ?> </button>

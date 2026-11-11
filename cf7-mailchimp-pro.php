@@ -46,16 +46,13 @@ class vxcf_mailchimp {
   public static $save_key='';  
   public static  $lic_msg = "";
   public static $db_version='';  
-  public static $vx_plugins;  
   public static $note;
   public static $feeds_res;    
   public static $cf_status='';    
   public static $cf_status_msg='';    
   public static $tooltips;    
   public static $entry_created=false;
-    public static $plugin;       
   public static $api_timeout;  
-  public static $is_pr;        
 
  public function instance(){ 
       add_action( 'plugins_loaded', array( $this, 'setup_main' ) );
@@ -78,18 +75,6 @@ register_activation_hook(__FILE__,(array($this,'activate')));
   return;
   } */
   
-$pro_file=self::$path . 'wp/crmperks-notices.php';
-if(file_exists($pro_file)){ 
-include_once($pro_file); 
-}else{
-//plugin api
-$this->plugin_api(true);    
-self::$is_pr=true;
- $pro_file=self::$path . 'pro/add-ons.php';
-if(file_exists($pro_file)){
-include_once($pro_file);
-} } 
-
 require_once(self::$path . "includes/plugin-pages.php");    
  
 
@@ -336,21 +321,6 @@ $form_name=$wpdb->get_var($sql);
 $form_arr=array('id'=>'fd_'.$form_id,'name'=>$form_name,'fields'=>$fields);
 $this->entry_created($lead,'0',$form_arr);  
 }
-public  function plugin_api($start_instance=false){
-    if(empty(self::$path)){   self::$path=$this->get_base_path(); }
-   $api_file=self::$path . "pro/plugin-api.php";
-    if(!class_exists('vxcf_plugin_api') && file_exists( $api_file)){   
-require_once( $api_file );
-}
-if(class_exists('vxcf_plugin_api')){
- $slug=$this->get_slug();
- $settings_link=$this->link_to_settings();
- $is_plugin_page=$this->is_crm_page(); 
-self::$plugin=new vxcf_plugin_api($this->id,$this->version,$this->type,$this->domain,$this->update_id,self::$title,$slug,self::$path,$settings_link,$is_plugin_page);
-if($start_instance){
-self::$plugin->instance();
-}
-} }
    /**
   * contact form entry created
   * 
@@ -361,18 +331,12 @@ self::$plugin->instance();
 
       self::$entry_created=true;
       
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'cf',$form);
-       }  
 
      $entry['__vx_id']=$entry_id; 
       $this->push($entry,$form,'',false);  
   } 
 public function entry_created_crmperks($entry_id,$entry,$form){ 
     self::$entry_created=true;
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'vf',$form);
-       } 
 
 $form['id']='vf_'.$form['id'];
 $form['cfx_type']='vf';
@@ -381,9 +345,6 @@ $this->push($entry,$form,'',false);
 }
   public function entry_created_contacts($entry,$entry_id,$form){
 
-       if($this->do_actions()){ 
-     do_action('vx_addons_save_entry',$entry_id,$entry,'cc',$form);
-       }  
 
      $entry['__vx_id']=$entry_id; 
       $this->push($entry,$form,'',false);  
@@ -1111,7 +1072,6 @@ return $objects;
   * 
   */
   public function activate(){ 
-$this->plugin_api(true);
 do_action('plugin_status_'.$this->type,'activate');  
   }
 
@@ -1314,14 +1274,6 @@ $enc_str.=":".base64_encode($iv);
   */
   public function get_slug(){
   return plugin_basename(__FILE__);
-  }
-public function do_actions(){
-     if(!is_object(self::$plugin) ){ $this->plugin_api(); }
-      if(is_object(self::$plugin) && method_exists(self::$plugin,'valid_addons')){
-       return self::$plugin->valid_addons();  
-      }
-    
-   return false;   
   }
   /**
   * Returns the physical path of the plugin's root folder

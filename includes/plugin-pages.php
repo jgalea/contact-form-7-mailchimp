@@ -1698,10 +1698,6 @@ $fields['_vx_updated']=array('id'=>'_vx_updated','label'=>__('Entry Updated','co
 
   $this->fields=$fields=array('cf'=>array("title"=>__('Contact Form Fields','contact-form-mailchimp'),"fields"=>$fields));
   
-  if($this->do_actions()){ 
-
-  $this->fields=$fields=apply_filters('vx_mapping_standard_fields',$this->fields);
-  }
   return $fields;
   }
     /**
