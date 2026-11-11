@@ -53,6 +53,7 @@ global $pagenow;
  add_filter("admin_menu", array($this, 'create_menu'), 50);
 add_filter( 'vx_cf_meta_boxes_right', array($this,'add_meta_box'),10,3 );
  add_action( 'admin_notices', array( $this, 'admin_notices' ) );  
+ add_action( 'admin_init', array( $this, 'retry_log_redirect' ) );
    add_filter('plugin_action_links', array($this, 'plugin_action_links'), 10, 2); 
     add_action('vxcf_entry_submit_btn', array($this, 'entry_checkbox'));  
 
@@ -957,47 +958,8 @@ $valid_accounts= is_array($accounts) && count($accounts) > 0 ? true : false;
   
 include_once(self::$path . "templates/feeds.php");
   }
-  /**
-  * Displays the crm feeds list page
-  * 
-  */
-  public  function log_page(){
-  
-  if(!current_user_can($this->id.'_read_logs')){
-  esc_html_e('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');    
-  return;
-  }
-  $is_section=apply_filters('add_page_html_'.$this->id,false);
-
-  if($is_section === true){
-    return;
-} 
-  $log_ids=array();
-   $bulk_action=$this->post('bulk_action');
-   $retry_id=absint($this->post('retry_log'));
-   if($retry_id){
-       $bulk_action='send_to_crm_bulk';
-   }
-      $offset=$this->time_offset();
-  if($bulk_action!=""){
-   check_admin_referer('vx_nonce','vx_nonce');
-   $needed_cap= $bulk_action == 'delete' ? '_edit_settings' : '_send_to_crm';
-   if(!current_user_can($this->id.$needed_cap)){
-       wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
-   }
-   $log_id= $retry_id ? array($retry_id) : $this->post('log_id');  
-   if(is_array($log_id) && count($log_id)>0){
-    foreach($log_id as $id){
-     if(is_numeric($id)){
-    $log_ids[]=(int)$id;     
-     }   
-    }
-    if($bulk_action == "delete"){
-$count=$this->data->delete_log($log_ids);
-  $this->screen_msg(sprintf(__('Successfully Deleted %d Item(s)','contact-form-mailchimp'),$count));  
-    }
-    else if(in_array($bulk_action,array("send_to_crm_bulk","send_to_crm_bulk_force"))){
-         self::$api_timeout='1000';
+  public function resend_logs($log_ids){
+     self::$api_timeout='1000';
          
        foreach($log_ids  as $id){
   $log = $this->data->get_log_by_id($id); 
@@ -1026,6 +988,65 @@ $count=$this->data->delete_log($log_ids);
    ///var_dump($log_ids,$log); die();  
     }
    
+  }
+
+  public function retry_log_redirect(){
+  if(empty($_GET['retry_log']) || $this->post('page') != $this->id){
+      return;
+  }
+  check_admin_referer('vx_nonce','vx_nonce');
+  if(!current_user_can($this->id.'_send_to_crm')){
+      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
+  }
+  ob_start();
+  $this->resend_logs(array(absint($_GET['retry_log'])));
+  set_transient('vxcf_mailchimp_retry_'.get_current_user_id(),ob_get_clean(),300);
+  wp_safe_redirect(add_query_arg(array('page'=>$this->id,'tab'=>'logs'),admin_url('admin.php')));
+  exit;
+  }
+
+  /**
+  * Displays the crm feeds list page
+  * 
+  */
+  public  function log_page(){
+  
+  if(!current_user_can($this->id.'_read_logs')){
+  esc_html_e('You do not have permission to access this page. Ask a site administrator to grant it.','contact-form-mailchimp');    
+  return;
+  }
+  $is_section=apply_filters('add_page_html_'.$this->id,false);
+
+  if($is_section === true){
+    return;
+} 
+  $retry_notice=get_transient('vxcf_mailchimp_retry_'.get_current_user_id());
+  if($retry_notice !== false){
+      delete_transient('vxcf_mailchimp_retry_'.get_current_user_id());
+      echo wp_kses_post($retry_notice);
+  }
+  $log_ids=array();
+   $bulk_action=$this->post('bulk_action');
+      $offset=$this->time_offset();
+  if($bulk_action!=""){
+   check_admin_referer('vx_nonce','vx_nonce');
+   $needed_cap= $bulk_action == 'delete' ? '_edit_settings' : '_send_to_crm';
+   if(!current_user_can($this->id.$needed_cap)){
+       wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
+   }
+   $log_id=$this->post('log_id');  
+   if(is_array($log_id) && count($log_id)>0){
+    foreach($log_id as $id){
+     if(is_numeric($id)){
+    $log_ids[]=(int)$id;     
+     }   
+    }
+    if($bulk_action == "delete"){
+$count=$this->data->delete_log($log_ids);
+  $this->screen_msg(sprintf(__('Successfully Deleted %d Item(s)','contact-form-mailchimp'),$count));  
+    }
+    else if(in_array($bulk_action,array("send_to_crm_bulk","send_to_crm_bulk_force"))){
+           $this->resend_logs($log_ids);
    }
    }
     unset($_GET['bulk_action']);
