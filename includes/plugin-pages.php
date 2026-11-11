@@ -766,7 +766,7 @@ public function has_feed($form_id) {
   */
   public function refresh_data(){
       check_ajax_referer("vx_crm_ajax","vx_crm_ajax"); 
-  if(!current_user_can($this->id."_read_settings")){ 
+  if(!current_user_can($this->id."_edit_feeds")){ 
    die();  
  }   
   $res=array();
@@ -1304,7 +1304,7 @@ $check= !empty($meta['groups'][$k]) ? 'checked="checked"' : '';
   */
   public  function get_field_map_ajax(){
         check_ajax_referer('vx_crm_ajax','vx_crm_ajax');
-  if(!current_user_can($this->id."_read_feeds")){ 
+  if(!current_user_can($this->id."_edit_feeds")){ 
   return;   
   }
 $this->ajax=true;
@@ -1341,7 +1341,7 @@ $this->ajax=true;
   } 
   public  function get_field_map_object_ajax(){
         check_ajax_referer('vx_crm_ajax','vx_crm_ajax');
-  if(!current_user_can($this->id."_read_feeds")){ 
+  if(!current_user_can($this->id."_edit_feeds")){ 
   return;   
   }
    $this->ajax=true;
@@ -1468,6 +1468,9 @@ include_once(self::$path . "templates/log.php");
      */
 public function get_objects_ajax(){
     check_ajax_referer('vx_crm_ajax','vx_crm_ajax');
+    if(!current_user_can($this->id."_edit_feeds")){
+        die();
+    }
     
 
     $object=$this->post('object');
