@@ -208,7 +208,7 @@ $entry['__vx_id']=$entry['id'];
         }
         }
         if(empty($notice)){
-            $notice=__('Nothing was sent to Mailchimp. Check the feed's filters and field mapping.','contact-form-mailchimp');
+            $notice=__('Nothing was sent to Mailchimp. Check the feed filters and field mapping.','contact-form-mailchimp');
         }
     $msg=array('msg'=>$notice,'class'=>$class);   
     }
