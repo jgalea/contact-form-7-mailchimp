@@ -975,7 +975,7 @@ return $objects;
    $desc=sprintf(__("Deleted from %s",'contact-form-mailchimp'),$feed['object']);   
   }
   }else if($feed['status'] == 4){
-      $desc=sprintf(__("Filtered from %s",'contact-form-mailchimp'),$feed['object']); 
+      $desc=sprintf($feed['error'] == 'skipped' ? __("Skipped, already in %s",'contact-form-mailchimp') : __("Filtered from %s",'contact-form-mailchimp'),$feed['object']); 
   }else{
   $desc= !empty($feed['error']) ? $feed['error'] : esc_html__("Unknown error. Open the log details for the full Mailchimp response.",'contact-form-mailchimp');
   }
@@ -1640,7 +1640,12 @@ if(!empty($res_temp)){ $res=$res_temp; }
    
   
   }else if($this->post('status',$res) == 4){
-  $screen_msg=$msg=$this->post('action',$res) == 'Skipped' ? __( 'Entry already exists in Mailchimp, skipped', 'contact-form-mailchimp') : __( 'Entry filtered', 'contact-form-mailchimp');    
+  if($this->post('action',$res) == 'Skipped'){
+  $error='skipped';
+  $screen_msg=$msg=__( 'Entry already exists in Mailchimp, skipped', 'contact-form-mailchimp');
+  }else{
+  $screen_msg=$msg=__( 'Entry filtered', 'contact-form-mailchimp');
+  }
   }else{
   $status=0; $screen_msg_class="error";
   $screen_msg=__('Errors when adding to Mailchimp. Entry not sent! Check the Entry Notes below for more details.' , 'contact-form-mailchimp' );
