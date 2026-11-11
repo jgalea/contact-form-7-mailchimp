@@ -31,6 +31,7 @@ class vxcf_mailchimp {
   public  $min_cf_version = "1.0";
   public $type = "vxcf_mailchimp";
   public  $fields = null;
+  public  $form_fields = null;
   public  $data = null;
 
   private $filter_condition;
@@ -1349,7 +1350,7 @@ public function post($key, $arr="") {
 }
 public static function clean($var){
     if ( is_array( $var ) ) {
-        return array_map( array('self','clean'), $var );
+        return array_map( array(__CLASS__,'clean'), $var );
     } else {
         return  sanitize_text_field(wp_unslash($var));
     }
@@ -1381,7 +1382,11 @@ public static function clean($var){
   public function time_offset(){
  $offset = (int) get_option('gmt_offset');
   return $offset*3600;
-  } 
+  }
+  public function format_time($time){
+  if(empty($time)){ return ''; }
+  return wp_date(get_option('date_format').' '.get_option('time_format'),strtotime($time));
+  }
   /**
   * Decrypts Values
   * @param array $info Mailchimp encrypted API info 

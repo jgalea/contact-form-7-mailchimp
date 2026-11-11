@@ -119,7 +119,7 @@
   </div></td>
   <td><p><?php echo esc_html($feed["object"]); ?></p></td>
   <td><p><?php echo esc_html($primary_key); ?></p></td>
-  <td><p><?php echo date('M-d-Y H:i:s', strtotime($feed['time'])+$offset); ?></p></td>
+  <td><p><?php echo esc_html($this->format_time($feed['time'])); ?></p></td>
   </tr>
   <?php
       }

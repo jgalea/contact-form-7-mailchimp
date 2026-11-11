@@ -12,6 +12,7 @@ if( !class_exists( 'vxcf_mailchimp_pages' ) ) {
 */
 class vxcf_mailchimp_pages   extends vxcf_mailchimp{
     public $ajax=false;
+    public $account='';
     
 /**
 * initialize plugin hooks

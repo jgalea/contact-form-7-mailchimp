@@ -19,7 +19,7 @@
   <select id="vx_module" class="load_form crm_sel" name="object" autocomplete="off">
   <option value=""><?php esc_html_e("Select a Mailchimp List", 'contact-form-mailchimp-crm'); ?></option>
   <?php 
-  foreach ($objects as $k=>$v){
+  foreach (is_array($objects) ? $objects : array() as $k=>$v){
   $sel=$feed['object'] == $k ? 'selected="selected"' : "";
 
   ?>
@@ -28,6 +28,7 @@
   }
   ?>
   </select>
+  <?php if(is_string($objects) && $objects !== ''){ ?><p class="description"><?php echo esc_html($objects); ?></p><?php } ?>
     <span style="margin-left: 10px;"></span>
           <button class="button" id="vx_refresh_objects" title="<?php esc_html_e('Refresh Lists','contact-form-mailchimp-crm'); ?>">
   <span class="reg_ok"><i class="fa fa-refresh"></i> <?php esc_html_e('Refresh Lists','contact-form-mailchimp-crm') ?></span>

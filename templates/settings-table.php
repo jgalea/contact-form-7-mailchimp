@@ -47,8 +47,8 @@ foreach($accounts as $id=>$v){
     $icon_title= $v['status'] == "1" ? esc_html__('Connected','contact-form-mailchimp-crm') : esc_html__('Disconnected','contact-form-mailchimp-crm');
  ?>
 <tr> <td><?php echo esc_attr($id) ?></td>  <td> <?php echo esc_html($v['name']) ?></td>
-<td> <i class="fa <?php echo esc_attr($icon) ?>" title="<?php echo esc_attr($icon_title) ?>"></i> </td> <td> <?php echo date('M-d-Y H:i:s', strtotime($v['time'])+$offset); ?> </td>
- <td> <?php echo date('M-d-Y H:i:s', strtotime($v['updated'])+$offset); ?> </td> 
+<td> <i class="fa <?php echo esc_attr($icon) ?>" title="<?php echo esc_attr($icon_title) ?>"></i> </td> <td> <?php echo esc_html($this->format_time($v['time'])); ?> </td>
+ <td> <?php echo esc_html($this->format_time(isset($v['updated']) ? $v['updated'] : '')); ?> </td> 
 <td><span class="row-actions visible"> <a href="<?php echo esc_url($page_link."&id=".$id); ?>"><?php 
 if($v['status'] == "1"){
 _e('View','contact-form-mailchimp-crm');
