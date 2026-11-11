@@ -1863,7 +1863,7 @@ if(!empty($res_temp)){ $res=$res_temp; }
           }
   $screen_msg=__( 'Entry added in Mailchimp', 'contact-form-mailchimp-crm');
       }else{
-            if(empty($res['link'])){
+            if(!empty($res['link'])){
   $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s . View entry at %s', 'contact-form-mailchimp-crm'),$feed['object'],$res['id'],$res['link']);   
             }else{
   $msg=sprintf(__('Successfully Updated to Mailchimp (%s) with ID # %s .', 'contact-form-mailchimp-crm'),$feed['object'],$res['id']);   

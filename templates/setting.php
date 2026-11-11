@@ -12,7 +12,7 @@
   <div class="clear"></div>
   </div>
                 
-    <?php if(isset($info['api_token'])  && $info['api_token']!="") {
+    <?php if(isset($info['valid_token'])  && $info['valid_token']!="") {
   ?>
       <div class="crm_field">
   <div class="crm_field_cell1"><label><?php esc_html_e("Test Connection",'contact-form-mailchimp-crm'); ?></label></div>

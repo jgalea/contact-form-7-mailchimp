@@ -575,7 +575,7 @@ die();
       $level="updated";
       }
       $this->add_msg($msg,$level);
-      $link=$this->link_to_settings('logs').$this->id.'_msg=1';
+      $link=$this->link_to_settings('logs').'&'.$this->id.'_msg=1';
   wp_redirect($link);
   die();
   }  
