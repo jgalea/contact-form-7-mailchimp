@@ -1880,7 +1880,7 @@ if(is_object($vxcf_form) && method_exists($vxcf_form,'get_forms')){
     }
 if(defined('ELEMENTOR_PRO_VERSION') ){  //&& class_exists('ElementorPro\\Plugin')
     global $wpdb;
-$data = $wpdb->get_results( "SELECT m.post_id, m.meta_value,p.post_title FROM $wpdb->postmeta m inner join $wpdb->posts p on(m.post_id=p.ID) WHERE p.post_status='publish' and m.meta_key = '_elementor_data' limit 100" , ARRAY_A  ); //__elementor_forms_snapshot
+$data = $wpdb->get_results( "SELECT m.post_id, m.meta_value,p.post_title FROM $wpdb->postmeta m inner join $wpdb->posts p on(m.post_id=p.ID) WHERE p.post_status='publish' and m.meta_key = '_elementor_data' and m.meta_value like '%\"widgetType\":\"form\"%' limit 500" , ARRAY_A  ); //__elementor_forms_snapshot
   $forms_arr=array();  
   
 foreach($data as $v){
