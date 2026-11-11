@@ -7,8 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) {
   <div>
 <div class="crm_panel crm_panel_50">
 <div class="crm_panel_head">
-<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('Data Sent','contact-form-mailchimp-crm') ?></span></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
+<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('Data Sent','contact-form-mailchimp') ?></span></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
 <div class="crm_clear"></div>
 </div>
 <div class="crm_panel_content crm-block-content">
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     }
   }else{
       ?>
-  <div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('Nothing Posted to Mailchimp','contact-form-mailchimp-crm');?></div>      
+  <div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('Nothing Posted to Mailchimp','contact-form-mailchimp');?></div>      
       <?php
   }
 ?>
@@ -46,8 +46,8 @@ if ( ! defined( 'ABSPATH' ) ) {
       ?>
         <div class="crm_panel crm_panel_50">
 <div class="crm_panel_head">
-<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('Mailchimp Response','contact-form-mailchimp-crm') ?></span></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
+<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('Mailchimp Response','contact-form-mailchimp') ?></span></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
 <div class="crm_clear"></div>
 </div>
 <div class="crm_panel_content crm-block-content">
@@ -71,8 +71,8 @@ if ( ! defined( 'ABSPATH' ) ) {
       ?>
         <div class="crm_panel <?php echo esc_attr($detail_class) ?>">
 <div class="crm_panel_head">
-<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('More Detail','contact-form-mailchimp-crm') ?></span></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
+<div class="crm_head_div"><span class="crm_head_text"><?php esc_html_e('More Detail','contact-form-mailchimp') ?></span></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp'); ?>"><i class="fa crm_toggle_btn fa-minus"></i></div>
 <div class="crm_clear"></div>
 </div>
 <div class="crm_panel_content crm-block-content">
@@ -117,7 +117,7 @@ if($k == "filter"){
   }
  if($error){
   ?>
-<div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('Detail Not Found','contact-form-mailchimp-crm');?></div>  
+<div class="vx_error"><i class="fa fa-warning"></i> <?php esc_html_e('Detail Not Found','contact-form-mailchimp');?></div>  
   <?php   
  } ?>
  <div style="clear: both"></div>
@@ -127,12 +127,12 @@ if($k == "filter"){
     if($log['feed_id']!=""){
         $feed_link=$this->get_feed_link($log['feed_id'],$log['form_id']);
 ?>
-<a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp-crm') ?>" class="button"><i class="fa fa-edit"></i> <?php esc_html_e('Edit Feed','contact-form-mailchimp-crm') ?></a>
+<a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp') ?>" class="button"><i class="fa fa-edit"></i> <?php esc_html_e('Edit Feed','contact-form-mailchimp') ?></a>
 <?php
     }
 ?>
-<a href="<?php echo esc_url($log_link) ?>" title="<?php esc_html_e('Open in New Window','contact-form-mailchimp-crm') ?>" target="_blank" class="button"><i class="fa fa-external-link"></i> <?php esc_html_e('Open in New Window','contact-form-mailchimp-crm') ?></a>
-<a href="#" class="button vx_close_detail" title="<?php esc_html_e('Close','contact-form-mailchimp-crm') ?>"><i class="fa fa-times"></i> <?php esc_html_e('Close','contact-form-mailchimp-crm') ?></a>
+<a href="<?php echo esc_url($log_link) ?>" title="<?php esc_html_e('Open in New Window','contact-form-mailchimp') ?>" target="_blank" class="button"><i class="fa fa-external-link"></i> <?php esc_html_e('Open in New Window','contact-form-mailchimp') ?></a>
+<a href="#" class="button vx_close_detail" title="<?php esc_html_e('Close','contact-form-mailchimp') ?>"><i class="fa fa-times"></i> <?php esc_html_e('Close','contact-form-mailchimp') ?></a>
 
 </div> 
 </div>

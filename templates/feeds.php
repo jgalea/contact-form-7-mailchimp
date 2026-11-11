@@ -24,15 +24,15 @@
 
   </style>
   <div class="vx_wrap"> 
-  <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm'); ?> <a class="page-title-action" href="<?php echo $new_feed_link?>">
-  <?php esc_html_e("Add New", 'contact-form-mailchimp-crm') ?>
+  <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp'); ?> <a class="page-title-action" href="<?php echo $new_feed_link?>">
+  <?php esc_html_e("Add New", 'contact-form-mailchimp') ?>
   </a> </h2>
   <div class="clear"></div>
   <?php
   if(!$valid_accounts){
   ?>
   <div class="error below-h2" id="message" style="margin-top:20px;">
-  <p><?php echo  sprintf( esc_html__("To get started, please configure your %s Mailchimp Settings %s.", 'contact-form-mailchimp-crm'), '<a href="'.esc_url($page_link).'">', "</a>") ?></p>
+  <p><?php echo  sprintf( esc_html__("To get started, please configure your %s Mailchimp Settings %s.", 'contact-form-mailchimp'), '<a href="'.esc_url($page_link).'">', "</a>") ?></p>
   </div>
   <?php
   } 
@@ -45,18 +45,18 @@
   <div class="tablenav">
   <div class="alignleft actions" style="padding:8px 0 7px; ">
   <label class="hidden" for="bulk_action">
-  <?php esc_html_e("Bulk action", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Bulk action", 'contact-form-mailchimp') ?>
   </label>
   <select name="bulk_action" id="bulk_action" style="width: 200px">
   <option value=''>
-  <?php esc_html_e("Bulk action", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Bulk action", 'contact-form-mailchimp') ?>
   </option>
   <option value='delete'>
-  <?php esc_html_e("Delete", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Delete", 'contact-form-mailchimp') ?>
   </option>
   </select>
-  <button type="submit" title="<?php  esc_html_e("Apply Action", 'contact-form-mailchimp-crm') ?>" class="button" id="vx_bulk_actions_submit">
-  <?php  esc_html_e("Apply", 'contact-form-mailchimp-crm') ?>
+  <button type="submit" title="<?php  esc_html_e("Apply Action", 'contact-form-mailchimp') ?>" class="button" id="vx_bulk_actions_submit">
+  <?php  esc_html_e("Apply", 'contact-form-mailchimp') ?>
   </button>
   </div>
   </div>
@@ -65,20 +65,20 @@
   <tr>
   <td id="cb" class="column-cb check-column" style=""><input type="checkbox" /></td>
   <th id="active" class="vx_col"></th>
-  <th><?php esc_html_e("Name", 'contact-form-mailchimp-crm') ?></th>
-  <th><?php esc_html_e("Mailchimp Object", 'contact-form-mailchimp-crm') ?></th>
-  <th><?php esc_html_e("Primary Key", 'contact-form-mailchimp-crm'); ?></th>
-  <th class="vx_date"><?php esc_html_e("Created", 'contact-form-mailchimp-crm') ?></th>
+  <th><?php esc_html_e("Name", 'contact-form-mailchimp') ?></th>
+  <th><?php esc_html_e("Mailchimp Object", 'contact-form-mailchimp') ?></th>
+  <th><?php esc_html_e("Primary Key", 'contact-form-mailchimp'); ?></th>
+  <th class="vx_date"><?php esc_html_e("Created", 'contact-form-mailchimp') ?></th>
   </tr>
   </thead>
   <tfoot>
   <tr>
   <td id="cb" class="column-cb check-column" style=""><input type="checkbox" /></td>
   <th id="active" class="vx_col"></th>
-  <th><?php esc_html_e("Name", 'contact-form-mailchimp-crm') ?></th>
-  <th><?php esc_html_e("Mailchimp Object", 'contact-form-mailchimp-crm') ?></th>
-  <th><?php esc_html_e("Primary Key", 'contact-form-mailchimp-crm'); ?></th>
-  <th class="vx_date"><?php esc_html_e("Created", 'contact-form-mailchimp-crm') ?></th>
+  <th><?php esc_html_e("Name", 'contact-form-mailchimp') ?></th>
+  <th><?php esc_html_e("Mailchimp Object", 'contact-form-mailchimp') ?></th>
+  <th><?php esc_html_e("Primary Key", 'contact-form-mailchimp'); ?></th>
+  <th class="vx_date"><?php esc_html_e("Created", 'contact-form-mailchimp') ?></th>
   </tr>
   </tfoot>
   <tbody class="list:user user-list">
@@ -92,7 +92,7 @@
           $data=json_decode($data,true);
           $fields=json_decode($meta,true);
           $fields=$this->post('fields',$fields);
-  $primary_key=!empty($data['primary_key']) && isset($fields[$data['primary_key']]['label']) ? $fields[$data['primary_key']]['label'] : esc_html__('N/A','contact-form-mailchimp-crm');
+  $primary_key=!empty($data['primary_key']) && isset($fields[$data['primary_key']]['label']) ? $fields[$data['primary_key']]['label'] : esc_html__('N/A','contact-form-mailchimp');
   $edit_link=$this->get_feed_link($feed['id']);
   if(isset($objects[$feed['object']])){
      $feed['object']=$objects[$feed['object']]; 
@@ -102,17 +102,17 @@
           ?>
   <tr class='author-self status-inherit' data-id="<?php echo esc_attr($feed['id']) ?>">
   <th scope="row" class="check-column"><input type="checkbox" class="vx_check" name="feed[]" value="<?php echo esc_attr($feed["id"]) ?>"/></th>
-  <td class="vx_col"><img src="<?php echo $this->get_base_url() ?>images/active<?php echo intval($feed["is_active"]) ?>.png" alt="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp-crm') : esc_html__("Inactive", 'contact-form-mailchimp-crm');?>" title="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp-crm') : esc_html__("Inactive", 'contact-form-mailchimp-crm');?>" class="vx_toggle_status" /></td>
+  <td class="vx_col"><img src="<?php echo $this->get_base_url() ?>images/active<?php echo intval($feed["is_active"]) ?>.png" alt="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" title="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" class="vx_toggle_status" /></td>
   <td><a href="<?php echo $edit_link ?>" title="<?php echo esc_html( $feed["name"] ) ?>"><?php echo esc_attr($feed["name"])  ?></a> 
   
   <div class="row-actions"> <span class="edit"> 
-  <a title="<?php esc_attr_e("Edit Settings", 'contact-form-mailchimp-crm') ?>" href="<?php echo $edit_link ?>">
-  <?php esc_html_e("Edit", 'contact-form-mailchimp-crm') ?>
+  <a title="<?php esc_attr_e("Edit Settings", 'contact-form-mailchimp') ?>" href="<?php echo $edit_link ?>">
+  <?php esc_html_e("Edit", 'contact-form-mailchimp') ?>
   </a> | 
   </span> 
   <span class="edit"> 
-  <a title="<?php esc_html_e("Delete", 'contact-form-mailchimp-crm') ?>" href="#" class="vx_del_feed">
-  <?php esc_html_e("Delete", 'contact-form-mailchimp-crm')?>
+  <a title="<?php esc_html_e("Delete", 'contact-form-mailchimp') ?>" href="#" class="vx_del_feed">
+  <?php esc_html_e("Delete", 'contact-form-mailchimp')?>
   </a>  
   </span> 
 
@@ -128,14 +128,14 @@
       if($valid_accounts){
           ?>
   <tr>
-  <td colspan="4" style="padding:20px;"><?php echo sprintf(esc_html__("You don't have any Mailchimp feeds configured. Let's go %s create one %s!", 'contact-form-mailchimp-crm'), '<a href="'.$new_feed_link.'">', "</a>"); ?></td>
+  <td colspan="4" style="padding:20px;"><?php echo sprintf(esc_html__("You don't have any Mailchimp feeds configured. Let's go %s create one %s!", 'contact-form-mailchimp'), '<a href="'.$new_feed_link.'">', "</a>"); ?></td>
   </tr>
   <?php
       }
       else{
           ?>
   <tr>
-  <td colspan="4" style="padding:20px;"><?php echo sprintf(esc_html__("To get started, please configure your %s Mailchimp Settings%s.", 'contact-form-mailchimp-crm'), '<a href="'.esc_url($page_link).'">', "</a>"); ?></td>
+  <td colspan="4" style="padding:20px;"><?php echo sprintf(esc_html__("To get started, please configure your %s Mailchimp Settings%s.", 'contact-form-mailchimp'), '<a href="'.esc_url($page_link).'">', "</a>"); ?></td>
   </tr>
   <?php
       }
@@ -159,7 +159,7 @@
       
              $(".vx_del_feed").click(function(e){
            e.preventDefault();
-      if(!confirm("<?php esc_html_e("Delete this feed? 'Cancel' to stop, 'OK' to delete.", 'contact-form-mailchimp-crm') ?>")){
+      if(!confirm("<?php esc_html_e("Delete this feed? 'Cancel' to stop, 'OK' to delete.", 'contact-form-mailchimp') ?>")){
           return;
       }
       var id=$(this).closest('tr').data('id');
@@ -176,11 +176,11 @@
   
   if(is_active){
   img.src=img.src.replace("active1.png", "active0.png");
-  $img.attr('title','<?php esc_html_e("Inactive", 'contact-form-mailchimp-crm') ?>').attr('alt', '<?php esc_html_e("Inactive", 'contact-form-mailchimp-crm') ?>');
+  $img.attr('title','<?php esc_html_e("Inactive", 'contact-form-mailchimp') ?>').attr('alt', '<?php esc_html_e("Inactive", 'contact-form-mailchimp') ?>');
   }
   else{
   img.src = img.src.replace("active0.png", "active1.png");
-  $img.attr('title','<?php esc_html_e("Active", 'contact-form-mailchimp-crm') ?>').attr('alt', '<?php esc_html_e("Active", 'contact-form-mailchimp-crm') ?>');
+  $img.attr('title','<?php esc_html_e("Active", 'contact-form-mailchimp') ?>').attr('alt', '<?php esc_html_e("Active", 'contact-form-mailchimp') ?>');
   }
   
   if(feed_id = $img.closest('tr').attr('data-id')) {
@@ -190,14 +190,14 @@
   
   $("#vx_bulk_actions_submit").click(function(e){
        if($("#bulk_action").val() == ""){
-  alert('<?php esc_html_e('Please Select Action','contact-form-mailchimp-crm') ?>');
+  alert('<?php esc_html_e('Please Select Action','contact-form-mailchimp') ?>');
   return false;
   }
   if($(".vx_check:checked").length == 0){
-  alert('<?php esc_html_e('Please Select Feed','contact-form-mailchimp-crm') ?>');
+  alert('<?php esc_html_e('Please Select Feed','contact-form-mailchimp') ?>');
   return false;
   }
-  if(!confirm('<?php esc_html_e("Are you sure to Delete selected feeds?",'contact-form-mailchimp-crm'); ?>' )){
+  if(!confirm('<?php esc_html_e("Are you sure to Delete selected feeds?",'contact-form-mailchimp'); ?>' )){
   return false;
   }    
   })

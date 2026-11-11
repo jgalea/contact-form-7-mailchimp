@@ -55,14 +55,14 @@
 <form id="mainform" method="post">
   <?php wp_nonce_field("vx_nonce") ?>
   <h2>
-  <?php esc_html_e("Settings", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Settings", 'contact-form-mailchimp') ?>
   </h2>
   <table class="form-table">
   <tr>
-  <th scope="row"><label for="vx_plugin_data"><?php esc_html_e("Plugin Data", 'contact-form-mailchimp-crm'); ?></label>
+  <th scope="row"><label for="vx_plugin_data"><?php esc_html_e("Plugin Data", 'contact-form-mailchimp'); ?></label>
   </th>
   <td>
-<label for="vx_plugin_data"><input type="checkbox" name="meta[plugin_data]" value="yes" <?php if($this->post('plugin_data',$meta) == "yes"){echo 'checked="checked"';} ?> id="vx_plugin_data"><?php esc_html_e('On deleting this plugin remove all of its data','contact-form-mailchimp-crm'); ?></label>
+<label for="vx_plugin_data"><input type="checkbox" name="meta[plugin_data]" value="yes" <?php if($this->post('plugin_data',$meta) == "yes"){echo 'checked="checked"';} ?> id="vx_plugin_data"><?php esc_html_e('On deleting this plugin remove all of its data','contact-form-mailchimp'); ?></label>
   </td>
   </tr>
   
@@ -71,20 +71,20 @@
   if(class_exists('vxcf_form')){
   ?>
   <tr>
-<th><label for="update_entry"><?php esc_html_e("Update Entry",'contact-form-mailchimp-crm');  ?></label></th>
-<td><label for="update_entry"><input type="checkbox" id="update_entry" name="meta[update]" value="yes" <?php if($this->post('update',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Update entry data in Mailchimp when updated in Contact Form Entries Plugin",'contact-form-mailchimp-crm');  ?></label></td>
+<th><label for="update_entry"><?php esc_html_e("Update Entry",'contact-form-mailchimp');  ?></label></th>
+<td><label for="update_entry"><input type="checkbox" id="update_entry" name="meta[update]" value="yes" <?php if($this->post('update',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Update entry data in Mailchimp when updated in Contact Form Entries Plugin",'contact-form-mailchimp');  ?></label></td>
 </tr>
 <tr>
-<th><label for="delet_entry"><?php esc_html_e("Delete Entry",'contact-form-mailchimp-crm');  ?></label></th>
-<td><label for="delet_entry"><input type="checkbox" id="delet_entry" name="meta[delete]" value="yes" <?php if($this->post('delete',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Delete entry data from Mailchimp when deleted from Contact Form Entries Plugin",'contact-form-mailchimp-crm'); ?></label></td>
+<th><label for="delet_entry"><?php esc_html_e("Delete Entry",'contact-form-mailchimp');  ?></label></th>
+<td><label for="delet_entry"><input type="checkbox" id="delet_entry" name="meta[delete]" value="yes" <?php if($this->post('delete',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Delete entry data from Mailchimp when deleted from Contact Form Entries Plugin",'contact-form-mailchimp'); ?></label></td>
 </tr>
 <tr>
-<th><label for="restore_entry"><?php esc_html_e("Restore Entry",'contact-form-mailchimp-crm');  ?></label></th>
-<td><label for="restore_entry"><input type="checkbox" id="restore_entry" name="meta[restore]" value="yes" <?php if($this->post('restore',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Restore entry in Mailchimp when restored in Contact Form Entries Plugin",'contact-form-mailchimp-crm'); ?></label></td>
+<th><label for="restore_entry"><?php esc_html_e("Restore Entry",'contact-form-mailchimp');  ?></label></th>
+<td><label for="restore_entry"><input type="checkbox" id="restore_entry" name="meta[restore]" value="yes" <?php if($this->post('restore',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Restore entry in Mailchimp when restored in Contact Form Entries Plugin",'contact-form-mailchimp'); ?></label></td>
 </tr>
 <tr>
-<th><label for="notes_meta"><?php esc_html_e("Entry Notes",'contact-form-mailchimp-crm');  ?></label></th>
-<td><label for="notes_meta"><input type="checkbox" id="notes_meta" name="meta[notes]" value="yes" <?php if($this->post('notes',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Add / delete notes to Mailchimp when added / deleted in Contact Form Entries Plugin",'contact-form-mailchimp-crm'); ?></label></td>
+<th><label for="notes_meta"><?php esc_html_e("Entry Notes",'contact-form-mailchimp');  ?></label></th>
+<td><label for="notes_meta"><input type="checkbox" id="notes_meta" name="meta[notes]" value="yes" <?php if($this->post('notes',$meta) == "yes"){echo 'checked="checked"';} ?> ><?php esc_html_e("Add / delete notes to Mailchimp when added / deleted in Contact Form Entries Plugin",'contact-form-mailchimp'); ?></label></td>
 </tr>
 
 <?php
@@ -92,7 +92,7 @@
 ?>
   </table>
 
-  <p class="submit"><input type="submit" name="save" class="button-primary" title="<?php esc_html_e('Save Settings','contact-form-mailchimp-crm'); ?>" value="<?php esc_html_e("Save Settings", 'contact-form-mailchimp-crm') ?>" /></p>
+  <p class="submit"><input type="submit" name="save" class="button-primary" title="<?php esc_html_e('Save Settings','contact-form-mailchimp'); ?>" value="<?php esc_html_e("Save Settings", 'contact-form-mailchimp') ?>" /></p>
   </form>
 
   <?php

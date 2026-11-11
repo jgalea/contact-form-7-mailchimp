@@ -178,7 +178,7 @@ $push=$this->push($lead,array('id'=>$form_id),'restore');
 
  
 public function add_bulk_send_crm_callcenter($list){ 
- $list['send_mailchimp']=__('Send to Mailchimp','contact-form-mailchimp-crm');
+ $list['send_mailchimp']=__('Send to Mailchimp','contact-form-mailchimp');
   return $list;  
 }
 public function bulk_send_crm_callcenter($msg,$action,$ids,$type){ 
@@ -411,7 +411,7 @@ $push=$this->push($entry_detail,$form,'add_note');
   public function entry_checkbox($lead){
   ?>
   <div class="vx_row">
-  <label><input type="checkbox" name="<?php echo esc_attr($this->id) ?>_send" value="yes"> <?php esc_html_e('Send to Mailchimp','contact-form-mailchimp-crm') ?></label>
+  <label><input type="checkbox" name="<?php echo esc_attr($this->id) ?>_send" value="yes"> <?php esc_html_e('Send to Mailchimp','contact-form-mailchimp') ?></label>
   </div>
   <?php  
 }
@@ -430,7 +430,7 @@ $push=$this->push($entry_detail,$form,'add_note');
   if(!empty($_POST[$this->id.'_send_btn']) && !empty($_REQUEST['id'])){
 check_admin_referer('vx_nonce','vx_nonce');
 if(!current_user_can($this->id.'_send_to_crm')){
-    wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+    wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
 }
 $tab=$this->post('tab');
 $id=$this->post('id');
@@ -476,7 +476,7 @@ $push=$this->push($lead,$form);
    $slug=$this->get_slug();
       if ( $file == $slug ) {
           $settings_link=$this->link_to_settings();
-            array_unshift( $links, '<a href="' .$settings_link. '">' . esc_html__('Settings', 'contact-form-mailchimp-crm') . '</a>' );
+            array_unshift( $links, '<a href="' .$settings_link. '">' . esc_html__('Settings', 'contact-form-mailchimp') . '</a>' );
         }
         return $links;
    }
@@ -487,8 +487,8 @@ $push=$this->push($lead,$form);
   */
   public  function create_menu(){
   // Adding submenu if user has access
-        $page_title =__('Mailchimp for Contact Form 7','contact-form-mailchimp-crm');
-        $menu_title =__('Mailchimp','contact-form-mailchimp-crm');
+        $page_title =__('Mailchimp for Contact Form 7','contact-form-mailchimp');
+        $menu_title =__('Mailchimp','contact-form-mailchimp');
         $capability = $this->id."_read_feeds"; 
             $menu_id='vxcf_leads';  
 if(empty($GLOBALS['admin_page_hooks'][$menu_id])){
@@ -512,10 +512,10 @@ $data=$this->get_data_object();
 $res=$data->del_account($id);
 $class='';
  if($res){
-       $msg=__('Account Deleted Successfully','contact-form-mailchimp-crm');
+       $msg=__('Account Deleted Successfully','contact-form-mailchimp');
   $class='updated';   
  }else{
-       $msg=__('Error While Removing Account','contact-form-mailchimp-crm');
+       $msg=__('Error While Removing Account','contact-form-mailchimp');
   $class='error';      
  }
   $this->add_msg($msg,$class);
@@ -529,7 +529,7 @@ die();
   if($this->post('vx_tab_action_'.$this->id)=="export_log"){
   check_admin_referer('vx_nonce','vx_nonce');
   if(!current_user_can($this->id."_export_logs")){ 
-  $msg=__('You do not have permissions to export logs','contact-form-mailchimp-crm');
+  $msg=__('You do not have permissions to export logs','contact-form-mailchimp');
   $this->display_msg('admin',$msg);
   return;   
   }
@@ -540,7 +540,7 @@ die();
   $forms=array();
   $sql="select * $sql_end limit 3000";
   $results = $wpdb->get_results($sql , ARRAY_A );
-  $fields=array(); $field_titles=array("#",__('Status','contact-form-mailchimp-crm'),__('Mailchimp ID','contact-form-mailchimp-crm') ,__('Entry ID','contact-form-mailchimp-crm'),__('Description','contact-form-mailchimp-crm'),__('Time','contact-form-mailchimp-crm'));
+  $fields=array(); $field_titles=array("#",__('Status','contact-form-mailchimp'),__('Mailchimp ID','contact-form-mailchimp') ,__('Entry ID','contact-form-mailchimp'),__('Description','contact-form-mailchimp'),__('Time','contact-form-mailchimp'));
   $fp = fopen('php://output', 'w');
   fputcsv($fp, $field_titles);
   $sno=0;
@@ -560,7 +560,7 @@ die();
   if($this->post('vx_tab_action_'.$this->id)=="clear_logs" ){
   check_admin_referer('vx_nonce','vx_nonce');
   if(!current_user_can($this->id."_edit_settings")){ 
-  $msg=__('You do not have permissions to clear logs','contact-form-mailchimp-crm');
+  $msg=__('You do not have permissions to clear logs','contact-form-mailchimp');
   $this->display_msg('admin',$msg);
   return;   
   }
@@ -568,10 +568,10 @@ die();
   $clear=$data->clear_logs();
 
   
-       $msg=__('Error While Clearing Mailchimp Logs','contact-form-mailchimp-crm');
+       $msg=__('Error While Clearing Mailchimp Logs','contact-form-mailchimp');
       $level="error";
       if(!empty($clear)){
-      $msg=__('Mailchimp Logs Cleared Successfully','contact-form-mailchimp-crm');   
+      $msg=__('Mailchimp Logs Cleared Successfully','contact-form-mailchimp');   
       $level="updated";
       }
       $this->add_msg($msg,$level);
@@ -581,53 +581,53 @@ die();
   }  
   //
   self::$tooltips = array(
- 'vx_feed_name' =>  esc_html__('Enter feed name of your choice.', 'contact-form-mailchimp-crm'),
-  'vx_sel_object' => esc_html__('Select the Object to Create when a Form is Submitted.', 'contact-form-mailchimp-crm'),
-   'vx_sel_account' =>__('Select the Mailchimp account you would like to export entries to.', 'contact-form-mailchimp-crm'),
-  'vx_sel_form' => esc_html__('Select the Contact Form you would like to integrate with Mailchimp. Contacts generated by this form will be automatically added to your Mailchimp account.', 'contact-form-mailchimp-crm'),
+ 'vx_feed_name' =>  esc_html__('Enter feed name of your choice.', 'contact-form-mailchimp'),
+  'vx_sel_object' => esc_html__('Select the Object to Create when a Form is Submitted.', 'contact-form-mailchimp'),
+   'vx_sel_account' =>__('Select the Mailchimp account you would like to export entries to.', 'contact-form-mailchimp'),
+  'vx_sel_form' => esc_html__('Select the Contact Form you would like to integrate with Mailchimp. Contacts generated by this form will be automatically added to your Mailchimp account.', 'contact-form-mailchimp'),
   
-  'vx_map_fields' => esc_html__('Associate your Mailchimp fields to the appropriate Contact Form fields.', 'contact-form-mailchimp-crm'),
+  'vx_map_fields' => esc_html__('Associate your Mailchimp fields to the appropriate Contact Form fields.', 'contact-form-mailchimp'),
   
-  'vx_optin_condition' =>__('When the opt-in condition is enabled, form submissions will only be exported to Mailchimp when the condition is met. When disabled all form submissions will be exported.', 'contact-form-mailchimp-crm'),
+  'vx_optin_condition' =>__('When the opt-in condition is enabled, form submissions will only be exported to Mailchimp when the condition is met. When disabled all form submissions will be exported.', 'contact-form-mailchimp'),
   
-  'vx_manual_export' => esc_html__('If you do not want all entries sent to Mailchimp, but only specific, approved entries, check this box. To manually send an entry to Mailchimp, go to Entries, choose the entry you would like to send to Mailchimp, and then click the "Send to Mailchimp" button.', 'contact-form-mailchimp-crm'),
+  'vx_manual_export' => esc_html__('If you do not want all entries sent to Mailchimp, but only specific, approved entries, check this box. To manually send an entry to Mailchimp, go to Entries, choose the entry you would like to send to Mailchimp, and then click the "Send to Mailchimp" button.', 'contact-form-mailchimp'),
   
-    'vx_entry_notes' => esc_html__('Enable this option if you want to synchronize Contact Form entry notes to Mailchimp Object notes. For example , when you add a note to a Contact Form entry, it will be added to the Mailchimp Object selected in the feed.', 'contact-form-mailchimp-crm'),
+    'vx_entry_notes' => esc_html__('Enable this option if you want to synchronize Contact Form entry notes to Mailchimp Object notes. For example , when you add a note to a Contact Form entry, it will be added to the Mailchimp Object selected in the feed.', 'contact-form-mailchimp'),
     
-      'vx_primary_key' => esc_html__('Which field should be used to update existing objects?', 'contact-form-mailchimp-crm'),
+      'vx_primary_key' => esc_html__('Which field should be used to update existing objects?', 'contact-form-mailchimp'),
       
   
-  'vx_disable_logs'=>__('When an order is sent to Mailchimp we store that order information in the database and show it in the Mailchimp Log. Check this box if you do not want to save the exported order information in the logs.','contact-form-mailchimp-crm'),
+  'vx_disable_logs'=>__('When an order is sent to Mailchimp we store that order information in the database and show it in the Mailchimp Log. Check this box if you do not want to save the exported order information in the logs.','contact-form-mailchimp'),
   
-'vx_sources'=>__('Get Lead Sources list from mailchimp.','contact-form-mailchimp-crm'),
-'vx_statuses'=>__('Get Lead Status list from mailchimp.','contact-form-mailchimp-crm'),
-'vx_cats'=>__('Get Categories list from mailchimp.','contact-form-mailchimp-crm'),
+'vx_sources'=>__('Get Lead Sources list from mailchimp.','contact-form-mailchimp'),
+'vx_statuses'=>__('Get Lead Status list from mailchimp.','contact-form-mailchimp'),
+'vx_cats'=>__('Get Categories list from mailchimp.','contact-form-mailchimp'),
 
-'vx_source'=>__('Which Lead Source should be assigned to this object.','contact-form-mailchimp-crm'),
-'vx_status'=>__('Which Lead Status should be assigned to this object.','contact-form-mailchimp-crm'),
-'vx_cat'=>__('Which Category should be assigned to this object.','contact-form-mailchimp-crm'),
+'vx_source'=>__('Which Lead Source should be assigned to this object.','contact-form-mailchimp'),
+'vx_status'=>__('Which Lead Status should be assigned to this object.','contact-form-mailchimp'),
+'vx_cat'=>__('Which Category should be assigned to this object.','contact-form-mailchimp'),
 
-'vx_source_check'=>__('If enabled, a Lead Source will be assigned to the Object','contact-form-mailchimp-crm'),
-'vx_status_check'=>__('If enabled, a Lead Status will be assigned to the Object','contact-form-mailchimp-crm'),
-'vx_cat_check'=>__('If enabled, a Category will be assigned to the Object','contact-form-mailchimp-crm'),
+'vx_source_check'=>__('If enabled, a Lead Source will be assigned to the Object','contact-form-mailchimp'),
+'vx_status_check'=>__('If enabled, a Lead Status will be assigned to the Object','contact-form-mailchimp'),
+'vx_cat_check'=>__('If enabled, a Category will be assigned to the Object','contact-form-mailchimp'),
 
-'vx_assign_opportunity'=>__('Enable this option if you want to assign an opportunity this object.','contact-form-mailchimp-crm'),
-'vx_sel_opportunity'=>__('Select Opportunity feed. Opportunity created by this feed will be assigned to this object.','contact-form-mailchimp-crm'),
+'vx_assign_opportunity'=>__('Enable this option if you want to assign an opportunity this object.','contact-form-mailchimp'),
+'vx_sel_opportunity'=>__('Select Opportunity feed. Opportunity created by this feed will be assigned to this object.','contact-form-mailchimp'),
 
-'vx_assign_contact'=>__('Enable this option , if you want to assign a Contact to this object','contact-form-mailchimp-crm'),
-'vx_sel_contact'=>__('Select Contact feed. Contact created by this feed will be assigned to this object','contact-form-mailchimp-crm'),
+'vx_assign_contact'=>__('Enable this option , if you want to assign a Contact to this object','contact-form-mailchimp'),
+'vx_sel_contact'=>__('Select Contact feed. Contact created by this feed will be assigned to this object','contact-form-mailchimp'),
 
-'vx_assign_organization'=>__('Enable this option , if you want to assign a Organization to this object','contact-form-mailchimp-crm'),
-'vx_sel_organization'=>__('Select Organization feed. Organization created by this feed will be assigned to this object','contact-form-mailchimp-crm'),
+'vx_assign_organization'=>__('Enable this option , if you want to assign a Organization to this object','contact-form-mailchimp'),
+'vx_sel_organization'=>__('Select Organization feed. Organization created by this feed will be assigned to this object','contact-form-mailchimp'),
 
-   'vx_owner_check'=>__('Enable this option if you want to assign another object owner.','contact-form-mailchimp-crm'),
-   'vx_owners'=>__('Get Users list from Mailchimp','contact-form-mailchimp-crm'),
-   'vx_order_notes'=>__('Enable this option if you want to synchronize WooCommerce Order notes to Mailchimp Object notes. For example, when you add a note to a WooCommerce Order, it will be added to the Mailchimp Object selected in the feed.','contact-form-mailchimp-crm'),
-   'vx_sel_owner'=>__('Select a user as a owner of this object','contact-form-mailchimp-crm'),
+   'vx_owner_check'=>__('Enable this option if you want to assign another object owner.','contact-form-mailchimp'),
+   'vx_owners'=>__('Get Users list from Mailchimp','contact-form-mailchimp'),
+   'vx_order_notes'=>__('Enable this option if you want to synchronize WooCommerce Order notes to Mailchimp Object notes. For example, when you add a note to a WooCommerce Order, it will be added to the Mailchimp Object selected in the feed.','contact-form-mailchimp'),
+   'vx_sel_owner'=>__('Select a user as a owner of this object','contact-form-mailchimp'),
    
-       'vx_entry_note'=>__('Check this option if you want to send more data as CRM entry note.', 'contact-form-mailchimp-crm'),
-   'vx_note_fields'=>__('Select fields which you want to send as a note', 'contact-form-mailchimp-crm'),
-   'vx_disable_note'=>__('Enable this option if you want to add note only for new CRM entry', 'contact-form-mailchimp-crm')
+       'vx_entry_note'=>__('Check this option if you want to send more data as CRM entry note.', 'contact-form-mailchimp'),
+   'vx_note_fields'=>__('Select fields which you want to send as a note', 'contact-form-mailchimp'),
+   'vx_disable_note'=>__('Enable this option if you want to add note only for new CRM entry', 'contact-form-mailchimp')
    
   );
   
@@ -642,7 +642,7 @@ $log_entry=$data->get_log_by_lead($lead['id'],$form_id);
 $log_url=$this->link_to_settings('logs').'&entry_id='.$lead['id'];
 ?>
 <div class="vx_div" style="margin-top: 20px;">
-<div class="table_head_i"><?php esc_html_e('Capsule', 'contact-form-mailchimp-crm'); ?></div>  
+<div class="table_head_i"><?php esc_html_e('Capsule', 'contact-form-mailchimp'); ?></div>  
 <div class="vx_group">
 <div class="vx_send_crm_msg">
 <?php
@@ -702,7 +702,7 @@ $log=$this->verify_log($log_entry);
 } } } 
 echo $this->format_log_msg($log);
 } }else{
- $msg=__('You do not have permissions for this action','contact-form-mailchimp-crm');
+ $msg=__('You do not have permissions for this action','contact-form-mailchimp');
 $this->screen_msg($msg,'error');    
 }
 die();
@@ -728,7 +728,7 @@ public function add_meta_box($boxes,$lead,$detail){
 $form_id=isset($lead['form_id']) ? $lead['form_id'] : ""; 
 
 if( $this->has_feed($form_id)) { 
- $boxes['mailchimp_crm']=array('title'=>'<i class="fa fa-plug"></i> '.__('MailChimp', 'contact-form-mailchimp-crm'),'callback'=>array($this,'meta_box_html'));  
+ $boxes['mailchimp_crm']=array('title'=>'<i class="fa fa-plug"></i> '.__('MailChimp', 'contact-form-mailchimp'),'callback'=>array($this,'meta_box_html'));  
 } 
 return $boxes; 
 }
@@ -816,7 +816,7 @@ public function has_feed($form_id) {
     }else{
      $res['error']=$users;   
     }
-        $data['crm_sel_user']=$this->gen_select($users,$owner_sel,__('Select User','contact-form-mailchimp-crm'));
+        $data['crm_sel_user']=$this->gen_select($users,$owner_sel,__('Select User','contact-form-mailchimp'));
   $meta['users']=$users;  
   $res['data']=$data;   
       break;
@@ -829,7 +829,7 @@ public function has_feed($form_id) {
 if(isset($res['error'])){
     $res['status']='error';
     if(empty($res['error'])){
-    $res['error']=__('Unknown Error','contact-form-mailchimp-crm');
+    $res['error']=__('Unknown Error','contact-form-mailchimp');
     }
 }
   die(json_encode($res));    
@@ -842,7 +842,7 @@ if(isset($res['error'])){
        wp_enqueue_style('vx-fonts');
       wp_enqueue_script('vxc-tooltip');
       wp_enqueue_style('vxc-tooltip');
-         $tabs=array('feeds'=>__('Mailchimp Feeds','contact-form-mailchimp-crm') , 'logs'=>__('Mailchimp Log','contact-form-mailchimp-crm') , 'accounts'=>__('Mailchimp Accounts','contact-form-mailchimp-crm'), 'settings'=>__('Settings','contact-form-mailchimp-crm'));
+         $tabs=array('feeds'=>__('Mailchimp Feeds','contact-form-mailchimp') , 'logs'=>__('Mailchimp Log','contact-form-mailchimp') , 'accounts'=>__('Mailchimp Accounts','contact-form-mailchimp'), 'settings'=>__('Settings','contact-form-mailchimp'));
          
          $tabs=apply_filters('vx_plugin_tabs_'.$this->id,$tabs);
                   
@@ -917,11 +917,11 @@ if(isset($res['error'])){
   var key=$(this).parents(".vx_tr").find(".crm_text"); 
 
   if($(this).hasClass('vx_hidden')){ 
-  $(this).text('<?php esc_html_e('Show Key','contact-form-mailchimp-crm') ?>');  
+  $(this).text('<?php esc_html_e('Show Key','contact-form-mailchimp') ?>');  
   $(this).removeClass('vx_hidden');
   key.attr('type','password');  
   }else{
-  $(this).text('<?php esc_html_e('Hide Key','contact-form-mailchimp-crm') ?>');  
+  $(this).text('<?php esc_html_e('Hide Key','contact-form-mailchimp') ?>');  
   $(this).addClass('vx_hidden');
   key.attr('type','text');  
   }
@@ -952,7 +952,7 @@ start_tooltip();
   */
   private  function list_page(){
   if(!current_user_can($this->id.'_read_feeds')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp-crm');    
+  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
   return;
   }
   $is_section=apply_filters('add_page_html_'.$this->id,false);
@@ -965,14 +965,14 @@ start_tooltip();
   if(isset($_POST["action"]) && $_POST["action"] == "delete"){
   check_admin_referer("vx_crm_ajax");
   if(!current_user_can($this->id.'_edit_feeds')){
-      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
   }
   $id = absint($this->post("action_argument"));
   $this->data->delete_feed($id);
   ?>
   <div class="updated fade" style="margin:10px 0;">
   <p>
-  <?php esc_html_e("Feed deleted.", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Feed deleted.", 'contact-form-mailchimp') ?>
   </p>
   </div>
   <?php
@@ -980,7 +980,7 @@ start_tooltip();
   else if (!empty($_POST["bulk_action"])){
   check_admin_referer("vx_crm_ajax");
   if(!current_user_can($this->id.'_edit_feeds')){
-      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
   }
   $selected_feeds = $this->post("feed");
   if(is_array($selected_feeds)){
@@ -990,7 +990,7 @@ start_tooltip();
   ?>
   <div class="updated fade" style="margin:10px 0;">
   <p>
-  <?php esc_html_e("Feeds deleted.", 'contact-form-mailchimp-crm') ?>
+  <?php esc_html_e("Feeds deleted.", 'contact-form-mailchimp') ?>
   </p>
   </div>
   <?php
@@ -1015,7 +1015,7 @@ include_once(self::$path . "templates/feeds.php");
   public  function log_page(){
   
   if(!current_user_can($this->id.'_read_logs')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp-crm');    
+  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
   return;
   }
   $is_section=apply_filters('add_page_html_'.$this->id,false);
@@ -1030,7 +1030,7 @@ include_once(self::$path . "templates/feeds.php");
    check_admin_referer('vx_nonce','vx_nonce');
    $needed_cap= $bulk_action == 'delete' ? '_edit_settings' : '_send_to_crm';
    if(!current_user_can($this->id.$needed_cap)){
-       wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+       wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
    }
    $log_id=$this->post('log_id');  
    if(is_array($log_id) && count($log_id)>0){
@@ -1041,7 +1041,7 @@ include_once(self::$path . "templates/feeds.php");
     }
     if($bulk_action == "delete"){
 $count=$this->data->delete_log($log_ids);
-  $this->screen_msg(sprintf(__('Successfully Deleted %d Item(s)','contact-form-mailchimp-crm'),$count));  
+  $this->screen_msg(sprintf(__('Successfully Deleted %d Item(s)','contact-form-mailchimp'),$count));  
     }
     else if(in_array($bulk_action,array("send_to_crm_bulk","send_to_crm_bulk_force"))){
          self::$api_timeout='1000';
@@ -1062,7 +1062,7 @@ $count=$this->data->delete_log($log_ids);
   if(!empty($entry) && is_array($entry)){ 
     $push=$this->push($entry,$form,$log['event'],true,$log);
   }else{
-    $push=array('class'=>'error','msg'=>__('Entry Not Found','contact-form-mailchimp-crm'));  
+    $push=array('class'=>'error','msg'=>__('Entry Not Found','contact-form-mailchimp'));  
   }
     if(is_array($push) && isset($push['class'])){
     $this->screen_msg($push['msg'],$push['class']); 
@@ -1094,12 +1094,12 @@ $count=$this->data->delete_log($log_ids);
   case"time": $time_order=$order_icon; $time_class="";   break;    
   }          
   }
-$bulk_actions=array(""=>__('Bulk Action','contact-form-mailchimp-crm'),"delete"=>__('Delete','contact-form-mailchimp-crm'),
-//  'send_to_crm_bulk'=>__('Send to Mailchimp','contact-form-mailchimp-crm'),'send_to_crm_bulk_force'=>__('Force Send to Mailchimp - Ignore filters','contact-form-mailchimp-crm')
+$bulk_actions=array(""=>__('Bulk Action','contact-form-mailchimp'),"delete"=>__('Delete','contact-form-mailchimp'),
+//  'send_to_crm_bulk'=>__('Send to Mailchimp','contact-form-mailchimp'),'send_to_crm_bulk_force'=>__('Force Send to Mailchimp - Ignore filters','contact-form-mailchimp')
 );
 $base_url=$this->get_base_url();
 $objects=$this->get_objects(); 
-$statuses=array("1"=>__("Created",'contact-form-mailchimp-crm'),"2"=>__("Updated",'contact-form-mailchimp-crm'),"error"=>__("Failed",'contact-form-mailchimp-crm'),"4"=>__("Filtered",'contact-form-mailchimp-crm'),"5"=>__("Deleted",'contact-form-mailchimp-crm')); 
+$statuses=array("1"=>__("Created",'contact-form-mailchimp'),"2"=>__("Updated",'contact-form-mailchimp'),"error"=>__("Failed",'contact-form-mailchimp'),"4"=>__("Filtered",'contact-form-mailchimp'),"5"=>__("Deleted",'contact-form-mailchimp')); 
 
 include_once(self::$path . "templates/logs.php");
   }
@@ -1233,7 +1233,7 @@ foreach($map as $field_k=>$field_v){
 
 
 
-  $sel_fields=array(""=>__("Standard Field",'contact-form-mailchimp-crm'),"value"=>__("Custom Value",'contact-form-mailchimp-crm'));
+  $sel_fields=array(""=>__("Standard Field",'contact-form-mailchimp'),"value"=>__("Custom Value",'contact-form-mailchimp'));
 include_once(self::$path . "templates/fields-mapping.php"); 
   }
 public function groups($meta,$info){
@@ -1296,7 +1296,7 @@ $check= !empty($meta['groups'][$k]) ? 'checked="checked"' : '';
   }
   public function set_logging_supported($plugins) {
       $slug=$this->plugin_dir_name(); 
-        $plugins[$slug] = esc_html__('Mailchimp','contact-form-mailchimp-crm');
+        $plugins[$slug] = esc_html__('Mailchimp','contact-form-mailchimp');
         return $plugins;
     }
   /**
@@ -1311,9 +1311,9 @@ $check= !empty($meta['groups'][$k]) ? 'checked="checked"' : '';
 $this->ajax=true;
   $msg="";
   if(empty($_REQUEST['module'])){
-  $msg=__("Please Choose Object",'contact-form-mailchimp-crm');
+  $msg=__("Please Choose Object",'contact-form-mailchimp');
   }else  if(empty($_REQUEST['form_id'])){
-  $msg=__("Please Choose Form",'contact-form-mailchimp-crm');
+  $msg=__("Please Choose Form",'contact-form-mailchimp');
   }
   if($msg !=""){
   ?>
@@ -1348,9 +1348,9 @@ $this->ajax=true;
    $this->ajax=true;
   $msg="";
   if(empty($_REQUEST['account'])){
-  $msg=__("Please Choose Account",'contact-form-mailchimp-crm');
+  $msg=__("Please Choose Account",'contact-form-mailchimp');
   }else  if(empty($_REQUEST['form_id'])){
-  $msg=__("Please Choose Form",'contact-form-mailchimp-crm');
+  $msg=__("Please Choose Form",'contact-form-mailchimp');
   }
   if($msg !=""){
   ?>
@@ -1480,7 +1480,7 @@ public function get_objects_ajax(){
 
   $objects=$this->get_objects($crm,true); 
 
-$field_options="<option>".esc_html__("Select Object",'contact-form-mailchimp-crm')."</option>"; 
+$field_options="<option>".esc_html__("Select Object",'contact-form-mailchimp')."</option>"; 
   if(is_array($objects)){
   foreach($objects as $k=>$v){
       $sel="";
@@ -1500,7 +1500,7 @@ die();
   */
   public  function settings_page(){ 
   if(!current_user_can($this->id.'_read_settings')){
-  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp-crm');   
+  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp');   
   $this->display_msg('admin',$msg_text); 
   return;
   }
@@ -1523,7 +1523,7 @@ die();
   return;
   }    
   $this->uninstall();
-  $uninstall_msg=sprintf(__("Contact Form Mailchimp Plugin has been successfully uninstalled. It can be re-activated from the %s plugins page %s.", 'contact-form-mailchimp-crm'),"<a href='plugins.php'>","</a>");
+  $uninstall_msg=sprintf(__("Contact Form Mailchimp Plugin has been successfully uninstalled. It can be re-activated from the %s plugins page %s.", 'contact-form-mailchimp'),"<a href='plugins.php'>","</a>");
 $this->screen_msg($uninstall_msg);
   return;
   }
@@ -1538,7 +1538,7 @@ $this->screen_msg($uninstall_msg);
 
   $meta=isset($_POST['meta']) ? array_intersect_key((array)$this->post('meta'),array_flip(array('plugin_data','update','delete','restore','notes'))) : array();
   
-   $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp-crm'));
+   $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp'));
   update_option($this->type.'_settings',$meta);
   }      
       } 
@@ -1552,7 +1552,7 @@ include_once(self::$path . "templates/settings.php");
   */
   public  function accounts_page(){ 
   if(!current_user_can($this->id.'_read_settings')){
-  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp-crm');   
+  $msg_text=__('You do not have permissions to access this page','contact-form-mailchimp');   
   $this->display_msg('admin',$msg_text); 
   return;
   }
@@ -1570,10 +1570,10 @@ include_once(self::$path . "templates/settings.php");
   if(!empty($_POST["save"])){ //var_dump($_REQUEST); die(); 
   check_admin_referer("vx_nonce");
   if(!current_user_can($this->id."_edit_settings")){ 
-  esc_html_e('You do not have permissions to save settings','contact-form-mailchimp-crm');
+  esc_html_e('You do not have permissions to save settings','contact-form-mailchimp');
   return;   
   }
-  $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp-crm'));
+  $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp'));
   $valid_email=true; $crm=$this->post('crm');
   if($this->post('error_email',$crm) !=""){
    $emails=explode(",",$this->post('error_email',$crm));
@@ -1585,7 +1585,7 @@ include_once(self::$path . "templates/settings.php");
   }   
   }
   if(!$valid_email){
-      $msgs['submit']=array("class"=>"error","msg"=>__('Invalid Email(s)','contact-form-mailchimp-crm'));
+      $msgs['submit']=array("class"=>"error","msg"=>__('Invalid Email(s)','contact-form-mailchimp'));
   }
    $info=$this->get_info($id); 
    
@@ -1639,11 +1639,11 @@ include_once(self::$path . "templates/settings.php");
    }
                 if(isset($_POST['vx_test_connection'])){  
   if($con_class != "updated" ){
-      $msg=__('Connection to Mailchimp is NOT Working','contact-form-mailchimp-crm');  
+      $msg=__('Connection to Mailchimp is NOT Working','contact-form-mailchimp');  
   }else{
-     $msg=__('Connection to Mailchimp is Working','contact-form-mailchimp-crm');   
+     $msg=__('Connection to Mailchimp is Working','contact-form-mailchimp');   
   }
-  $title=__('Test Connection: ','contact-form-mailchimp-crm');
+  $title=__('Test Connection: ','contact-form-mailchimp');
   $msgs['test']=array('class'=>$con_class,'msg'=>'<b>'.$title.'</b>'.$msg);
   }
 
@@ -1662,7 +1662,7 @@ include_once(self::$path . "templates/accounts.php");
   */
   private  function edit_page($fid=""){ 
   if(!current_user_can($this->id.'_read_feeds')){
-  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp-crm');    
+  esc_html_e('You do not have permissions to access this page','contact-form-mailchimp');    
   return;
   }
   wp_enqueue_style('vx-fonts');
@@ -1680,7 +1680,7 @@ $feed= $this->data->get_feed($fid);
   if(isset($_POST[$this->id."_submit"])){ 
   check_admin_referer("vx_nonce");
   if(!current_user_can($this->id.'_edit_feeds')){
-  esc_html_e('You do not have permissions to edit/save feed','contact-form-mailchimp-crm'); 
+  esc_html_e('You do not have permissions to edit/save feed','contact-form-mailchimp'); 
   return;
   }
   //
@@ -1705,10 +1705,10 @@ if(is_array($feed_update) && is_array($feed)){
 
   if($is_valid){
       $feed_link=$this->link_to_settings('feeds');
-      $msgs['save']=array('class'=>'updated','msg'=>sprintf(__("Feed Updated. %sback to list%s", 'contact-form-mailchimp-crm'), '<a href="'.$feed_link.'">', "</a>"));
+      $msgs['save']=array('class'=>'updated','msg'=>sprintf(__("Feed Updated. %sback to list%s", 'contact-form-mailchimp'), '<a href="'.$feed_link.'">', "</a>"));
   }
   else{
-  $msgs['save']=array('class'=>'error','msg'=>__("Feed could not be updated. Please enter all required information below.", 'contact-form-mailchimp-crm'));
+  $msgs['save']=array('class'=>'error','msg'=>__("Feed could not be updated. Please enter all required information below.", 'contact-form-mailchimp'));
 
   }
   } 
@@ -1749,15 +1749,15 @@ if(is_array($tags)){
    }   
     
 }  
-  $fields['__vx_id']=array('id'=>'__vx_id','label'=>__('Entry ID','contact-form-mailchimp-crm')); 
-$fields['_vx_form_id']=array('id'=>'_vx_form_id','label'=>__('Form ID','contact-form-mailchimp-crm')); 
-$fields['_vx_form_name']=array('id'=>'_vx_form_title','label'=>__('Form Title','contact-form-mailchimp-crm')); 
+  $fields['__vx_id']=array('id'=>'__vx_id','label'=>__('Entry ID','contact-form-mailchimp')); 
+$fields['_vx_form_id']=array('id'=>'_vx_form_id','label'=>__('Form ID','contact-form-mailchimp')); 
+$fields['_vx_form_name']=array('id'=>'_vx_form_title','label'=>__('Form Title','contact-form-mailchimp')); 
 
-$fields['_vx_url']=array('id'=>'_vx_url','label'=>__('Page URL','contact-form-mailchimp-crm')); 
-$fields['_vx_created']=array('id'=>'_vx_created','label'=>__('Entry Created','contact-form-mailchimp-crm')); 
-$fields['_vx_updated']=array('id'=>'_vx_updated','label'=>__('Entry Updated','contact-form-mailchimp-crm'));
+$fields['_vx_url']=array('id'=>'_vx_url','label'=>__('Page URL','contact-form-mailchimp')); 
+$fields['_vx_created']=array('id'=>'_vx_created','label'=>__('Entry Created','contact-form-mailchimp')); 
+$fields['_vx_updated']=array('id'=>'_vx_updated','label'=>__('Entry Updated','contact-form-mailchimp'));
 
-  $this->fields=$fields=array('cf'=>array("title"=>__('Contact Form Fields','contact-form-mailchimp-crm'),"fields"=>$fields));
+  $this->fields=$fields=array('cf'=>array("title"=>__('Contact Form Fields','contact-form-mailchimp'),"fields"=>$fields));
   
   if($this->do_actions()){ 
 
@@ -1850,7 +1850,7 @@ if(is_array($fields_arr['fields'])){
   if(!empty($feed['object']) && is_array($objects) && !isset($objects[$feed['object']])){
   $feed['object']="";     
   }  
-  $modules=array(""=>__("Select Object",'contact-form-mailchimp-crm'));
+  $modules=array(""=>__("Select Object",'contact-form-mailchimp'));
   if(isset($objects) && is_array($objects)){
   foreach($objects as $k=>$v){
   $modules[$k]=$v;     
@@ -1875,7 +1875,7 @@ if(is_array($fields_arr['fields'])){
   } 
 
   if(isset($info['valid_token'])  && $info['valid_token']!="") { 
-  $msg=__( 'Successfully Connected to Mailchimp','contact-form-mailchimp-crm' );
+  $msg=__( 'Successfully Connected to Mailchimp','contact-form-mailchimp' );
      if(isset($info['_time'])){
        $msg.=" - ".date('F d, Y h:i:s A',$info['_time']);
    }

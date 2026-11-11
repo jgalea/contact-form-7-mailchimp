@@ -64,7 +64,7 @@ $(".sf_login").click(function(e){
     var new_id=$("#app_id").val();
     if(client_id!=new_id){
           e.preventDefault();   
-     alert("<?php esc_html_e('Mailchimp Client ID Changed.Please save new changes first','contact-form-mailchimp-crm') ?>");   
+     alert("<?php esc_html_e('Mailchimp Client ID Changed.Please save new changes first','contact-form-mailchimp') ?>");   
     }    
     }
 })
@@ -78,7 +78,7 @@ $(".sf_login").click(function(e){
   
     $(document).on('click','#vx_revoke',function(e){
   
-  if(!confirm('<?php esc_html_e('Notification - Remove Connection?','contact-form-mailchimp-crm'); ?>')){
+  if(!confirm('<?php esc_html_e('Notification - Remove Connection?','contact-form-mailchimp'); ?>')){
   e.preventDefault();   
   }
   });
@@ -89,23 +89,23 @@ $(".sf_login").click(function(e){
 
   <form method="post" id="mainform">
   <?php wp_nonce_field("vx_nonce") ?>
-  <h2 class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php 
+  <h2 class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php 
   if(empty($id)){
-  esc_html_e("Mailchimp Accounts", 'contact-form-mailchimp-crm');
+  esc_html_e("Mailchimp Accounts", 'contact-form-mailchimp');
   }else{
-  esc_html_e("Mailchimp Account #", 'contact-form-mailchimp-crm'); echo $id;    
+  esc_html_e("Mailchimp Account #", 'contact-form-mailchimp'); echo $id;    
   } 
   if(empty($id) || $new_account_id != $id){
- ?> <a href="<?php echo $new_account ?>" class="add-new-h2" title="<?php esc_html_e('Add New Account','contact-form-mailchimp-crm'); ?>"><?php esc_html_e('Add New Account','contact-form-mailchimp-crm'); ?></a> 
+ ?> <a href="<?php echo $new_account ?>" class="add-new-h2" title="<?php esc_html_e('Add New Account','contact-form-mailchimp'); ?>"><?php esc_html_e('Add New Account','contact-form-mailchimp'); ?></a> 
  <?php
 }if(!empty($id)){
  ?>
- <a href="<?php echo $page_link ?>" class="add-new-h2" title="<?php esc_html_e('Back to Accounts','contact-form-mailchimp-crm'); ?>"><?php esc_html_e('Back to Accounts','contact-form-mailchimp-crm'); ?></a>
+ <a href="<?php echo $page_link ?>" class="add-new-h2" title="<?php esc_html_e('Back to Accounts','contact-form-mailchimp'); ?>"><?php esc_html_e('Back to Accounts','contact-form-mailchimp'); ?></a>
  <?php
 }
  ?>
   </h2>
-  <p style="text-align: left;"> <?php echo sprintf(esc_html__("If you don't have a Mailchimp account, you can %ssign up for one here%s.", 'contact-form-mailchimp-crm'), "<a href='https://www.mailchimp.com/' target='_blank' title='".__('Sign Up for Mailchimp CRM','contact-form-mailchimp-crm')."'>" , "</a>") ?> </p>
+  <p style="text-align: left;"> <?php echo sprintf(esc_html__("If you don't have a Mailchimp account, you can %ssign up for one here%s.", 'contact-form-mailchimp'), "<a href='https://www.mailchimp.com/' target='_blank' title='".__('Sign Up for Mailchimp CRM','contact-form-mailchimp')."'>" , "</a>") ?> </p>
     <?php 
 $this->show_msgs($msgs);               
 

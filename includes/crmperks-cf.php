@@ -41,8 +41,8 @@ public function add_meta_box($lead,$detail){
 ?>
   <div class="vx_div">
         <div class="vx_head">
-<div class="crm_head_div"><i class="fa fa-bullhorn"></i> <?php esc_html_e('Marketing Data', 'contact-form-mailchimp-crm'); ?></div>
-<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp-crm') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
+<div class="crm_head_div"><i class="fa fa-bullhorn"></i> <?php esc_html_e('Marketing Data', 'contact-form-mailchimp'); ?></div>
+<div class="crm_btn_div" title="<?php esc_html_e('Expand / Collapse','contact-form-mailchimp') ?>"><i class="fa crm_toggle_btn vx_action_btn fa-minus"></i></div>
 <div class="crm_clear"></div> 
   </div>
 
@@ -53,7 +53,7 @@ public function add_meta_box($lead,$detail){
      $plugin_url=$this->plugin_url.'?vx_product='.$this->get_pro_domain(); 
  ?>
 <div class="vx_panel" style="text-align: center; font-size: 16px; color: #888; font-weight: bold;">
-<p><?php esc_html_e('Need Marketing Insight? ,','contact-form-mailchimp-crm')?> <a href="<?php echo esc_url($plugin_url) ?>&section=vxc_premium"><?php esc_html_e('Go Pro!','contact-form-mailchimp-crm')?></a></p>
+<p><?php esc_html_e('Need Marketing Insight? ,','contact-form-mailchimp')?> <a href="<?php echo esc_url($plugin_url) ?>&section=vxc_premium"><?php esc_html_e('Go Pro!','contact-form-mailchimp')?></a></p>
 </div>
  <?php
  }else{
@@ -61,7 +61,7 @@ public function add_meta_box($lead,$detail){
 
 if(!$html_added){
    ?> 
-   <h3 style="text-align: center;"><?php esc_html_e('No Information Available','contact-form-mailchimp-crm')?></h3>
+   <h3 style="text-align: center;"><?php esc_html_e('No Information Available','contact-form-mailchimp')?></h3>
    <?php
 }
  }

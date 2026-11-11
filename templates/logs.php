@@ -201,10 +201,10 @@ margin-left: 8px;
   </style>
   <div class="vx_wrap"> 
   <div>
-  <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp-crm') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Log", 'contact-form-mailchimp-crm'); ?>
+  <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Log", 'contact-form-mailchimp'); ?>
   
    <select style="min-width: 120px; max-width: 200px; margin-left: 12px; font-weight: normal;" id="vx_sel_feed">
-  <option value=""><?php esc_html_e('All Feeds','contact-form-mailchimp-crm') ?></option>
+  <option value=""><?php esc_html_e('All Feeds','contact-form-mailchimp') ?></option>
   <?php    
   foreach($feeds as $val){
   $sel="";
@@ -226,7 +226,7 @@ margin-left: 8px;
     <input type="hidden" name="page" value="<?php echo esc_attr($this->post('page')) ?>" />
   <input type="hidden" name="id" value="<?php echo esc_attr($this->post('id')) ?>" />
   <input type="hidden" name="tab" value="<?php echo esc_attr($this->post('tab')) ?>" />
-  <input type="text" placeholder="<?php esc_html_e('Search','contact-form-mailchimp-crm') ?>" value="<?php echo esc_attr($this->post('search')) ?>" name="search" class="crm_input_inline">
+  <input type="text" placeholder="<?php esc_html_e('Search','contact-form-mailchimp') ?>" value="<?php echo esc_attr($this->post('search')) ?>" name="search" class="crm_input_inline">
   <?php
        if($this->post('entry_id') !=""){
    ?> 
@@ -239,7 +239,7 @@ margin-left: 8px;
   <input type="hidden" name="vx_tab_action_<?php echo esc_attr($this->id) ?>" id="vx_export_log" value="" autocomplete="off" />
    <input type="hidden" id="vx_nonce_field" value="<?php echo wp_create_nonce('vx_nonce'); ?>">
   <select name="object" class="crm_input_inline" style="max-width: 100px;">
-  <option value=""><?php esc_html_e('All Objects','contact-form-mailchimp-crm') ?></option>
+  <option value=""><?php esc_html_e('All Objects','contact-form-mailchimp') ?></option>
   <?php    
   foreach($objects as $f_key=>$f_val){
   $sel="";
@@ -250,7 +250,7 @@ margin-left: 8px;
   ?>
   </select>
   <select name="status" class="crm_input_inline">
-  <option value=""><?php esc_html_e('All Status','contact-form-mailchimp-crm') ?></option>
+  <option value=""><?php esc_html_e('All Status','contact-form-mailchimp') ?></option>
   <?php
    
   foreach($statuses as $f_key=>$f_val){
@@ -262,7 +262,7 @@ margin-left: 8px;
   ?>
   </select>
   <select name="time" class="crm_time_select crm_input_inline" style="max-width: 100px;">
-  <option value=""><?php esc_html_e('All Times','contact-form-mailchimp-crm') ?></option>
+  <option value=""><?php esc_html_e('All Times','contact-form-mailchimp') ?></option>
   <?php
   foreach($times as $f_key=>$f_val){
   $sel="";
@@ -273,11 +273,11 @@ margin-left: 8px;
   ?>
   </select>
   <span style="<?php if($this->post('time') != "custom"){echo "display:none";} ?>" class="crm_custom_range"> 
-  <input type="text" name="start_date" placeholder="<?php esc_html_e('From Date','contact-form-mailchimp-crm') ?>" value="<?php if(isset($_REQUEST['start_date'])){echo esc_attr($_REQUEST['start_date']);}?>" class="vxc_date crm_input_inline" style="width: 100px">
-  <input type="text" class="vxc_date crm_input_inline" value="<?php if(isset($_REQUEST['end_date'])){echo esc_attr($_REQUEST['end_date']);}?>" placeholder="<?php esc_html_e('To Date','contact-form-mailchimp-crm') ?>" name="end_date"  style="width: 100px">
+  <input type="text" name="start_date" placeholder="<?php esc_html_e('From Date','contact-form-mailchimp') ?>" value="<?php if(isset($_REQUEST['start_date'])){echo esc_attr($_REQUEST['start_date']);}?>" class="vxc_date crm_input_inline" style="width: 100px">
+  <input type="text" class="vxc_date crm_input_inline" value="<?php if(isset($_REQUEST['end_date'])){echo esc_attr($_REQUEST['end_date']);}?>" placeholder="<?php esc_html_e('To Date','contact-form-mailchimp') ?>" name="end_date"  style="width: 100px">
   </span>
  
-  <button type="submit" title="<?php esc_html_e('Search','contact-form-mailchimp-crm') ?>" name="search" class="button-secondary button crm_input_inline"><i class="fa fa-search"></i> <?php esc_html_e('Search','contact-form-mailchimp-crm') ?></button> 
+  <button type="submit" title="<?php esc_html_e('Search','contact-form-mailchimp') ?>" name="search" class="button-secondary button crm_input_inline"><i class="fa fa-search"></i> <?php esc_html_e('Search','contact-form-mailchimp') ?></button> 
      
   </div>   </form> 
      <div style="clear: both;"></div> 
@@ -294,7 +294,7 @@ margin-left: 8px;
   ?>
   </select>
     <input type="hidden" name="vx_nonce" value="<?php echo wp_create_nonce('vx_nonce'); ?>">   
-  <button type="submit" class="button-secondary button crm_input_inline" title="<?php esc_html_e('Apply','contact-form-mailchimp-crm') ?>" id="vx_apply_bulk"><i class="fa fa-check"></i> <?php esc_html_e('Apply','contact-form-mailchimp-crm') ?></button>
+  <button type="submit" class="button-secondary button crm_input_inline" title="<?php esc_html_e('Apply','contact-form-mailchimp') ?>" id="vx_apply_bulk"><i class="fa fa-check"></i> <?php esc_html_e('Apply','contact-form-mailchimp') ?></button>
 
   <?php   
   $log_link= admin_url("admin.php?page={$this->id}&tab=logs");
@@ -302,7 +302,7 @@ margin-left: 8px;
          if($items>0){
         
   ?>
-  <button type="button" name="tab_action" title="<?php esc_html_e('Export as CSV','contact-form-mailchimp-crm') ?>" id="vx_export" class="button-secondary button crm_input_inline vx_left_10"><i class="fa fa-download"></i> <?php esc_html_e('Export as CSV','contact-form-mailchimp-crm') ?></button> 
+  <button type="button" name="tab_action" title="<?php esc_html_e('Export as CSV','contact-form-mailchimp') ?>" id="vx_export" class="button-secondary button crm_input_inline vx_left_10"><i class="fa fa-download"></i> <?php esc_html_e('Export as CSV','contact-form-mailchimp') ?></button> 
   <?php
   }
  
@@ -311,10 +311,10 @@ margin-left: 8px;
   if(isset($data['feeds'][0]['entry_id']) && $data['feeds'][0]['entry_id']!=""){
      $entry_id=$data['feeds'][0]['entry_id'];
       ?>
-  <a href="<?php echo  esc_url( $log_link.'&entry_id='.$entry_id);?>" title="<?php echo sprintf(esc_html__('View Entry# %s Logs','contact-form-mailchimp-crm'),$entry_id); ?>" class="button vx_left_10"><i class="fa fa-hand-o-right"></i> <?php echo sprintf(esc_html__('View Entry# %s Logs','contact-form-mailchimp-crm'),$entry_id); ?></a><?php
+  <a href="<?php echo  esc_url( $log_link.'&entry_id='.$entry_id);?>" title="<?php echo sprintf(esc_html__('View Entry# %s Logs','contact-form-mailchimp'),$entry_id); ?>" class="button vx_left_10"><i class="fa fa-hand-o-right"></i> <?php echo sprintf(esc_html__('View Entry# %s Logs','contact-form-mailchimp'),$entry_id); ?></a><?php
   }}
  if($this->post('entry_id') !="" || $_log_id !=""){
-          ?><a href="<?php echo esc_url($log_link);?>" title="<?php esc_html_e('View All Logs','contact-form-mailchimp-crm') ?>" class="button vx_left_10"><i class="fa fa-external-link"></i> <?php esc_html_e('View All Logs','contact-form-mailchimp-crm') ?></a>        
+          ?><a href="<?php echo esc_url($log_link);?>" title="<?php esc_html_e('View All Logs','contact-form-mailchimp') ?>" class="button vx_left_10"><i class="fa fa-external-link"></i> <?php esc_html_e('View All Logs','contact-form-mailchimp') ?></a>        
           <?php
       }
   
@@ -323,7 +323,7 @@ margin-left: 8px;
   <?php
 if($items>0){
   ?>
-  <div class="tablenav-pages"> <span id="paging_header" class="displaying-num"><?php esc_html_e('Displaying','contact-form-mailchimp-crm') ?> <span id="paging_range_min_header"><?php echo esc_html($data['min']); ?></span> - <span id="paging_range_max_header"><?php echo esc_html($data['max']) ?></span> of <span id="paging_total_header"><?php echo esc_html($data['items']) ?></span></span><?php echo wp_kses_post($data['links']) ?></div>
+  <div class="tablenav-pages"> <span id="paging_header" class="displaying-num"><?php esc_html_e('Displaying','contact-form-mailchimp') ?> <span id="paging_range_min_header"><?php echo esc_html($data['min']); ?></span> - <span id="paging_range_max_header"><?php echo esc_html($data['max']) ?></span> of <span id="paging_total_header"><?php echo esc_html($data['items']) ?></span></span><?php echo wp_kses_post($data['links']) ?></div>
  <?php
 }
         ?>       
@@ -335,19 +335,19 @@ if($items>0){
   <tr>
   <th scope="col" id="active" class="manage-column vx_col"><input type="checkbox" class="crm_head_check"> </th>
   <th scope="col" class="manage-column vx_col"> </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="crm_id"><?php esc_html_e("Mailchimp ID", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="crm_id"><?php esc_html_e("Mailchimp ID", 'contact-form-mailchimp') ?>
    <i class="fa fa-caret-<?php echo esc_attr($crm_order) ?> vx_sort_icon <?php echo esc_attr($crm_class) ?>"></i>                          
   </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="entry_id"><?php esc_html_e("Entry ID", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="entry_id"><?php esc_html_e("Entry ID", 'contact-form-mailchimp') ?>
   <i class="fa fa-caret-<?php echo esc_attr($entry_order) ?> vx_sort_icon <?php echo esc_attr($entry_class) ?>"></i>                      
   </th>
-  <th scope="col"><?php esc_html_e('Feed ID', 'contact-form-mailchimp-crm') ?> </th>
-  <th scope="col" class="manage-column"  data-name="object"><?php esc_html_e("Description", 'contact-form-mailchimp-crm') ?>
+  <th scope="col"><?php esc_html_e('Feed ID', 'contact-form-mailchimp') ?> </th>
+  <th scope="col" class="manage-column"  data-name="object"><?php esc_html_e("Description", 'contact-form-mailchimp') ?>
   </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="time"><?php esc_html_e("Time", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="time"><?php esc_html_e("Time", 'contact-form-mailchimp') ?>
   <i class="fa fa-caret-<?php echo esc_attr($time_order) ?> vx_sort_icon <?php echo esc_attr($time_class) ?>"></i>
   </th>
-  <th style="width: 40px"><?php esc_html_e('Detail','contact-form-mailchimp-crm') ?></th>
+  <th style="width: 40px"><?php esc_html_e('Detail','contact-form-mailchimp') ?></th>
   </tr>
   </thead>
   
@@ -355,19 +355,19 @@ if($items>0){
   <tr>
   <th scope="col" id="active" class="manage-column vx_col"><input type="checkbox" class="crm_head_check"> </th>
   <th scope="col" class="manage-column vx_col"> </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="crm_id"><?php esc_html_e("Mailchimp ID", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="crm_id"><?php esc_html_e("Mailchimp ID", 'contact-form-mailchimp') ?>
    <i class="fa fa-caret-<?php echo esc_attr($crm_order) ?> vx_sort_icon <?php echo esc_attr($crm_class) ?>"></i>                          
   </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="entry_id"><?php esc_html_e("Entry ID", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="entry_id"><?php esc_html_e("Entry ID", 'contact-form-mailchimp') ?>
   <i class="fa fa-caret-<?php echo esc_attr($entry_order) ?> vx_sort_icon <?php echo esc_attr($entry_class) ?>"></i>                      
   </th>
-    <th scope="col"><?php esc_html_e('Feed ID', 'contact-form-mailchimp-crm') ?> </th>
-  <th scope="col" class="manage-column"  data-name="object"><?php esc_html_e("Description", 'contact-form-mailchimp-crm') ?>
+    <th scope="col"><?php esc_html_e('Feed ID', 'contact-form-mailchimp') ?> </th>
+  <th scope="col" class="manage-column"  data-name="object"><?php esc_html_e("Description", 'contact-form-mailchimp') ?>
   </th>
-  <th scope="col" class="manage-column vx_sort"  data-name="time"><?php esc_html_e("Time", 'contact-form-mailchimp-crm') ?>
+  <th scope="col" class="manage-column vx_sort"  data-name="time"><?php esc_html_e("Time", 'contact-form-mailchimp') ?>
   <i class="fa fa-caret-<?php echo esc_attr($time_order) ?> vx_sort_icon <?php echo esc_attr($time_class) ?>"></i>
   </th>
-  <th><?php esc_html_e('Detail','contact-form-mailchimp-crm') ?></th>  
+  <th><?php esc_html_e('Detail','contact-form-mailchimp') ?></th>  
   </tr>
   
   </tfoot>
@@ -385,7 +385,7 @@ if($items>0){
   ?>
   <tr class='author-self status-inherit <?php if(in_array($row['id'],$log_ids)){echo 'vx_yellow ';} echo $sno%2 == 0 ? 'alternate' :'' ?>' id="tr_<?php echo esc_attr($row['id']) ?>" data-id="<?php echo esc_attr($row['id']); ?>" >
   <td class="vx_check_col"><input type="checkbox" name="log_id[]" value="<?php echo esc_attr($row['id']); ?>" class="crm_input_check"></td>
-    <td class="vx_icon_col"><img src="<?php echo esc_url($base_url) ?>images/<?php echo esc_attr($row["status_img"]); ?>.png" alt="<?php echo $row["status"] ? esc_html__("Active", 'contact-form-mailchimp-crm') : esc_html__("Inactive", 'contact-form-mailchimp-crm');?>" title="<?php echo esc_html($row['title']);?>" class="crm_status_img" /></td>
+    <td class="vx_icon_col"><img src="<?php echo esc_url($base_url) ?>images/<?php echo esc_attr($row["status_img"]); ?>.png" alt="<?php echo $row["status"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" title="<?php echo esc_html($row['title']);?>" class="crm_status_img" /></td>
   <td class="column-name" style="width:40%"><?php echo wp_kses_post($row['a_link']) ?></td>
       <td class="column-title">
       <?php 
@@ -424,11 +424,11 @@ echo esc_html($e_id);
     <td scope="col" class="manage-column"><?php 
 if(!empty($row['feed_id'])){
 $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
- ?><a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp-crm') ?>">#<?php echo esc_html($row['feed_id']) ?></a><?php  } ?>
+ ?><a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp') ?>">#<?php echo esc_html($row['feed_id']) ?></a><?php  } ?>
  </td>
     <td scope="col" class="manage-column"><?php echo esc_html($row['desc']); ?></td>
     <td scope="col" class="manage-column"><?php echo    esc_html($this->format_time($row['time']));?></td>
-    <td><i class="vx_icons vx_detail fa fa-th-list" title="<?php esc_html_e('Expand Details','contact-form-mailchimp-crm') ?>"></i></td>  
+    <td><i class="vx_icons vx_detail fa fa-th-list" title="<?php esc_html_e('Expand Details','contact-form-mailchimp') ?>"></i></td>  
   </tr>
   <tr style="display: none;"><td colspan="8" class="entry_detail"></td></tr>
   <?php
@@ -438,7 +438,7 @@ $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
   ?>
   <tr>
     <td colspan="4" style="padding:20px;">
-        <?php esc_html_e("No Record(s) Found", 'contact-form-mailchimp-crm'); ?>
+        <?php esc_html_e("No Record(s) Found", 'contact-form-mailchimp'); ?>
     </td>
   </tr>
   <?php
@@ -451,8 +451,8 @@ $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
   if($items>0){
   ?>
     <div class="crm_actions tablenav">
-   <a id="vx_clear_logs" class="button" title="<?php esc_html_e('Clear Mailchimp Log','contact-form-mailchimp-crm') ?>" href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page='.$this->post('page')."&view=log&vx_tab_action_".$this->id."=clear_logs"),'vx_nonce','vx_nonce')); ?>"><?php esc_html_e('Clear Mailchimp Log','contact-form-mailchimp-crm') ?></a>
-  <div class="tablenav-pages"> <span id="paging_header" class="displaying-num"><?php esc_html_e('Displaying','contact-form-mailchimp-crm') ?> <span id="paging_range_min_header"><?php echo esc_html($data['min']); ?></span> - <span id="paging_range_max_header"><?php echo esc_html($data['max']) ?></span> of <span id="paging_total_header"><?php echo esc_html($data['items']) ?></span></span><?php echo wp_kses_post($data['links']) ?></div>
+   <a id="vx_clear_logs" class="button" title="<?php esc_html_e('Clear Mailchimp Log','contact-form-mailchimp') ?>" href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page='.$this->post('page')."&view=log&vx_tab_action_".$this->id."=clear_logs"),'vx_nonce','vx_nonce')); ?>"><?php esc_html_e('Clear Mailchimp Log','contact-form-mailchimp') ?></a>
+  <div class="tablenav-pages"> <span id="paging_header" class="displaying-num"><?php esc_html_e('Displaying','contact-form-mailchimp') ?> <span id="paging_range_min_header"><?php echo esc_html($data['min']); ?></span> - <span id="paging_range_max_header"><?php echo esc_html($data['max']) ?></span> of <span id="paging_total_header"><?php echo esc_html($data['items']) ?></span></span><?php echo wp_kses_post($data['links']) ?></div>
     </div>
   <?php
   }
@@ -523,22 +523,22 @@ $(".crm_head_check").removeAttr('checked');
     $("#vx_apply_bulk").click(function(e){
         var sel=$("#vx_bulk_action");
 if(sel.val() == ""){
-    alert('<?php esc_html_e('Please Select Action','contact-form-mailchimp-crm') ?>');
+    alert('<?php esc_html_e('Please Select Action','contact-form-mailchimp') ?>');
       return false;
 }
 if($(".crm_input_check:checked").length == 0){ 
-    alert('<?php esc_html_e('Please select at least one entry','contact-form-mailchimp-crm') ?>');
+    alert('<?php esc_html_e('Please select at least one entry','contact-form-mailchimp') ?>');
     return false;
 }
 var action=sel.val();
 if( $.inArray(action,["send_to_crm_bulk_force","send_to_crm_bulk"]) !=-1 && $(".crm_input_check:checked").length>4){
- if(!confirm('<?php esc_html_e('Exporting more than 4 entries may take too long.\\n Are you sure you want to continue?','contact-form-mailchimp-crm') ?>')){
+ if(!confirm('<?php esc_html_e('Exporting more than 4 entries may take too long.\\n Are you sure you want to continue?','contact-form-mailchimp') ?>')){
   e.preventDefault();    
  }   
 }
   })
    $("#vx_clear_logs").click(function(e){
-      if(!confirm('<?php esc_html_e('Mailchimp Logs will be deleted permanently. Do you want to continue?','contact-form-mailchimp-crm') ?>')){
+      if(!confirm('<?php esc_html_e('Mailchimp Logs will be deleted permanently. Do you want to continue?','contact-form-mailchimp') ?>')){
           e.preventDefault();
       }  
   })    
@@ -596,14 +596,14 @@ if( $.inArray(action,["send_to_crm_bulk_force","send_to_crm_bulk"]) !=-1 && $(".
         next_tr.hide();     
         })
        if(is_main){
-    icon.attr('title','<?php esc_html_e('Expand Detail','contact-form-mailchimp-crm'); ?>');    
+    icon.attr('title','<?php esc_html_e('Expand Detail','contact-form-mailchimp'); ?>');    
     }        
      return;   
     }else{
      next_tr.show('fast'); 
     next_tr.find('.vxa_entry').slideDown('fast'); 
     if(is_main){
-    icon.attr('title','<?php esc_html_e('Collapse Detail','contact-form-mailchimp-crm'); ?>');    
+    icon.attr('title','<?php esc_html_e('Collapse Detail','contact-form-mailchimp'); ?>');    
     }    
     }
     if(!td.find("div").length){
