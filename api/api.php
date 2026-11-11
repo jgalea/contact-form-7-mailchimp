@@ -222,6 +222,15 @@ if(!empty($meta['vx_unsub'])){
     }
 }
 
+if($id == "" && !in_array($event,array('delete','delete_note','add_note')) && !empty($fields['email_address']['value'])){
+    $member_hash=md5(strtolower(trim($fields['email_address']['value'])));
+    $member=$this->post_crm('lists/'.$module.'/members/'.$member_hash,'get');
+    if(!empty($member['id']) && empty($member['detail'])){
+        $id=$member['id'];
+        $extra['Existing member']=$member_hash;
+    }
+}
+
      if(in_array($event,array('delete_note','add_note'))){    
   if(isset($meta['related_object'])){
     $extra['Note Object']= $meta['related_object'];
@@ -320,7 +329,9 @@ if($type == 'birthday'){ $temp_val=strtotime($val); if(!empty($temp_val)){ $val=
 if(!empty($merge_fields)){
 $post['merge_fields']=$merge_fields;
 }
+if($method != 'patch'){
 $post['status']=!empty($meta['status']) ? $meta['status'] : 'subscribed';
+}
 $post['email_type']=!empty($meta['email_type']) ? $meta['email_type'] : 'html';
 $post['language']=!empty($meta['language']) ? $meta['language'] : 'en';
 if(!empty($meta['vip'])){
@@ -439,7 +450,7 @@ public function post_crm($path,$method,$body=''){
        $body=json_encode($body); 
    }
      $head=array('Authorization'=> ' apikey ' .$this->api_key); 
-       if($method == 'post'){
+ if(in_array($method,array('post','put','patch'))){
        $head['Content-Type']='application/json';   
        }
      
