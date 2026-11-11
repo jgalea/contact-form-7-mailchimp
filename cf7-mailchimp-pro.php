@@ -1080,7 +1080,7 @@ return $objects;
   // $desc="Note Added to ";     
   }
   if($feed['status'] == 2){
-  $desc="Updated to ";    
+  $desc=__("Updated to ",'contact-form-mailchimp');    
   }
   $desc.=$feed['object'];
   if($feed['status'] == 5){
@@ -1934,7 +1934,7 @@ $this->send_error_email($info,$entry,$form);
   */
   public function send_error_email($info,$entry,$form){
         if(!empty($info['data']['error_email'])){
-  $subject="Error While Posting to Mailchimp";
+  $subject=__("Error while posting to Mailchimp",'contact-form-mailchimp');
     $entry_link=add_query_arg(array('page' => 'vxcf_leads','tab'=>'entries', 'id' => $entry['__vx_id']), admin_url('admin.php'));  
   $page_url = esc_url_raw(home_url(wp_unslash($_SERVER['REQUEST_URI']))); 
 

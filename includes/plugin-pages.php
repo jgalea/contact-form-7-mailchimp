@@ -208,7 +208,7 @@ $entry['__vx_id']=$entry['id'];
         }
         }
         if(empty($notice)){
-            $notice='Nothing Sent to Mailchimp';
+            $notice=__('Nothing sent to Mailchimp','contact-form-mailchimp');
         }
     $msg=array('msg'=>$notice,'class'=>$class);   
     }
@@ -655,8 +655,8 @@ echo $this->format_log_msg($log);
 ?></div>
 <p style="margin-top: 12px;">
 <button class="button vx_send_crm_btn" data-crm="<?php echo esc_attr($this->crm_name); ?>" type="button" data-action="send_to_crm_<?php echo esc_attr($this->id) ?>" value="yes">
-<span class="reg_ok"><i class="fa fa-send"></i> Send to <?php echo esc_attr($this->crm_name); ?></span> 
-<span class="reg_proc" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> Sending ...</span>
+<span class="reg_ok"><i class="fa fa-send"></i> <?php esc_html_e('Send to Mailchimp','contact-form-mailchimp'); ?></span> 
+<span class="reg_proc" style="display: none;"><i class="fa fa-circle-o-notch fa-spin"></i> <?php esc_html_e('Sending...','contact-form-mailchimp'); ?></span>
 </button>
   <?php
       if($comments ){
@@ -1080,7 +1080,7 @@ $count=$this->data->delete_log($log_ids);
   }
   wp_enqueue_script('jquery-ui-datepicker' );
      wp_enqueue_style('vx-datepicker');
-  $times=array("today"=>"Today","yesterday"=>"Yesterday","this_week"=>"This Week","last_7"=>"Last 7 Days","last_30"=>"Last 30 Days","this_month"=>"This Month","last_month"=>"Last Month","custom"=>"Select Range"); 
+  $times=array("today"=>__("Today",'contact-form-mailchimp'),"yesterday"=>__("Yesterday",'contact-form-mailchimp'),"this_week"=>__("This Week",'contact-form-mailchimp'),"last_7"=>__("Last 7 Days",'contact-form-mailchimp'),"last_30"=>__("Last 30 Days",'contact-form-mailchimp'),"this_month"=>__("This Month",'contact-form-mailchimp'),"last_month"=>__("Last Month",'contact-form-mailchimp'),"custom"=>__("Select Range",'contact-form-mailchimp')); 
   $data= $this->data->get_log(); $items=count($data['feeds']);
   $crm_order=$entry_order=$desc_order=$time_order="up"; 
   $crm_class=$entry_class=$desc_class=$time_class="vx_hide_sort";
@@ -1378,7 +1378,7 @@ $this->field_map_object($account,$form_id,$feed,$info);
   * 
   */
   public function get_filter_ops(){
-           return array("is"=>"Exactly Matches","is_not"=>"Does Not Exactly Match","contains"=>"(Text) Contains","not_contains"=>"(Text) Does Not Contain","is_in"=>"(Text) Is In","not_in"=>"(Text) Is Not In","starts"=>"(Text) Starts With","not_starts"=>"(Text) Does Not Start With","ends"=>"(Text) Ends With","not_ends"=>"(Text) Does Not End With","less"=>"(Number) Less Than","greater"=>"(Number) Greater Than","less_date"=>"(Date/Time) Less Than","greater_date"=>"(Date/Time) Greater Than","equal_date"=>"(Date/Time) Equals","empty"=>"Is Empty","not_empty"=>"Is Not Empty"); 
+           return array("is"=>__("Exactly Matches",'contact-form-mailchimp'),"is_not"=>__("Does Not Exactly Match",'contact-form-mailchimp'),"contains"=>__("(Text) Contains",'contact-form-mailchimp'),"not_contains"=>__("(Text) Does Not Contain",'contact-form-mailchimp'),"is_in"=>__("(Text) Is In",'contact-form-mailchimp'),"not_in"=>__("(Text) Is Not In",'contact-form-mailchimp'),"starts"=>__("(Text) Starts With",'contact-form-mailchimp'),"not_starts"=>__("(Text) Does Not Start With",'contact-form-mailchimp'),"ends"=>__("(Text) Ends With",'contact-form-mailchimp'),"not_ends"=>__("(Text) Does Not End With",'contact-form-mailchimp'),"less"=>__("(Number) Less Than",'contact-form-mailchimp'),"greater"=>__("(Number) Greater Than",'contact-form-mailchimp'),"less_date"=>__("(Date/Time) Less Than",'contact-form-mailchimp'),"greater_date"=>__("(Date/Time) Greater Than",'contact-form-mailchimp'),"equal_date"=>__("(Date/Time) Equals",'contact-form-mailchimp'),"empty"=>__("Is Empty",'contact-form-mailchimp'),"not_empty"=>__("Is Not Empty",'contact-form-mailchimp')); 
   }
   /**
   * crm fields select options
