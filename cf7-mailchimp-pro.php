@@ -357,7 +357,7 @@ if(is_array($fields)){
               $val=str_replace($base_url,trim(ABSPATH,'/'),$val);
     $uploaded_files_form[$name]=$val;   
      }     
-  $lead[$name]=$detail[$name];          
+  $lead[$name]=is_serialized($detail[$name]) ? @unserialize($detail[$name],array('allowed_classes'=>false)) : $detail[$name];
      }
   }  
 //
@@ -967,10 +967,6 @@ return $result;
      if(is_array($value) && isset($value['value'])){
       $value=$value['value'];   
      }
-     if(!is_array($value)){
-          $value=maybe_unserialize($value);
-     }
-  
   }
  $fields=$this->form_fields;  
  $type=isset($fields[$field_id]['type']) ? $fields[$field_id]['type'] : '';
