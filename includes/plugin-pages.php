@@ -1474,7 +1474,8 @@ $this->screen_msg($uninstall_msg);
              check_admin_referer('vx_nonce');
              if(current_user_can($this->id."_edit_settings")){ 
 
-  $meta=isset($_POST['meta']) ? array_intersect_key((array)$this->post('meta'),array_flip(array('plugin_data','update','delete','restore','notes'))) : array();
+  $meta=isset($_POST['meta']) ? array_intersect_key((array)$this->post('meta'),array_flip(array('plugin_data','update','delete','restore','notes','log_days'))) : array();
+  if(isset($meta['log_days'])){ $meta['log_days']=min(absint($meta['log_days']),3650); }
   
    $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp'));
   update_option($this->type.'_settings',$meta);

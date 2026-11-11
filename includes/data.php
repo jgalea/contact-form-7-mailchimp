@@ -307,6 +307,11 @@ $page=(int)$this->post('page_id');
   * 
   * @param mixed $id
   */
+  public  function delete_old_logs($days){
+  global $wpdb;
+  $table=$this->get_crm_table_name('log');
+  return $wpdb->query($wpdb->prepare("DELETE FROM $table WHERE `time` < %s",gmdate('Y-m-d H:i:s',time()-$days*DAY_IN_SECONDS)));
+  }
   public  function delete_log($log_ids){
   global $wpdb;
   $table=$this->get_crm_table_name('log');

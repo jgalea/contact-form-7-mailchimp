@@ -68,6 +68,14 @@
   </tr>
   
 
+  <tr>
+  <th scope="row"><label for="vx_log_days"><?php esc_html_e("Keep logs for", 'contact-form-mailchimp'); ?></label></th>
+  <td>
+  <input type="number" min="0" max="3650" step="1" id="vx_log_days" name="meta[log_days]" value="<?php echo esc_attr($this->post('log_days',$meta)); ?>" class="small-text" placeholder="0"> <?php esc_html_e('days', 'contact-form-mailchimp'); ?>
+  <p class="description"><?php esc_html_e('Older log entries are deleted automatically once a day. Leave empty or set 0 to keep them.', 'contact-form-mailchimp'); ?></p>
+  </td>
+  </tr>
+
   <?php
   if(class_exists('vxcf_form')){
   ?>

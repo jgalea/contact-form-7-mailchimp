@@ -106,6 +106,10 @@ require_once(self::$path . "includes/plugin-pages.php");
  add_action('vxcf_entry_created', array($this, 'entry_created'),10,3);
  add_action('vx_contact_created', array($this, 'entry_created_contacts'),10,3);
  add_action('vx_callcenter_entry_created', array($this, 'entry_created_callcenter'),10,3);
+ add_action($this->id.'_prune_logs', array($this,'prune_logs'));
+ if(!wp_next_scheduled($this->id.'_prune_logs')){
+  wp_schedule_event(time()+HOUR_IN_SECONDS,'daily',$this->id.'_prune_logs');
+ }
  
   add_filter('wpcf7_before_send_mail', array($this, 'create_entry_cf'),99);
    //formidable
@@ -121,6 +125,9 @@ require_once(self::$path . "includes/plugin-pages.php");
   
   self::$db_version=get_option($this->type."_version");
   if(self::$db_version != $this->version && current_user_can( 'manage_options' )){
+  if(empty(self::$db_version) && get_option($this->type.'_settings') === false){
+  add_option($this->type.'_settings',array('log_days'=>30));
+  }
   $data=$this->get_data_object();
   $data->update_table();
   update_option($this->type."_version", $this->version);
@@ -1088,7 +1095,15 @@ return $objects;
   * 
   * @param mixed $action
   */
-  public function deactivate($action="deactivate"){ 
+  public function prune_logs(){
+  $settings=get_option($this->type.'_settings',array());
+  $days=isset($settings['log_days']) ? absint($settings['log_days']) : 0;
+  if($days > 0){
+  $this->get_data_object()->delete_old_logs($days);
+  }
+  }
+  public function deactivate($action="deactivate"){
+  wp_clear_scheduled_hook($this->id.'_prune_logs');
   do_action('plugin_status_'.$this->type,$action);
   }
   /**

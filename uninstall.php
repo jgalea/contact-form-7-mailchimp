@@ -7,6 +7,7 @@ include_once($path . "cf7-mailchimp-pro.php");
 include_once($path . "includes/install.php");
 $install=new vxcf_mailchimp_install();
 $settings=get_option($install->id.'_settings',array());
+wp_clear_scheduled_hook($install->id.'_prune_logs');
 if(empty($install->other_plugin_version())){
     $install->remove_roles();
     delete_option($install->id.'_msgs');
