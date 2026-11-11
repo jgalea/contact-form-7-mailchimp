@@ -57,18 +57,18 @@ if ( ! defined( 'ABSPATH' ) ) {
   <?php if(!isset($v['name_c'])){ ?>
 
   <div class="crm-panel-description">
-  <span class="crm-desc-name-div"><?php echo esc_html__('Name:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-name"><?php echo $v['name']; ?></span> </span>
+  <span class="crm-desc-name-div"><?php echo esc_html__('Name:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-name"><?php echo esc_html(isset($v['name']) ? $v['name'] : ''); ?></span> </span>
   <?php if($this->post('type',$v) !=""){ ?>
-    <span class="crm-desc-type-div">, <?php echo esc_html__('Type:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-type"><?php echo $v['type'] ?></span> </span>
+    <span class="crm-desc-type-div">, <?php echo esc_html__('Type:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-type"><?php echo esc_html($v['type']) ?></span> </span>
 <?php
    }
   if($this->post('maxlength',$v) !=""){ 
    ?>
-   <span class="crm-desc-len-div">, <?php echo esc_html__('Max Length:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-len"><?php echo $v['maxlength']; ?></span> </span>
+   <span class="crm-desc-len-div">, <?php echo esc_html__('Max Length:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-len"><?php echo esc_html($v['maxlength']); ?></span> </span>
   <?php 
   }     if($this->post('eg',$v) !=""){ 
    ?>
-   <span class="crm-desc-eg-div">, <?php echo esc_html__('e.g:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-eg"><?php echo $v['eg']; ?></span> </span>
+   <span class="crm-desc-eg-div">, <?php echo esc_html__('e.g:','contact-form-mailchimp-crm')." ";?><span class="crm-desc-eg"><?php echo esc_html($v['eg']); ?></span> </span>
   <?php 
   }
   ?>

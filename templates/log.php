@@ -56,7 +56,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="entry_row">
 <div class="entry_col1 vx_label"><?php echo esc_attr($k) ?></div>
-<div class="entry_col2"><?php echo is_array($v) ? json_encode($v) : $v ?></div>
+<div class="entry_col2"><?php echo esc_html(is_array($v) ? json_encode($v) : $v) ?></div>
 <div class="crm_clear"></div>
 </div>
 <?php

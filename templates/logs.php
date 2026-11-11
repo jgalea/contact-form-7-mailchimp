@@ -424,7 +424,7 @@ echo esc_html($e_id);
     <td scope="col" class="manage-column"><?php 
 if(!empty($row['feed_id'])){
 $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
- ?><a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp-crm') ?>">#<?php echo $row['feed_id'] ?></a><?php  } ?>
+ ?><a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp-crm') ?>">#<?php echo esc_html($row['feed_id']) ?></a><?php  } ?>
  </td>
     <td scope="col" class="manage-column"><?php echo esc_html($row['desc']); ?></td>
     <td scope="col" class="manage-column"><?php echo    date('M-d-Y H:i:s', strtotime($row['time'])+$offset);?></td>

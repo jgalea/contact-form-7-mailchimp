@@ -546,7 +546,11 @@ die();
   foreach($results as $row){
   $sno++;
   $row=$this->verify_log($row);
-  fputcsv($fp, array($sno,$row['title'],$row['_crm_id'],$row['entry_id'],$row['desc'],$row['time']));    
+  $csv_row=array($sno,$row['title'],$row['_crm_id'],$row['entry_id'],$row['desc'],$row['time']);
+  foreach($csv_row as $i=>$cell){
+      if(is_string($cell) && preg_match('/^[=+\-@\t\r]/',$cell)){ $csv_row[$i]="'".$cell; }
+  }
+  fputcsv($fp, $csv_row);    
   }
   fclose($fp);
   die();
@@ -1238,7 +1242,7 @@ public function groups($meta,$info){
     ?>
   <div class="vx_row">
    <div class="vx_col1">
-  <label for="crm_sel_camp"><?php echo $v['title'] ?></label>
+  <label for="crm_sel_camp"><?php echo esc_html($v['title']) ?></label>
 </div> <div class="vx_col2">
 <?php
     if(!empty($v['items'])){
@@ -1809,7 +1813,7 @@ $sel_val=array($sel_val);
   if(is_array($fields)){
   foreach($fields as $key=>$fields_arr){
 if(is_array($fields_arr['fields'])){
-    $sel.="<optgroup label='".$fields_arr['title']."'>";
+    $sel.="<optgroup label='".esc_attr($fields_arr['title'])."'>";
       foreach($fields_arr['fields'] as $k=>$v){
           $option_k=$k;
           $option_name=$v;

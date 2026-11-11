@@ -100,8 +100,8 @@
      $feed['object']=''; 
   }
           ?>
-  <tr class='author-self status-inherit' data-id="<?php echo $feed['id'] ?>">
-  <th scope="row" class="check-column"><input type="checkbox" class="vx_check" name="feed[]" value="<?php echo $feed["id"] ?>"/></th>
+  <tr class='author-self status-inherit' data-id="<?php echo esc_attr($feed['id']) ?>">
+  <th scope="row" class="check-column"><input type="checkbox" class="vx_check" name="feed[]" value="<?php echo esc_attr($feed["id"]) ?>"/></th>
   <td class="vx_col"><img src="<?php echo $this->get_base_url() ?>images/active<?php echo intval($feed["is_active"]) ?>.png" alt="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp-crm') : esc_html__("Inactive", 'contact-form-mailchimp-crm');?>" title="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp-crm') : esc_html__("Inactive", 'contact-form-mailchimp-crm');?>" class="vx_toggle_status" /></td>
   <td><a href="<?php echo $edit_link ?>" title="<?php echo esc_html( $feed["name"] ) ?>"><?php echo esc_attr($feed["name"])  ?></a> 
   
@@ -117,8 +117,8 @@
   </span> 
 
   </div></td>
-  <td><p><?php echo $feed["object"]; ?></p></td>
-  <td><p><?php echo $primary_key; ?></p></td>
+  <td><p><?php echo esc_html($feed["object"]); ?></p></td>
+  <td><p><?php echo esc_html($primary_key); ?></p></td>
   <td><p><?php echo date('M-d-Y H:i:s', strtotime($feed['time'])+$offset); ?></p></td>
   </tr>
   <?php
