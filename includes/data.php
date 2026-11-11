@@ -244,8 +244,9 @@ $page=(int)$this->post('page_id');
   if($search!=""){
   $sql_end.=" where ".substr($search,4);
   }
-  if($this->post('orderby')!=""){
-  $sql_end.=' order by '.esc_sql($this->post('orderby'));   
+  $order_cols=array('crm_id'=>'crm_id','entry_id'=>'entry_id','object'=>'object','time'=>'s.time','id'=>'s.id');
+  if(isset($order_cols[$this->post('orderby')])){
+  $sql_end.=' order by '.$order_cols[$this->post('orderby')];   
   if($this->post('order')!="" && in_array($this->post('order'),array("asc","desc"))){
   $sql_end.=' '.$this->post('order'); 
   }
@@ -387,7 +388,7 @@ return $results;
   return $results[0];   
   }     
   }
-  $results = $wpdb->get_results( 'SELECT * FROM '.$table.' where id='.$id.' limit 1',ARRAY_A );
+  $results = $wpdb->get_results( $wpdb->prepare('SELECT * FROM '.$table.' where id=%d limit 1',$id),ARRAY_A );
   if(count($results) == 0){
   return array();
   }
