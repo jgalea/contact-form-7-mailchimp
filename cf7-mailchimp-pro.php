@@ -361,21 +361,11 @@ $this->push($entry,$form,'',false);
   * @param mixed $id
   */
   public function display_msg($type,$message,$id=""){
-  //exp 
-  global $wp_version;
-  $ver=floatval($wp_version);
   if($type == "admin"){
-     if($ver<4.2){
-  ?>
-    <div class="error vx_notice notice" data-id="<?php echo esc_attr($id) ?>"><p style="display: table"><span style="display: table-cell; width: 98%"><span class="dashicons dashicons-megaphone"></span> <b><?php esc_html_e('Contact Form Mailchimp Plugin','contact-form-mailchimp') ?>. </b><?php echo wp_kses_post($message);?> </span>
-<span style="display: table-cell; padding-left: 10px; vertical-align: middle;"><a href="#" class="notice-dismiss" title="<?php esc_html_e('Dismiss Notice','contact-form-mailchimp') ?>">dismiss</a></span> </p></div>
-  <?php
-     }else{
   ?>
   <div class="error vx_notice notice below-h2 is-dismissible" data-id="<?php echo esc_attr($id) ?>"><p><span class="dashicons dashicons-megaphone"></span> <b><?php esc_html_e('Contact Form Mailchimp Plugin','contact-form-mailchimp') ?>. </b> <?php echo wp_kses_post($message);?> </p>
   </div>    
   <?php
-     }
   }else{
   ?>
   <tr class="plugin-update-tr"><td colspan="5" class="plugin-update">
@@ -1022,10 +1012,6 @@ return $objects;
   return false;
   }
   }
-  /**
-  * uninstall plugin
-  * 
-  */
     /**
   * email validation
   * 
