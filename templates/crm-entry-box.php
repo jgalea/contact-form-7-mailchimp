@@ -18,6 +18,7 @@ echo $this->format_log_msg($log);
   }
   ?>
 <div class="box_btns_div">
+  <?php wp_nonce_field('vx_nonce','vx_nonce',false); ?>
   <button class="button" type="submit" name="<?php echo esc_attr($this->id) ?>_send_btn" value="yes"><?php echo esc_html__("Send to Mailchimp",'contact-form-mailchimp-crm')?></button>
   <?php
       if($comments ){

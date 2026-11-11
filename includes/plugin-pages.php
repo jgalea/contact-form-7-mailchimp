@@ -427,6 +427,10 @@ $push=$this->push($entry_detail,$form,'add_note');
   self::$debug_html='';
   }
   if(!empty($_POST[$this->id.'_send_btn']) && !empty($_REQUEST['id'])){
+check_admin_referer('vx_nonce','vx_nonce');
+if(!current_user_can($this->id.'_send_to_crm')){
+    wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+}
 $tab=$this->post('tab');
 $id=$this->post('id');
 $form=array('title'=>'Contact Form');
