@@ -460,22 +460,22 @@ var crm_fields=<?php echo json_encode($json_fields); ?>;
     <div class="vx_group">
   <div class="vx_row">
   <div class="vx_col1">
-  <label for="crm_primary_field"><?php esc_html_e('Select Primary Key','%dd%') ?></label>
+  <label for="crm_primary_field"><?php esc_html_e('Select Primary Key','contact-form-mailchimp') ?></label>
   </div><div class="vx_col2">
   <select id="crm_primary_field" name="meta[primary_key]" class="vx_sel vx_input_100" autocomplete="off">
   <?php echo $this->crm_select($fields,$this->post('primary_key',$meta)); ?>
   </select> 
-  <div class="description" style="float: none; width: 90%"><?php esc_html_e('If you want to update a pre-existing object, select what should be used as a unique identifier ("Primary Key"). For example, this may be an email address, lead ID, or address. When a new entry comes in with the same "Primary Key" you select, a new object will not be created, instead the pre-existing object will be updated.', '%dd%'); ?></div>
+  <div class="description" style="float: none; width: 90%"><?php esc_html_e('If you want to update a pre-existing object, select what should be used as a unique identifier ("Primary Key"). For example, this may be an email address, lead ID, or address. When a new entry comes in with the same "Primary Key" you select, a new object will not be created, instead the pre-existing object will be updated.', 'contact-form-mailchimp'); ?></div>
   </div>
   <div class="clear"></div>
   </div>
  <div class="vx_row">
   <div class="vx_col1">
-  <label for="vx_update"><?php esc_html_e('Update Entry ', '%dd%');?></label>
+  <label for="vx_update"><?php esc_html_e('Update Entry ', 'contact-form-mailchimp');?></label>
   </div>
   <div class="vx_col2">
   <input type="checkbox" style="margin-top: 0px;" id="vx_update" class="crm_toggle_check" name="meta[update]" value="1" <?php echo !empty($meta['update']) ? 'checked="checked"' : ''?> autocomplete="off"/>
-    <label for="vx_update"><?php esc_html_e('Do not update entry, if already exists', '%dd%'); ?></label>
+    <label for="vx_update"><?php esc_html_e('Do not update entry, if already exists', 'contact-form-mailchimp'); ?></label>
   
   </div>
   <div class="clear"></div>
