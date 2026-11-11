@@ -190,10 +190,8 @@ public function push_object($module,$fields,$meta){
 //check primary key
  $extra=array();
 
-  $debug = isset($_GET['vx_debug']) && current_user_can('manage_options');
   $event= isset($meta['event']) ? $meta['event'] : '';
   $id= isset($meta['crm_id']) ? $meta['crm_id'] : '';
-  if($debug){ ob_start();}
 if(isset($meta['primary_key']) && $meta['primary_key']!="" && isset($fields[$meta['primary_key']]['value']) && $fields[$meta['primary_key']]['value']!=""){    
 $search=$fields[$meta['primary_key']]['value'];
 $field=$meta['primary_key'];
@@ -209,18 +207,6 @@ if(!empty($search_response['exact_matches']['members']) && is_array($search_resp
   }  
 }
 
-  if($debug){
-  ?>
-  <h3>Search field</h3>
-  <p><?php print_r($field) ?></p>
-  <h3>Search term</h3>
-  <p><?php print_r($search) ?></p>
-    <h3>POST Body</h3>
-  <p><?php print_r($body) ?></p>
-  <h3>Search response</h3>
-  <p><?php print_r($res) ?></p>  
-  <?php
-  }
 
       $extra["body"]=$search;
       $extra["response"]=$search_response;
@@ -366,24 +352,6 @@ if($status == '2' && !empty($post['tags'])){
 $extra['Tags Response']=$this->post_crm($object_url.'/tags','post',array('tags'=>$tags));   
 }
     }
-  if($debug){
-  ?>
-  <h3>Account Information</h3>
-  <p><?php //print_r($this->info) ?></p>
-  <h3>Data Sent</h3>
-  <p><?php print_r($post) ?></p>
-  <h3>Fields</h3>
-  <p><?php echo json_encode($fields) ?></p>
-  <h3>Response</h3>
-  <p><?php print_r($response) ?></p>
-  <h3>Object</h3>
-  <p><?php print_r($module."--------".$action) ?></p>
-  <?php
- echo  $contents=trim(ob_get_clean());
-  if($contents!=""){
-  update_option($this->id."_debug",$contents);   
-  }
-  }
        //add entry note
  if(!empty($meta['__vx_entry_note']) && !empty($id)){
  $disable_note=$this->post('disable_entry_note',$meta);

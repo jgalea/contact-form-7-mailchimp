@@ -11,11 +11,6 @@
       $comments=true;
 echo $this->format_log_msg($log);
   }
-  if(isset($_GET['vx_debug'])){
-  ?>
-  <input type="hidden" name="vx_debug" value="<?php echo esc_attr($_REQUEST['vx_debug']); ?>">
-  <?php
-  }
   ?>
 <div class="box_btns_div">
   <?php wp_nonce_field('vx_nonce','vx_nonce',false); ?>
