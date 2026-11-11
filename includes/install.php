@@ -49,7 +49,8 @@ public function remove_data(){
     global $wpdb;
 
   //delete options
-  delete_option($this->type."_version"); 
+  delete_option($this->type."_version");
+  delete_option($this->type."_schema");
   delete_option($this->type."_updates");
   delete_option($this->type."_settings");
      $other_version=$this->other_plugin_version(); 

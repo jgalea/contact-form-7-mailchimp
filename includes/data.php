@@ -62,7 +62,9 @@ class vxcf_mailchimp_data extends vxcf_mailchimp{
   `status` tinyint(1) not null default 1,
   `time` datetime null,
   PRIMARY KEY  (id),
-  KEY entry_id (entry_id)
+  KEY entry_id (entry_id),
+  KEY idx_time (`time`),
+  KEY idx_status_time (`status`,`time`)
   )$charset_collate;";
   
    dbDelta($sql);

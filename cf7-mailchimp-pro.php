@@ -119,11 +119,15 @@ require_once(self::$path . "includes/plugin-pages.php");
   //add post permissions
   require_once(self::$path . "includes/install.php"); 
   $install=new vxcf_mailchimp_install();
-  $install->create_roles();   
+  $install->create_roles();
 
   }
+  if((int)get_option($this->type.'_schema',1) < 2 && current_user_can( 'manage_options' )){
+  $this->get_data_object()->update_table();
+  update_option($this->type.'_schema',2);
+  }
 }
-  
+
   }
 public function create_entry_cf($form){ 
  if(class_exists('vxcf_form')){ return; }   
