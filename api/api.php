@@ -279,6 +279,8 @@ if(empty($meta['update'])){
  $is_main=true;
 $object_url='lists/'.$module.'/members/'.$id;
  $method='patch';
+ }else{
+ $action="Skipped"; $status="4";
  } }
 }
 
@@ -331,6 +333,8 @@ $post['merge_fields']=$merge_fields;
 }
 if($method != 'patch'){
 $post['status']=!empty($meta['status']) ? $meta['status'] : 'subscribed';
+}else if(!empty($meta['status']) && in_array($meta['status'],array('unsubscribed','cleaned'))){
+$post['status']=$meta['status'];
 }
 $post['email_type']=!empty($meta['email_type']) ? $meta['email_type'] : 'html';
 $post['language']=!empty($meta['language']) ? $meta['language'] : 'en';
@@ -381,7 +385,7 @@ $note_response= $this->post_crm( $object_url,'post',$note_post);
    }  
  }
 
-return array("error"=>$error,"id"=>$id,"link"=>$link,"action"=>$action,"status"=>$status,"data"=>$fields,"response"=>$arr,"extra"=>$extra);
+return array("error"=>$error,"id"=>($action == "Skipped" ? "" : $id),"link"=>$link,"action"=>$action,"status"=>$status,"data"=>$fields,"response"=>$arr,"extra"=>$extra);
 }
 public function create_fields_section($fields){ 
 $arr=array(); 

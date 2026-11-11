@@ -1640,7 +1640,7 @@ if(!empty($res_temp)){ $res=$res_temp; }
    
   
   }else if($this->post('status',$res) == 4){
-  $screen_msg=$msg=__( 'Entry filtered', 'contact-form-mailchimp');    
+  $screen_msg=$msg=$this->post('action',$res) == 'Skipped' ? __( 'Entry already exists in Mailchimp, skipped', 'contact-form-mailchimp') : __( 'Entry filtered', 'contact-form-mailchimp');    
   }else{
   $status=0; $screen_msg_class="error";
   $screen_msg=__('Errors when adding to Mailchimp. Entry not sent! Check the Entry Notes below for more details.' , 'contact-form-mailchimp' );
