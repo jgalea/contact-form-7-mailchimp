@@ -1455,16 +1455,6 @@ die();
    $tooltips=self::$tooltips;
   
    
-  if(!empty($_POST[$this->id."_uninstall"])){
-  check_admin_referer("vx_nonce");
-  if(!current_user_can($this->id."_uninstall")){
-  return;
-  }    
-  $this->uninstall();
-  $uninstall_msg=sprintf(__("Contact Form Mailchimp Plugin has been successfully uninstalled. It can be re-activated from the %s plugins page %s.", 'contact-form-mailchimp'),"<a href='plugins.php'>","</a>");
-$this->screen_msg($uninstall_msg);
-  return;
-  }
                 
 
 

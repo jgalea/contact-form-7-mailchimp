@@ -1026,14 +1026,6 @@ return $objects;
   * uninstall plugin
   * 
   */
-  public  function uninstall(){
-  //droping all tables
- require_once(self::$path . "includes/install.php"); 
-  $install=new vxcf_mailchimp_install();
-    do_action('uninstall_vx_plugin_'.$install->id);
-  $install->remove_data();
-  $install->remove_roles();
-  }
     /**
   * email validation
   * 
