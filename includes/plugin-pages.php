@@ -959,7 +959,9 @@ start_tooltip();
   $offset=$this->time_offset();
   if(isset($_POST["action"]) && $_POST["action"] == "delete"){
   check_admin_referer("vx_crm_ajax");
-  
+  if(!current_user_can($this->id.'_edit_feeds')){
+      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+  }
   $id = absint($this->post("action_argument"));
   $this->data->delete_feed($id);
   ?>
@@ -972,6 +974,9 @@ start_tooltip();
   }
   else if (!empty($_POST["bulk_action"])){
   check_admin_referer("vx_crm_ajax");
+  if(!current_user_can($this->id.'_edit_feeds')){
+      wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+  }
   $selected_feeds = $this->post("feed");
   if(is_array($selected_feeds)){
   foreach($selected_feeds as $feed_id)
@@ -1017,6 +1022,11 @@ include_once(self::$path . "templates/feeds.php");
    $bulk_action=$this->post('bulk_action');
       $offset=$this->time_offset();
   if($bulk_action!=""){
+   check_admin_referer('vx_nonce','vx_nonce');
+   $needed_cap= $bulk_action == 'delete' ? '_edit_settings' : '_send_to_crm';
+   if(!current_user_can($this->id.$needed_cap)){
+       wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp-crm'),403);
+   }
    $log_id=$this->post('log_id');  
    if(is_array($log_id) && count($log_id)>0){
     foreach($log_id as $id){
@@ -1515,9 +1525,10 @@ $this->screen_msg($uninstall_msg);
           $meta=get_option($this->type.'_settings',array());
 
        if(!empty($_POST['save'])){ 
+             check_admin_referer('vx_nonce');
              if(current_user_can($this->id."_edit_settings")){ 
 
-  $meta=isset($_POST['meta']) ? $this->post('meta') : array();
+  $meta=isset($_POST['meta']) ? array_intersect_key((array)$this->post('meta'),array_flip(array('plugin_data','update','delete','restore','notes'))) : array();
   
    $msgs['submit']=array('class'=>'updated','msg'=>__('Settings Changed Successfully','contact-form-mailchimp-crm'));
   update_option($this->type.'_settings',$meta);
