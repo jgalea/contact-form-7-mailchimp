@@ -393,8 +393,8 @@ return $results;
   return array();
   }
   $feed=$results[0];
-  $fields=json_decode($feed['data'],true);
-  $meta=json_decode($feed['meta'],true);
+  $fields=json_decode((string)$feed['data'],true);
+  $meta=json_decode((string)$feed['meta'],true);
   $feed['meta']=is_array($meta) ? $meta : array();
   $feed['data']=is_array($fields) ? $fields : array();
   return $feed;

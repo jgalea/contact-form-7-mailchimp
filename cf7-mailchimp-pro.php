@@ -737,7 +737,9 @@ return $forms;
       $title='Contacts Addon';
       if($form_id !='vx_contacts'){
       global $vxcf_form;
-      if(method_exists($vxcf_form,'get_forms')){
+      if(strpos($form_id,'cf_') === 0){
+          $title=get_the_title((int)substr($form_id,3));
+      }else if(is_object($vxcf_form) && method_exists($vxcf_form,'get_forms')){
           $forms=$vxcf_form->get_forms();
           if(is_array($forms) && count($forms)>0){
               foreach($forms as $key=>$vals){

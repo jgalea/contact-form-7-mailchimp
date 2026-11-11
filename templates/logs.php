@@ -427,7 +427,10 @@ if(!empty($row['feed_id'])){
 $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
  ?><a href="<?php echo esc_url($feed_link) ?>" title="<?php esc_html_e('Edit Feed','contact-form-mailchimp') ?>">#<?php echo esc_html($row['feed_id']) ?></a><?php  } ?>
  </td>
-    <td scope="col" class="manage-column"><?php echo esc_html($row['desc']); ?></td>
+    <td scope="col" class="manage-column"><?php echo esc_html($row['desc']); ?>
+    <?php if($row['status_img'] == 'failed' && current_user_can($this->id.'_send_to_crm')){ ?>
+    <a class="button button-small" href="<?php echo esc_url(wp_nonce_url(add_query_arg(array('page'=>$this->id,'tab'=>'logs','retry_log'=>$row['id']),admin_url('admin.php')),'vx_nonce','vx_nonce')); ?>"><?php esc_html_e('Retry','contact-form-mailchimp'); ?></a>
+    <?php } ?></td>
     <td scope="col" class="manage-column"><?php echo    esc_html($this->format_time($row['time']));?></td>
     <td><i class="vx_icons vx_detail fa fa-th-list" title="<?php esc_html_e('Expand Details','contact-form-mailchimp') ?>"></i></td>  
   </tr>

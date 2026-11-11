@@ -974,6 +974,10 @@ include_once(self::$path . "templates/feeds.php");
 } 
   $log_ids=array();
    $bulk_action=$this->post('bulk_action');
+   $retry_id=absint($this->post('retry_log'));
+   if($retry_id){
+       $bulk_action='send_to_crm_bulk';
+   }
       $offset=$this->time_offset();
   if($bulk_action!=""){
    check_admin_referer('vx_nonce','vx_nonce');
@@ -981,7 +985,7 @@ include_once(self::$path . "templates/feeds.php");
    if(!current_user_can($this->id.$needed_cap)){
        wp_die(esc_html__('You do not have permission to do this.','contact-form-mailchimp'),403);
    }
-   $log_id=$this->post('log_id');  
+   $log_id= $retry_id ? array($retry_id) : $this->post('log_id');  
    if(is_array($log_id) && count($log_id)>0){
     foreach($log_id as $id){
      if(is_numeric($id)){
@@ -1044,7 +1048,7 @@ $count=$this->data->delete_log($log_ids);
   }          
   }
 $bulk_actions=array(""=>__('Bulk Action','contact-form-mailchimp'),"delete"=>__('Delete','contact-form-mailchimp'),
-//  'send_to_crm_bulk'=>__('Send to Mailchimp','contact-form-mailchimp'),'send_to_crm_bulk_force'=>__('Force Send to Mailchimp - Ignore filters','contact-form-mailchimp')
+  'send_to_crm_bulk'=>__('Send to Mailchimp again','contact-form-mailchimp')
 );
 $base_url=$this->get_base_url();
 $objects=$this->get_objects(); 
