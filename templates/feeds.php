@@ -24,6 +24,7 @@
 
   </style>
   <div class="vx_wrap"> 
+<h1 class="screen-reader-text"><?php esc_html_e("Contact Form 7 - Mailchimp", "contact-form-mailchimp") ?></h1>
   <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp'); ?> <a class="page-title-action" href="<?php echo $new_feed_link?>">
   <?php esc_html_e("Add New", 'contact-form-mailchimp') ?>
   </a> </h2>
@@ -102,7 +103,7 @@
           ?>
   <tr class='author-self status-inherit' data-id="<?php echo esc_attr($feed['id']) ?>">
   <th scope="row" class="check-column"><input type="checkbox" class="vx_check" name="feed[]" value="<?php echo esc_attr($feed["id"]) ?>"/></th>
-  <td class="vx_col"><img src="<?php echo $this->get_base_url() ?>images/active<?php echo intval($feed["is_active"]) ?>.png" alt="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" title="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" class="vx_toggle_status" /></td>
+  <td class="vx_col"><img src="<?php echo $this->get_base_url() ?>images/active<?php echo intval($feed["is_active"]) ?>.png" alt="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" title="<?php echo $feed["is_active"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" class="vx_toggle_status" tabindex="0" role="button" /></td>
   <td><a href="<?php echo $edit_link ?>" title="<?php echo esc_html( $feed["name"] ) ?>"><?php echo esc_attr($feed["name"])  ?></a> 
   
   <div class="row-actions"> <span class="edit"> 
@@ -188,6 +189,9 @@
   }
   });
   
+  $(".vx_toggle_status").on('keydown',function(e){
+  if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); $(this).trigger('click'); }
+  });
   $("#vx_bulk_actions_submit").click(function(e){
        if($("#bulk_action").val() == ""){
   alert('<?php esc_html_e('Please Select Action','contact-form-mailchimp') ?>');

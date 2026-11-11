@@ -29,7 +29,7 @@
   <div class="vx_tr" >
   <div class="vx_td">
   <input type="password" id="vx_pass" name="crm[api_key]" class="crm_text" placeholder="<?php esc_html_e('API Key','contact-form-mailchimp'); ?>" value="<?php echo esc_attr($this->post('api_key',$info)); ?>" <?php if(!defined('VXCF_MAILCHIMP_API_KEY')){ echo 'required'; } ?>>
-  <span class="howto"><?php echo sprintf(esc_html__('in mailchimp, go to Profile > Extras > API Leys and click "create Key" button , check %sDocs on crmperks.com%s','contact-form-mailchimp'),'<a href="https://www.crmperks.com/post-data-to-mailchimp/" target="_blank">','</a>'); ?></span>
+  <span class="howto"><?php esc_html_e('In Mailchimp, open your profile, go to Extras > API keys and click "Create A Key".','contact-form-mailchimp'); ?></span>
   </div>
   <div class="vx_td2">
   <a href="#" class="button vx_toggle_btn vx_toggle_key" title="<?php esc_html_e('Toggle Key','contact-form-mailchimp'); ?>"><?php esc_html_e('Show Key','contact-form-mailchimp') ?></a>

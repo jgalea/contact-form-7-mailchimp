@@ -263,6 +263,7 @@ color: #E31230;
    } 
   ?>
   <div class="vx_wrap"> 
+<h1 class="screen-reader-text"><?php esc_html_e("Contact Form 7 - Mailchimp", "contact-form-mailchimp") ?></h1>
     <h2 class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php 
 echo sprintf(esc_html__('Edit Mailchimp Feed # %d','contact-form-mailchimp') ,$fid); 
   if(empty($id) || $new_account_id != $id){

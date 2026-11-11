@@ -200,6 +200,7 @@ margin-left: 8px;
 .tablenav .tablenav-pages a,.tablenav-pages-navspan{display:inline-block;min-width:17px;border:1px solid #ccc;padding:3px 5px 7px;background:#e5e5e5;font-size:16px;line-height:1;font-weight:400;text-align:center}
   </style>
   <div class="vx_wrap"> 
+<h1 class="screen-reader-text"><?php esc_html_e("Contact Form 7 - Mailchimp", "contact-form-mailchimp") ?></h1>
   <div>
   <h2  class="vx_img_head"><img alt="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" title="<?php esc_html_e("Mailchimp Feeds", 'contact-form-mailchimp') ?>" src="<?php echo $this->get_base_url()?>images/mailchimp-crm-logo.png?ver=1" /> <?php esc_html_e("Mailchimp Log", 'contact-form-mailchimp'); ?>
   
@@ -385,7 +386,7 @@ if($items>0){
   ?>
   <tr class='author-self status-inherit <?php if(in_array($row['id'],$log_ids)){echo 'vx_yellow ';} echo $sno%2 == 0 ? 'alternate' :'' ?>' id="tr_<?php echo esc_attr($row['id']) ?>" data-id="<?php echo esc_attr($row['id']); ?>" >
   <td class="vx_check_col"><input type="checkbox" name="log_id[]" value="<?php echo esc_attr($row['id']); ?>" class="crm_input_check"></td>
-    <td class="vx_icon_col"><img src="<?php echo esc_url($base_url) ?>images/<?php echo esc_attr($row["status_img"]); ?>.png" alt="<?php echo $row["status"] ? esc_html__("Active", 'contact-form-mailchimp') : esc_html__("Inactive", 'contact-form-mailchimp');?>" title="<?php echo esc_html($row['title']);?>" class="crm_status_img" /></td>
+    <td class="vx_icon_col"><img src="<?php echo esc_url($base_url) ?>images/<?php echo esc_attr($row["status_img"]); ?>.png" alt="<?php echo esc_attr($row['title']);?>" title="<?php echo esc_attr($row['title']);?>" class="crm_status_img" /></td>
   <td class="column-name" style="width:40%"><?php echo wp_kses_post($row['a_link']) ?></td>
       <td class="column-title">
       <?php 

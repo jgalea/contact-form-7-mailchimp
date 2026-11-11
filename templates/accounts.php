@@ -86,6 +86,7 @@ $(".sf_login").click(function(e){
   });
   </script> 
 <div class="vx_wrap">
+<h1 class="screen-reader-text"><?php esc_html_e("Contact Form 7 - Mailchimp", "contact-form-mailchimp") ?></h1>
 
   <form method="post" id="mainform">
   <?php wp_nonce_field("vx_nonce") ?>
