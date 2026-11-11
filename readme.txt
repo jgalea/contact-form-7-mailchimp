@@ -1,197 +1,60 @@
-=== Integration for Mailchimp and Contact Form 7, WPForms, Elementor, Ninja Forms  ===
-Contributors: crmperks, sbazzi, asif876
-Tags: contact form 7, contact form 7 mailchimp, elementor form mailchimp, mailchimp, ninja forms mailchimp
-Requires at least: 3.8
+=== Contact Form 7 - Mailchimp ===
+Contributors: crmperks
+Tags: contact form 7, mailchimp, elementor forms, ninja forms, wpforms
+Requires at least: 5.8
 Tested up to: 7.0
-Stable tag: 1.1.8
-Version: 1.1.8
-Requires PHP: 5.3
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Stable tag: 1.1.9
+Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Send Contact Form 7, WPforms, Elementor, Ninja Forms, CRM Perks Forms and many other contact form submissions to Mailchimp.
+Send Contact Form 7, WPForms, Elementor, Ninja Forms and Formidable submissions to your Mailchimp lists.
 
 == Description ==
 
-Contact Form 7 Mailchimp extension sends form submissions from [Contact Form 7](https://wordpress.org/plugins/contact-form-7/), [WPforms](https://wordpress.org/plugins/wpforms-lite/), [Elementor Forms](https://wordpress.org/plugins/elementor/), [Ninja Forms](https://wordpress.org/plugins/ninja-forms/), [Formidable Forms](https://wordpress.org/plugins/formidable/), [Contact Form Entries](https://wordpress.org/plugins/contact-form-entries/) and many other popular contact form plugins to Mailchimp when anyone submits a form. Learn more at [crmperks.com](https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/?utm_source=wordpress&utm_medium=directory&utm_campaign=mailchimp_readme)
+Connect a form to a Mailchimp list, map the form fields to Mailchimp merge fields, and every submission is added to the list. Works with [Contact Form 7](https://wordpress.org/plugins/contact-form-7/), [WPForms](https://wordpress.org/plugins/wpforms-lite/), [Elementor Forms](https://wordpress.org/plugins/elementor/), [Ninja Forms](https://wordpress.org/plugins/ninja-forms/), [Formidable Forms](https://wordpress.org/plugins/formidable/) and [Contact Form Entries](https://wordpress.org/plugins/contact-form-entries/).
 
+* Connect one or more Mailchimp accounts with an API key.
+* Map form fields to any merge field, tags and interest groups.
+* Double opt-in for new feeds, and repeat signups update the existing subscriber.
+* Send only the submissions that match a condition, such as a "Subscribe to newsletter" checkbox.
+* A log of every request with Mailchimp's response, and a Retry button for failed submissions.
+* Keep logs for as many days as you choose.
+* Error emails when a submission can't be sent.
 
-== Why we built this Contact Form 7 Mailchimp Extension ==
+== How to set up ==
 
-Many Mailchimp extensions are already available but we added many new features. This plugin shows all mailchimp merge fields list and you can easily map any field. This plugin displays complete log of data sent to mailchimp. You can easily resend any contact form entry to mailchimp.
-
-== How to Setup ==
-
-* Go to "Mailchimp Accounts" tab then add new account. check [docs at crmperks.com](https://www.crmperks.com/post-data-to-mailchimp/&utm_medium=directory&utm_campaign=mailchimp_readme)
-* Go to "Mailchimp Feeds" tab then create a new feed.
-* Map required mailchimp fields to contact form fields.
-* Send your test entry to mailchimp by clicking "send to mailchimp" button.
-* Go to "Mailchimp Logs" tab and verify status of previously sent entry.
-
-
-**Connect Mailchimp account**
-
-Connect any contact form 7 to Mailchimp account by simply entering Mailchimp API key. Additionally, you can connect multiple Mailchimp accounts to Contact Form 7.
-
-**Map Mailchimp fields**
-
-Select any mailchimp list then Map mailchimp list fields to any contact form 7 fields. Plugin displays  all mailchimp merge fields.
-
-**Filter contact form 7  submissions**
-
-Filter contact form 7 submissions sent to Mailchimp based on user input. For example , send those customers to Mailchimp who check "Subscribe to newsletter" checkbox.  
-
-**Manually send to Mailchimp**
-
-Send contact form 7 submissions to Mailchimp when someone submits a contact form. You can manually send contact form 7 submissions to Mailchimp by clicking "Send to Mailchimp" button.
-
-**Mailchimp logs**
-
-View a detailed log of each contact form 7 submission Whether sent or not sent to Mailchimp and easily resend contact form 7 submission to Mailchimp.
-
-**Send Data As Mailchimp Member Notes**
-
-Send one to many contact form 7 form fields as Mailchimp Object notes when someone submits a contact form on your site.
-
-**Create Or Update Contact in Mailchimp**
-
-If a member already exists in Mailchimp , update it otherwise create a new member in Mailchimp.
-
-
-<blockquote>
-<p><strong>Premium Version Features.</strong></p>
-<p>Following features are available only in premium version <a href="https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/?utm_source=wordpress&utm_medium=directory&utm_campaign=mailchimp_readme">Contact Form 7 Mailchimp Pro</a>.</p>
-<ul>
-<li>Mailchimp tags and GDPR fields.</li>
-<li>Phone number field and all custom fields of Mailchimp.</li>
-<li>Mailchimp interest groups.</li>
-<li>Google Analytics Parameters and Geolocation of a visitor who submitted the form.</li>
-<li>Lookup lead's email and phone using email and phone lookup apis.</li>
-<li>20+ premium addons</li>
-</ul>
-<p><a href="https://www.crmperks.com/plugins/contact-form-plugins/contact-form-mailchimp-plugin/?utm_source=wordpress&utm_medium=directory&utm_campaign=readme">Upgrade to Contact Form 7 Mailchimp Pro</a></p>
-</blockquote>
-
-
-== Want to send data to crm ==
-We have Premium Extensions for 20+ CRMs.[View All CRM Extensions](https://www.crmperks.com/plugin-category/contact-form-plugins/?utm_source=wordpress&utm_medium=directory&utm_campaign=mailchimp_readme)
-
-
-
-== Screenshots ==
-
-1. Connect Mailchimp Account to contact form 7.
-2. Map Mailchimp fields.
-3. Mailchimp logs.
-4. Manually Send Contact form 7 submission to Mailchimp.
-5. Get email infomation of contact form 7 entry from Full Contact(Premium feature).
-6. Get Customer geolocation, browser and OS (Premium feature).
-
+1. Open Mailchimp > Accounts and add your Mailchimp API key.
+2. Open Mailchimp > Feeds and create a feed: pick the form, the list and map the fields.
+3. Submit the form and check Mailchimp > Logs.
 
 == Frequently Asked Questions ==
 
-= Where can I get support? =
+= How do I require email confirmation? =
 
-Our team provides free support at <a href="https://www.crmperks.com/contact-us/">https://www.crmperks.com/contact-us/</a>.
+New feeds use double opt-in. To change it, edit the feed and set the subscriber status.
 
+= What happens when someone signs up twice? =
 
-= How to integrate contact form 7 with mailchimp =
+The existing Mailchimp subscriber is updated and keeps their current status.
 
-You can easily integrate contact form 7 with mailchimp by following these steps.
+= How do I resend a failed submission? =
 
-* Go to Mailchimp Accounts then connect your account.
-* Go to Mailchimp Feeds , select desired list then map form fields to mailchimp list fields.
-* Submit a contact form , a new member will added in mailchimp.
-* If you have installed Contact Form Entries plugin then open any entry and click "Send to MailChimp" button.
-* Go to MailChimp logs and check if entry was successfully sent to MailChimp.
+Open Mailchimp > Logs and click Retry next to the failed row, or select rows and use the Send to Mailchimp again bulk action.
 
-= Connect WPForms to Mailchimp =
+= Can I keep the API key out of the database? =
 
-* Easily connect WPforms to your mailchimp account.
-* Create feeds for mailchimp list like Contacts, Leads and Accounts etc.
-* New WPforms submission will be automatically sent to your mailchimp account.
-
-= Elementor form mailchimp =
-
-* Connect Elementor form to your mailchimp account.
-* Create a feed for any mailchimp contacts list like Contacts, leads etc.
-* When someone submits Elementor form, submission will be automatically sent to your mailchimp account.
-* You can manually send any Elementor form entry to mailchimp by clicking "send to mailchimp" button.
-
-= Contact form 7 mailchimp subscribe =
-
-* Create beautifull mailchimp subscribe forms and popups with free [CRM Perks Forms](https://wordpress.org/plugins/crm-perks-forms/).
-* Go to MailChimp accounts tab and connect your mailchimp account. 
-* Creat a feed and select desired list then map form fields to mailchimp list fields.
-
-= Ninja Forms mailchimp =
-
-* Easily connect Ninja Forms to your mailchimp account.
-* After connecting mailchimp account, Create a feed for any mailchimp list.
-* New Ninja Forms submission will be automatically sent to your mailchimp account.
-* You can manually send any Ninja Forms entry to mailchimp by clicking "send to mailchimp" button.
-
-= Formidable Forms mailchimp =
-
-* Connect your mailchimp account with our mailchimp plugin.
-* Create feeds for any mailchimp list like Contacts, Lead etc. Select correct Formidable Form in feed. 
-* New Formidable Form submission will be automatically sent to your mailchimp account.
-* You can manually send any Formidable Form entry to mailchimp by clicking "send to mailchimp" button.
-
-= Connecting contact form 7 and mailchimp =
-
-* Simply Connect your mailchimp account.
-* Go to Feeds and create mailchimp feed, select list then map contact form 7 fields to mailchimp fields.
-* Test by submitting a form or go to Contact Form Entries and open any entry then press "Send to Mailchimp" button.
-* Go to MailChimp Logs and verify if entry was sent to mailchimp.
-
-= contact form 7 mailchimp integration =
-
-You can easily integrate contact form 7 with mailchimp. You can add a member as Subsribed or pending in mailchimp when someone submits a form on your site.
-
-= Add mailchimp to contact form 7 =
-
-You can add mailchimp to contact form 7 with this free Wordpress contact form 7 mailchimp plugin. Simply connect mailchimp then map mailchimp list fields to contact form 7 fields. 
-
-= Mailchimp integration with contact form 7 =
-
-Integrating mailchimp with contact form 7 is very easy. You can send form entry to mailchimp when anyone submits a form or send it manually by clicking "Send to Mailchimp" button. 
-
-= how to use contact form 7 mailchimp extension =
-
-It is simple, Go to Mailchimp accounts , add your account then go to Mailchimp feeds and add new feed here. Now submit a contact form 7 form, this new submission will be sent to mailchimp. 
-
-= Contact form 7 integration with mailchimp =
-
-Easily integrate contact form 7 and mailchimp with this free wordpress mailchimp contact form 7 extension. This plugin displays all data whether sent or not sent to mailchimp as "Mailchimp Logs". 
-
-
-= Mailchimp and contact form 7 =
-
-contact form 7 is always free forms builder and mailchimp is a free newsletter service which is good. You can easily connect mailchimp to contact form 7 with this free contact form 7 mailchimp extension. 
-
-= Contact form 7 mailchimp checkbox =
-
-You do not need a separate checkbox for mailchimp optin. simply use "Optin Condition" feature of this plugin. Additionally you can add multiple conditions for mailchimp optin.   
-
-= Contact form 7 mailchimp custom fields =
-
-This contact form 7 mailchimp extension displays list of all mailchimp custom fields. you can easily map mailchimp merge fields to contact form 7 fields.
-
-= Contact form 7 mailchimp groups =
-
-You can add a member to multiple groups in mailchimp. currently this feature is available in pro version of this plugin. 
-
-= Mailchimp for contact form 7 =
-
-You can use contact form 7 forms for sending form submissions to mailchimp with mailchimp contact form 7 plugin. when anyone submits a form , you can subscribe him to mailchimp list. 
-
-= Contact form 7 newsletter signup mailchimp =
-
-Mailchimp is a popular newletter service. You can create newsletter singup forms using any form builder then send it to mailchimp with this free contact form 7 mailchimp extension. 
-
+Define the VXCF_MAILCHIMP_API_KEY constant in your site configuration and it's used instead of the saved key.
 
 == Changelog ==
+
+= Unreleased =
+* Security: submitted values are no longer unserialized, log details and bulk actions require a nonce and capability, SQL queries are prepared, TLS is verified on Mailchimp requests.
+* New: repeat signups update the existing Mailchimp subscriber and keep their current status.
+* New: new feeds default to double opt-in. Existing feeds keep their saved status.
+* New: retry failed submissions from the log, one row at a time or in bulk.
+* New: log retention setting with a daily clean-up.
+* Fixed PHP 8.2+ deprecation notices and several admin screen messages.
 
 = 1.1.9 =
 * fixed "birthday field" issue.
