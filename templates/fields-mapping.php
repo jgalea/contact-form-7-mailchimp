@@ -555,10 +555,10 @@ var crm_fields=<?php echo json_encode($json_fields); ?>;
   
 <?php 
 $panel_count++;
-$statuses=array('subscribed'=>__('Subscribed','contact-form-mailchimp'),'unsubscribed'=>__('Unsubscribed','contact-form-mailchimp'),'cleaned'=>__('Cleaned','contact-form-mailchimp'),'pending'=>__('Pending (double opt-in)','contact-form-mailchimp'));
+$statuses=array('subscribed'=>__('Subscribed (no confirmation email)','contact-form-mailchimp'),'unsubscribed'=>__('Unsubscribed','contact-form-mailchimp'),'cleaned'=>__('Cleaned','contact-form-mailchimp'),'pending'=>__('Pending (double opt-in, sends a confirmation email)','contact-form-mailchimp'));
 $langs=array("en"=>__("English",'contact-form-mailchimp'),"ar"=>__("Arabic",'contact-form-mailchimp'),"af"=>__("Afrikaans",'contact-form-mailchimp'),"be"=>__("Belarusian",'contact-form-mailchimp'),"bg"=>__("Bulgarian",'contact-form-mailchimp'),"ca"=>__("Catalan",'contact-form-mailchimp'),"zh"=>__("Chinese",'contact-form-mailchimp'),"hr"=>__("Croatian",'contact-form-mailchimp'),"cs"=>__("Czech",'contact-form-mailchimp'),"da"=>__("Danish",'contact-form-mailchimp'),"nl"=>__("Dutch",'contact-form-mailchimp'),"et"=>__("Estonian",'contact-form-mailchimp'),"fa"=>__("Farsi",'contact-form-mailchimp'),"fi"=>__("Finnish",'contact-form-mailchimp'),"fr"=>__("French (France)",'contact-form-mailchimp'),"fr_CA"=>__("French (Canada)",'contact-form-mailchimp'),"de"=>__("German",'contact-form-mailchimp'),"el"=>__("Greek",'contact-form-mailchimp'),"he"=>__("Hebrew",'contact-form-mailchimp'),"hi"=>__("Hindi",'contact-form-mailchimp'),"hu"=>__("Hungarian",'contact-form-mailchimp'),"is"=>__("Icelandic",'contact-form-mailchimp'),"id"=>__("Indonesian",'contact-form-mailchimp'),"ga"=>__("Irish",'contact-form-mailchimp'),"it"=>__("Italian",'contact-form-mailchimp'),"ja"=>__("Japanese",'contact-form-mailchimp'),"km"=>__("Khmer",'contact-form-mailchimp'),"ko"=>__("Korean",'contact-form-mailchimp'),"lv"=>__("Latvian",'contact-form-mailchimp'),"lt"=>__("Lithuanian",'contact-form-mailchimp'),"mt"=>__("Maltese",'contact-form-mailchimp'),"ms"=>__("Malay",'contact-form-mailchimp'),"mk"=>__("Macedonian",'contact-form-mailchimp'),"no"=>__("Norwegian",'contact-form-mailchimp'),"pl"=>__("Polish",'contact-form-mailchimp'),"pt"=>__("Portuguese (Brazil)",'contact-form-mailchimp'),"pt_PT"=>__("Portuguese (Portugal)",'contact-form-mailchimp'),"ro"=>__("Romanian",'contact-form-mailchimp'),"ru"=>__("Russian",'contact-form-mailchimp'),"sr"=>__("Serbian",'contact-form-mailchimp'),"sk"=>__("Slovak",'contact-form-mailchimp'),"sl"=>__("Slovenian",'contact-form-mailchimp'),"es"=>__("Spanish (Mexico)",'contact-form-mailchimp'),"es_ES"=>__("Spanish (Spain)",'contact-form-mailchimp'),"sw"=>__("Swahili",'contact-form-mailchimp'),"sv"=>__("Swedish",'contact-form-mailchimp'),"ta"=>__("Tamil",'contact-form-mailchimp'),"th"=>__("Thai",'contact-form-mailchimp'),"tr"=>__("Turkish",'contact-form-mailchimp'),"uk"=>__("Ukrainian",'contact-form-mailchimp'),"vi"=>__("Vietnamese",'contact-form-mailchimp'));
 $email_types=array('html'=>__('HTML','contact-form-mailchimp'), 'text'=>__('Text','contact-form-mailchimp'));
-if(empty($meta['status'])){ $meta['status']='subscribed'; }
+if(empty($meta['status'])){ $meta['status']= empty($feed['time']) ? 'pending' : 'subscribed'; }
 if(empty($meta['language'])){ $meta['language']='en'; }
 if(empty($meta['email_type'])){ $meta['email_type']='html'; }
 ?>
@@ -571,13 +571,13 @@ if(empty($meta['email_type'])){ $meta['email_type']='html'; }
     <div class="vx_group ">
    <div class="vx_row"> 
    <div class="vx_col1"> 
-  <label for="crm_sel_status"><?php esc_html_e('Status/ Double Optin', 'contact-form-mailchimp'); ?></label>
+  <label for="crm_sel_status"><?php esc_html_e('Subscriber status', 'contact-form-mailchimp'); ?></label>
   </div>
   <div class="vx_col2">
   <select id="crm_sel_status" name="meta[status]" style="width: 100%;" autocomplete="off">
   <?php echo $this->gen_select($statuses,$this->post('status',$meta)); ?>
   </select>
-  <div class="howto"><?php esc_html_e('Select status as "pending" if you want people to confirm their email address before being subscribed', 'contact-form-mailchimp'); ?></div>
+  <div class="howto"><?php esc_html_e('Choose "Pending" so people confirm their email address before they are subscribed. This only applies to new subscribers; existing subscribers keep their current status.', 'contact-form-mailchimp'); ?></div>
   </div>
 <div class="clear"></div>
 </div>
