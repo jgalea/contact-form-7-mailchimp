@@ -19,7 +19,7 @@ function __construct($info) {
        if(!empty($info['data']['api_key'])){
         $this->api_key=$info['data']['api_key'];
       $temp_arr=explode('-',$this->api_key); 
-      if(!empty($temp_arr[1])){ 
+      if(!empty($temp_arr[1]) && preg_match('/^[a-z]+[0-9]+$/',$temp_arr[1])){ 
 $this->url='https://'.$temp_arr[1].'.api.mailchimp.com/3.0/';
       }
        }
@@ -476,7 +476,6 @@ public function post_crm($path,$method,$body=''){
   'body' => $body,
   'headers'=> $head,
   'method' => strtoupper($method), // GET, POST, PUT, DELETE, etc.
-  'sslverify' => false,
   'timeout' => 30,
   );
   

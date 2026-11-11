@@ -1286,37 +1286,6 @@ if(!current_user_can($this->id."_send_to_crm")){return; }
 $this->plugin_api(true);
 do_action('plugin_status_'.$this->type,'activate');  
   }
-    /**
-  * Send CURL Request
-  * 
-  * @param mixed $body
-  * @param mixed $path
-  * @param mixed $method
-  */
-  public function request($path="",$method='POST',$body="",$head=array()) {
-
-        $args = array(
-            'body' => $body,
-            'headers'=> $head,
-            'method' => strtoupper($method), // GET, POST, PUT, DELETE, etc.
-            'sslverify' => false,
-            'timeout' => 20,
-        );
-
-       $response = wp_remote_request($path, $args);
-
-        if(is_wp_error($response)) { 
-            $this->error_msg= $response->get_error_message();
-            return false;
-        } else if(isset($response['response']['code']) && $response['response']['code'] != 200 && $response['response']['code'] != 404) {
-            $this->error_msg = strip_tags($response['body']);
-            return false;
-        } else if(!$response) {
-            return false;
-        }
-   $result=wp_remote_retrieve_body($response);
-        return $result;
-    }
 
   /**
   * Formates User Informations and submitted form to string
