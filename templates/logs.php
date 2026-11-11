@@ -330,7 +330,8 @@ if($items>0){
         ?>       
   </div>
   
-  <table class="widefat fixed sort" cellspacing="0">
+  <div class="vx_table_scroll" style="overflow-x:auto;inline-size:100%">
+  <table class="widefat fixed sort" style="min-inline-size:44rem" cellspacing="0">
   
   <thead>
   <tr>
@@ -450,6 +451,7 @@ $feed_link=$this->get_feed_link($row['feed_id'],$row['form_id']);
   ?>
   </tbody>
   </table>
+  </div>
 
       <?php
   if($items>0){
